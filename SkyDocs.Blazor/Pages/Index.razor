@@ -115,7 +115,7 @@
                 <Card Margin="Margin.Is4.OnY" @onclick="@(x => OpenDocument(document.Id))">
                     @if (document.PreviewImage != null)
                     {
-                        <CardImage Source="@string.Format("https://siasky.net/{0}", document.PreviewImage)"  Alt="@document.Title">
+                        <CardImage Source="@string.Format("https://siasky.net/{0}", document.PreviewImage)" Style="width:100%;height:auto" Alt="@document.Title">
                         </CardImage>
                     }
 
