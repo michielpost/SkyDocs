@@ -1,0 +1,292 @@
+﻿@page "/"
+@inject SkyDocsService skyDocsService;
+
+<Modal @ref="modalRef" Closing="@OnModalClosing">
+    <ModalBackdrop />
+    <ModalContent Size="@modalSize" Centered="@centered">
+        <ModalHeader>
+            <ModalTitle>
+                <Icon Name="IconName.User" />
+                Login
+            </ModalTitle>
+            @*<CloseButton Clicked="@HideModal" />*@
+        </ModalHeader>
+        <ModalBody>
+            <Validations Mode="ValidationMode.Auto" ValidateOnLoad="false">
+                <Validation Validator="@ValidationRule.IsNotEmpty">
+                    <Field>
+                        <FieldLabel>Username</FieldLabel>
+                        <TextEdit Placeholder="Username" @bind-Text="@Username" KeyUp="@OnTextChanged">
+                            <Feedback>
+                                <ValidationError>Please enter a username</ValidationError>
+                            </Feedback>
+                        </TextEdit>
+                    </Field>
+                </Validation>
+                <Validation Validator="@ValidationRule.IsNotEmpty">
+                    <Field>
+                        <FieldLabel>Password</FieldLabel>
+                        <TextEdit Placeholder="Password" @bind-Text="@Password" KeyUp="@OnTextChanged">
+                            <Feedback>
+                                <ValidationError>Please enter a password</ValidationError>
+                            </Feedback>
+                        </TextEdit>
+                    </Field>
+                </Validation>
+            </Validations>
+        </ModalBody>
+        <ModalFooter>
+            <Button Color="Color.Primary" Clicked="@Login" Disabled="@LoginDisabled">Login</Button>
+        </ModalFooter>
+    </ModalContent>
+</Modal>
+
+<Modal Visible="skyDocsService.IsLoading" Closing="@OnLoadingModalClosing">
+    <ModalBackdrop />
+    <ModalContent>
+        <ModalHeader>
+            <ModalTitle>
+                <Icon Name="IconName.Satellite" />
+                Loading...
+            </ModalTitle>
+        </ModalHeader>
+        <ModalBody>
+            <h1>Loading...</h1>
+        </ModalBody>
+    </ModalContent>
+</Modal>
+
+<Modal Visible="IsSaving" Closing="@OnSavingModalClosing">
+    <ModalBackdrop />
+    <ModalContent>
+        <ModalHeader>
+            <ModalTitle>
+                <Icon Name="IconName.Satellite" />
+                Saving...
+            </ModalTitle>
+        </ModalHeader>
+        <ModalBody>
+            <h1>Saving...</h1>
+        </ModalBody>
+    </ModalContent>
+</Modal>
+
+@if (skyDocsService.IsLoggedIn && skyDocsService.CurrentDocument == null && !skyDocsService.IsLoading)
+{
+    <Row>
+        <Column ColumnSize="ColumnSize.Is4.OnTablet.Is3.OnWidescreen.Is12.OnMobile">
+            <Card Margin="Margin.Is4.OnY">
+                <CardBody>
+                    <CardTitle Size="5">New Document</CardTitle>
+                    <Button Color="Color.Primary" Clicked="@NewDocument">Blank</Button>
+                </CardBody>
+            </Card>
+        </Column>
+
+        @foreach (var document in skyDocsService.DocumentList.OrderByDescending(x => x.ModifiedDate))
+        {
+            <Column ColumnSize="ColumnSize.Is4.OnTablet.Is3.OnWidescreen.Is12.OnMobile">
+                <Card Margin="Margin.Is4.OnY" @onclick="@(x => OpenDocument(document.Id))">
+                    <CardImage Source="assets/images/gallery/9.jpg" Alt="Placeholder image">
+                    </CardImage>
+                    <CardBody>
+                        <CardTitle Size="5">@document.Title</CardTitle>
+                        <CardLink>Edit</CardLink>
+                    </CardBody>
+                </Card>
+            </Column>
+        }
+    </Row>
+}
+else if (skyDocsService.CurrentDocument != null)
+{
+    <TextEdit Placeholder="Title" @bind-Text="@skyDocsService.CurrentDocument.Title" />
+}
+
+
+
+<RichTextEdit @ref="richTextEditRef"
+              ContentChanged="@OnContentChanged"
+              SubmitOnEnter="false"
+              Style="@(skyDocsService.CurrentDocument == null ? "display:none" : "height:80vh")"
+              ToolbarPosition="Placement.Top">
+    <Editor></Editor>
+    <Toolbar>
+        <RichTextEditToolbarGroup>
+            <RichTextEditToolbarButton Action="RichTextEditAction.Bold" />
+            <RichTextEditToolbarButton Action="RichTextEditAction.Italic" />
+            <RichTextEditToolbarButton Action="RichTextEditAction.Underline" />
+            <RichTextEditToolbarButton Action="RichTextEditAction.Strike" />
+        </RichTextEditToolbarGroup>
+        <RichTextEditToolbarGroup>
+            <RichTextEditToolbarSelect Action="RichTextEditAction.Size">
+                <RichTextEditToolbarSelectItem Value="small" />
+                <RichTextEditToolbarSelectItem Selected="true" />
+                <RichTextEditToolbarSelectItem Value="large" />
+                <RichTextEditToolbarSelectItem Value="huge">Very Big</RichTextEditToolbarSelectItem>
+            </RichTextEditToolbarSelect>
+        </RichTextEditToolbarGroup>
+        <RichTextEditToolbarGroup>
+            <RichTextEditToolbarButton Action="RichTextEditAction.List" Value="ordered" />
+            <RichTextEditToolbarButton Action="RichTextEditAction.List" Value="bullet" />
+        </RichTextEditToolbarGroup>
+        <RichTextEditToolbarGroup>
+            <RichTextEditToolbarButton Action="RichTextEditAction.Blockquote" />
+            <RichTextEditToolbarButton Action="RichTextEditAction.CodeBlock" />
+        </RichTextEditToolbarGroup>
+        <RichTextEditToolbarGroup>
+            <RichTextEditToolbarButton Action="RichTextEditAction.Script" Value="sub" />
+            <RichTextEditToolbarButton Action="RichTextEditAction.Script" Value="super" />
+        </RichTextEditToolbarGroup>
+        <RichTextEditToolbarGroup>
+            <RichTextEditToolbarSelect Action="RichTextEditAction.Color" />
+            <RichTextEditToolbarSelect Action="RichTextEditAction.Background" />
+        </RichTextEditToolbarGroup>
+        <RichTextEditToolbarGroup Float="Float.Right">
+            <Button Class="btn-icon" Size="Size.ExtraSmall" Clicked="@OnSave"><Icon Name="IconName.Save" /></Button>
+        </RichTextEditToolbarGroup>
+    </Toolbar>
+</RichTextEdit>
+
+@if (skyDocsService.CurrentDocument != null)
+{
+    <div style="text-align:right">
+        <Button Color="Color.Danger" Clicked="@GoToList">Back</Button>
+        <Button Color="Color.Success" Clicked="@OnSave">Save</Button>
+    </div>
+
+}
+
+
+
+@code{
+    private Modal modalRef;
+    private bool centered = false;
+    private ModalSize modalSize = ModalSize.Default;
+    private RichTextEdit richTextEditRef;
+
+    private bool LoginDisabled = true;
+    private bool IsSaving = false;
+    public string Username { get; set; }
+    public string Password { get; set; }
+
+    protected override async void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            if (!skyDocsService.IsLoggedIn)
+                modalRef.Show();
+
+            if (skyDocsService.CurrentDocument != null)
+            {
+                await Task.Delay(100);
+                await InitDocument();
+            }
+
+        }
+
+    }
+
+    void OnTextChanged(Microsoft.AspNetCore.Components.Web.KeyboardEventArgs e)
+    {
+        if (!string.IsNullOrWhiteSpace(Username) && !string.IsNullOrWhiteSpace(Password))
+            LoginDisabled = false;
+        else
+            LoginDisabled = true;
+    }
+
+    private void OnModalClosing(System.ComponentModel.CancelEventArgs e)
+    {
+        if (!skyDocsService.IsLoggedIn)
+        {
+            // just set Cancel to true to prevent modal from closing
+            e.Cancel = true;
+        }
+    }
+
+    private void OnLoadingModalClosing(System.ComponentModel.CancelEventArgs e)
+    {
+        if (skyDocsService.IsLoading)
+        {
+            // just set Cancel to true to prevent modal from closing
+            e.Cancel = true;
+        }
+    }
+
+    private void OnSavingModalClosing(System.ComponentModel.CancelEventArgs e)
+    {
+        if (IsSaving)
+        {
+            // just set Cancel to true to prevent modal from closing
+            e.Cancel = true;
+        }
+    }
+
+
+    private async Task Login()
+    {
+        skyDocsService.Login(Username, Password);
+        modalRef.Hide();
+
+        await skyDocsService.LoadDocumentList();
+    }
+
+    private async Task OpenDocument(Guid id)
+    {
+        await skyDocsService.LoadDocument(id);
+
+        await InitDocument();
+    }
+
+    private async Task InitDocument()
+    {
+        if (skyDocsService.CurrentDocument != null && !string.IsNullOrEmpty(skyDocsService.CurrentDocument.Content))
+        {
+            skyDocsService.CurrentDocument.Title = skyDocsService.CurrentDocument.Title;
+
+            if (richTextEditRef != null)
+                await richTextEditRef.SetHtmlAsync(skyDocsService.CurrentDocument.Content);
+        }
+    }
+
+    private void NewDocument()
+    {
+        skyDocsService.StartNewDocument();
+    }
+
+    public async Task OnContentChanged()
+    {
+        //contentAsHtml = await richTextEditRef.GetHtmlAsync();
+        //contentAsDeltaJson = await richTextEditRef.GetDeltaAsync();
+        //contentAsText = await richTextEditRef.GetTextAsync();
+    }
+
+    public async Task GoToList()
+    {
+        await richTextEditRef.ClearAsync();
+        skyDocsService.CurrentDocument = null;
+    }
+
+    public async Task OnSave()
+    {
+        IsSaving = true;
+
+        var htmlContent = await richTextEditRef.GetHtmlAsync();
+        var textContent = await richTextEditRef.GetTextAsync();
+
+        if (skyDocsService.CurrentDocument != null)
+        {
+            skyDocsService.CurrentDocument.Content = htmlContent;
+
+            var fallbackTitle = textContent.Substring(0, Math.Min(textContent.Length, 15));
+
+            await skyDocsService.SaveCurrentDocument(textContent);
+
+        }
+
+        await richTextEditRef.ClearAsync();
+
+        IsSaving = false;
+
+    }
+}
