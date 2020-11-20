@@ -11,6 +11,7 @@ namespace SkyDocs.Blazor.Models
         public string Title { get; set; }
         public DateTimeOffset CreatedDate { get; set; }
         public DateTimeOffset ModifiedDate { get; set; }
+        public string? PreviewImage { get; set; }
     }
 
     public class Document

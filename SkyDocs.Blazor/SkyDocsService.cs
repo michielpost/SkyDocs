@@ -2,6 +2,7 @@
 using SkyDocs.Blazor.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -69,7 +70,7 @@ namespace SkyDocs.Blazor
         /// </summary>
         /// <param name="fallbackTitle"></param>
         /// <returns></returns>
-        public async Task SaveCurrentDocument(string fallbackTitle)
+        public async Task SaveCurrentDocument(string fallbackTitle, byte[] img)
         {
             if (CurrentDocument != null)
             {
@@ -98,6 +99,19 @@ namespace SkyDocs.Blazor
                     ModifiedDate = DateTimeOffset.UtcNow
                 };
                 DocumentList.Add(sum);
+
+                string? imgLink = null;
+                if (img != null)
+                {
+                    using (Stream stream = new MemoryStream(img))
+                    {
+                        //Save preview image to Skynet file
+                        var response = await client.UploadFileAsync("document.jpg", stream);
+
+                        imgLink = response.Skylink;
+                    }
+                }
+                sum.PreviewImage = imgLink;
 
                 bool success = await SaveDocument(CurrentDocument);
                 if (success)

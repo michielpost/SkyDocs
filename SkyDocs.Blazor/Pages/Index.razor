@@ -1,5 +1,6 @@
 ﻿@page "/"
 @inject SkyDocsService skyDocsService;
+@inject IJSRuntime JsRuntime
 
 <Modal @ref="modalRef" Closing="@OnModalClosing">
     <ModalBackdrop />
@@ -87,8 +88,12 @@
         {
             <Column ColumnSize="ColumnSize.Is4.OnTablet.Is3.OnWidescreen.Is12.OnMobile">
                 <Card Margin="Margin.Is4.OnY" @onclick="@(x => OpenDocument(document.Id))">
-                    <CardImage Source="assets/images/gallery/9.jpg" Alt="Placeholder image">
-                    </CardImage>
+                    @if (document.PreviewImage != null)
+                    {
+                        <CardImage Source="@string.Format("https://siasky.net/{0}", document.PreviewImage)"  Alt="@document.Title">
+                        </CardImage>
+                    }
+
                     <CardBody>
                         <CardTitle Size="5">@document.Title</CardTitle>
                         <CardLink>Edit</CardLink>
@@ -106,6 +111,7 @@ else if (skyDocsService.CurrentDocument != null)
 
 
 <RichTextEdit @ref="richTextEditRef"
+              Attributes="@at"
               ContentChanged="@OnContentChanged"
               SubmitOnEnter="false"
               Style="@(skyDocsService.CurrentDocument == null ? "display:none" : "height:80vh")"
@@ -150,7 +156,7 @@ else if (skyDocsService.CurrentDocument != null)
 
 @if (skyDocsService.CurrentDocument != null)
 {
-    <div style="text-align:right">
+    <div style="text-align:right" id="test">
         <Button Color="Color.Danger" Clicked="@GoToList">Back</Button>
         <Button Color="Color.Success" Clicked="@OnSave">Save</Button>
     </div>
@@ -169,6 +175,7 @@ else if (skyDocsService.CurrentDocument != null)
     private bool IsSaving = false;
     public string Username { get; set; }
     public string Password { get; set; }
+    private Dictionary<string, object> at = new Dictionary<string, object>() { { "id", "rte" } };
 
     protected override async void OnAfterRender(bool firstRender)
     {
@@ -280,7 +287,11 @@ else if (skyDocsService.CurrentDocument != null)
 
             var fallbackTitle = textContent.Substring(0, Math.Min(textContent.Length, 15));
 
-            await skyDocsService.SaveCurrentDocument(textContent);
+            var imageBytes = await JsRuntime.InvokeAsync<string>("Snap", "rte", "image/jpeg");
+            var data = Convert.FromBase64String(imageBytes); // get the image as byte array
+            Console.WriteLine("Image captured: " + data.Length);
+
+            await skyDocsService.SaveCurrentDocument(textContent, data);
 
         }
 
