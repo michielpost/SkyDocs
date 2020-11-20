@@ -35,6 +35,12 @@
                     </Field>
                 </Validation>
             </Validations>
+            <br />
+            <p>
+                <small>
+                    You can enter any username / password combination. But please remember your username and password, there is no way to retreive them.
+                </small>
+            </p>
         </ModalBody>
         <ModalFooter>
             <Button Color="Color.Primary" Clicked="@Login" Disabled="@LoginDisabled">Login</Button>
@@ -47,12 +53,14 @@
     <ModalContent>
         <ModalHeader>
             <ModalTitle>
-                <Icon Name="IconName.Satellite" />
-                Loading...
+                <Icon Name="IconName.FileDownload" />
+                Loading documents from SkyNet...
             </ModalTitle>
         </ModalHeader>
         <ModalBody>
-            <h1>Loading...</h1>
+            <div class="loader">
+                Loading...
+            </div>
         </ModalBody>
     </ModalContent>
 </Modal>
@@ -62,12 +70,29 @@
     <ModalContent>
         <ModalHeader>
             <ModalTitle>
-                <Icon Name="IconName.Satellite" />
-                Saving...
+                <Icon Name="IconName.FileUpload" />
+                Saving document to Skynet...
             </ModalTitle>
         </ModalHeader>
         <ModalBody>
-            <h1>Saving...</h1>
+            <div class="loader">
+                Saving...
+            </div>
+        </ModalBody>
+    </ModalContent>
+</Modal>
+
+<Modal Visible="!string.IsNullOrEmpty(skyDocsService.Error)"  Closing="@OnErrorModalClosing">
+    <ModalBackdrop />
+    <ModalContent>
+        <ModalHeader>
+            <ModalTitle>
+                <Icon Name="IconName.Exclamation" />
+                Error
+            </ModalTitle>
+        </ModalHeader>
+        <ModalBody>
+           @skyDocsService.Error
         </ModalBody>
     </ModalContent>
 </Modal>
@@ -112,7 +137,6 @@ else if (skyDocsService.CurrentDocument != null)
 
 <RichTextEdit @ref="richTextEditRef"
               Attributes="@at"
-              ContentChanged="@OnContentChanged"
               SubmitOnEnter="false"
               Style="@(skyDocsService.CurrentDocument == null ? "display:none" : "height:80vh")"
               ToolbarPosition="Placement.Top">
@@ -149,6 +173,7 @@ else if (skyDocsService.CurrentDocument != null)
             <RichTextEditToolbarSelect Action="RichTextEditAction.Background" />
         </RichTextEditToolbarGroup>
         <RichTextEditToolbarGroup Float="Float.Right">
+            <Button Class="btn-icon" Size="Size.ExtraSmall" Clicked="@OnDelete"><Icon Name="IconName.Delete" /></Button>
             <Button Class="btn-icon" Size="Size.ExtraSmall" Clicked="@OnSave"><Icon Name="IconName.Save" /></Button>
         </RichTextEditToolbarGroup>
     </Toolbar>
@@ -229,6 +254,11 @@ else if (skyDocsService.CurrentDocument != null)
         }
     }
 
+    private void OnErrorModalClosing(System.ComponentModel.CancelEventArgs e)
+    {
+        skyDocsService.Error = null;
+    }
+
 
     private async Task Login()
     {
@@ -261,13 +291,6 @@ else if (skyDocsService.CurrentDocument != null)
         skyDocsService.StartNewDocument();
     }
 
-    public async Task OnContentChanged()
-    {
-        //contentAsHtml = await richTextEditRef.GetHtmlAsync();
-        //contentAsDeltaJson = await richTextEditRef.GetDeltaAsync();
-        //contentAsText = await richTextEditRef.GetTextAsync();
-    }
-
     public async Task GoToList()
     {
         await richTextEditRef.ClearAsync();
@@ -292,6 +315,22 @@ else if (skyDocsService.CurrentDocument != null)
             Console.WriteLine("Image captured: " + data.Length);
 
             await skyDocsService.SaveCurrentDocument(textContent, data);
+
+        }
+
+        await richTextEditRef.ClearAsync();
+
+        IsSaving = false;
+
+    }
+
+    public async Task OnDelete()
+    {
+        IsSaving = true;
+
+        if (skyDocsService.CurrentDocument != null)
+        {
+            await skyDocsService.DeleteCurrentDocument();
 
         }
 

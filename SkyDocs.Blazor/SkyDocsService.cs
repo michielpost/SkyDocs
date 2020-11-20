@@ -26,6 +26,7 @@ namespace SkyDocs.Blazor
         public bool IsLoading { get; set; }
         public List<DocumentSummary> DocumentList { get; set; } = new List<DocumentSummary>();
         public Document? CurrentDocument { get; set; }
+        public string? Error { get; set; }
 
         /// <summary>
         /// Login with username/password
@@ -72,6 +73,7 @@ namespace SkyDocs.Blazor
         /// <returns></returns>
         public async Task SaveCurrentDocument(string fallbackTitle, byte[] img)
         {
+            Error = null;
             if (CurrentDocument != null)
             {
                 var existing = DocumentList.Where(x => x.Id == CurrentDocument.Id).FirstOrDefault();
@@ -116,11 +118,33 @@ namespace SkyDocs.Blazor
                 bool success = await SaveDocument(CurrentDocument);
                 if (success)
                     CurrentDocument = null;
+                else
+                    Error = "Unable to save document to Skynet. Please try again.";
 
                 //Save updated document list
                 await SaveDocumentList(DocumentList);
             }
 
+        }
+
+        public async Task DeleteCurrentDocument()
+        {
+            Error = null;
+            if (CurrentDocument != null)
+            {
+                var existing = DocumentList.Where(x => x.Id == CurrentDocument.Id).FirstOrDefault();
+                if (existing != null)
+                {
+                    DocumentList.Remove(existing);
+                }
+
+                //Save updated document list
+                bool success = await SaveDocumentList(DocumentList);
+                if (success)
+                    CurrentDocument = null;
+                else
+                    Error = "Unable to delete document. Please try again.";
+            }
         }
 
         /// <summary>
@@ -137,12 +161,20 @@ namespace SkyDocs.Blazor
         /// <returns></returns>
         private async Task<List<DocumentSummary>> GetDocumentList()
         {
-            var json = await client.SkyDbGetAsString(publicKey, listDataKey, TimeSpan.FromSeconds(5));
-            if (string.IsNullOrEmpty(json))
-                return new List<DocumentSummary>();
-            else
-                return JsonSerializer.Deserialize<List<DocumentSummary>>(json) ?? new List<DocumentSummary>();
-
+            try
+            {
+                Error = null;
+                var json = await client.SkyDbGetAsString(publicKey, listDataKey, TimeSpan.FromSeconds(5));
+                if (string.IsNullOrEmpty(json))
+                    return new List<DocumentSummary>();
+                else
+                    return JsonSerializer.Deserialize<List<DocumentSummary>>(json) ?? new List<DocumentSummary>();
+            }
+            catch
+            {
+                Error = "Unable to get list of documents from Skynet. Please try again.";
+            }
+            return new List<DocumentSummary>();
         }
 
         /// <summary>
@@ -153,7 +185,15 @@ namespace SkyDocs.Blazor
         private async Task<bool> SaveDocumentList(List<DocumentSummary> list)
         {
             var json = JsonSerializer.Serialize(list);
-            var success = await client.SkyDbSet(privateKey, publicKey, listDataKey, json);
+            bool success = false;
+            try
+            {
+                success = await client.SkyDbSet(privateKey, publicKey, listDataKey, json);
+            }
+            catch
+            {
+                success = false;
+            }
             return success;
         }
 
@@ -164,11 +204,21 @@ namespace SkyDocs.Blazor
         /// <returns></returns>
         private async Task<Document> GetDocument(Guid id)
         {
-            var json = await client.SkyDbGetAsString(publicKey, id.ToString(), TimeSpan.FromSeconds(10));
-            if (string.IsNullOrEmpty(json))
-                return new Document();
-            else
-                return JsonSerializer.Deserialize<Document>(json) ?? new Document();
+            try
+            {
+                Error = null;
+                var json = await client.SkyDbGetAsString(publicKey, id.ToString(), TimeSpan.FromSeconds(10));
+                if (string.IsNullOrEmpty(json))
+                    return new Document();
+                else
+                    return JsonSerializer.Deserialize<Document>(json) ?? new Document();
+            }
+            catch
+            {
+                Error = "Unable to load document from Skynet. Please try again.";
+            }
+
+            return new Document();
         }
 
         /// <summary>
@@ -179,7 +229,15 @@ namespace SkyDocs.Blazor
         private async Task<bool> SaveDocument(Document doc)
         {
             var json = JsonSerializer.Serialize(doc);
-            var success = await client.SkyDbSet(privateKey, publicKey, doc.Id.ToString(), json);
+            bool success = false;
+            try
+            {
+                success = await client.SkyDbSet(privateKey, publicKey, doc.Id.ToString(), json);
+            }
+            catch
+            {
+                success = false;
+            }
             return success;
         }
 
