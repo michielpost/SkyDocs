@@ -10,9 +10,9 @@ Features:
 - Edit documents
 - Delete documents
 
-NOTE: All data is publicly stored on the Sia Skynet. Encryption of your documents is not yet implemented.
+NOTE: All data is publicly stored on Sia Skynet. Encryption of your documents is not yet implemented.
 
-SkyDocs is build with Blazor and runs on WebAssembly.
+SkyDocs is build with Blazor and runs on WebAssembly. The [SiaSkynet C# SDK](https://github.com/michielpost/SiaSkynet) is used to communicate with Skynet and SkyDB.
 
 Demo video: https://siasky.net/AADh9ZruJIm-UqRKWNCA_uCh1sYYg4NvrWZUKKw3UbwXiw
 
