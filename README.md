@@ -14,9 +14,18 @@ NOTE: All data is publicly stored on the Sia Skynet. Encryption of your document
 
 SkyDocs is build with Blazor and runs on WebAssembly.
 
+Demo video: https://siasky.net/AADh9ZruJIm-UqRKWNCA_uCh1sYYg4NvrWZUKKw3UbwXiw
+
 ---
 
 ## Screenshots
 
+Login
+![Login](screenshots/01_login.png)
 
+View all your documents
+![View all your documents](screenshots/02_documents.png)
+
+Edit a document
+![Edit a document](screenshots/03_edit_document.png)
 

@@ -1,6 +1,7 @@
 ﻿@page "/"
 @inject SkyDocsService skyDocsService;
 @inject IJSRuntime JsRuntime
+@inject HttpClient httpClient;
 
 <Modal @ref="modalRef" Closing="@OnModalClosing">
     <ModalBackdrop />
@@ -82,7 +83,7 @@
     </ModalContent>
 </Modal>
 
-<Modal Visible="!string.IsNullOrEmpty(skyDocsService.Error)"  Closing="@OnErrorModalClosing">
+<Modal Visible="!string.IsNullOrEmpty(skyDocsService.Error)" Closing="@OnErrorModalClosing">
     <ModalBackdrop />
     <ModalContent>
         <ModalHeader>
@@ -92,7 +93,7 @@
             </ModalTitle>
         </ModalHeader>
         <ModalBody>
-           @skyDocsService.Error
+            @skyDocsService.Error
         </ModalBody>
     </ModalContent>
 </Modal>
@@ -105,6 +106,11 @@
                 <CardBody>
                     <CardTitle Size="5">New Document</CardTitle>
                     <Button Color="Color.Primary" Clicked="@NewDocument">Blank</Button>
+
+                    @*@if (!skyDocsService.DocumentList.Any(x => x.Id == Guid.Parse("4c17a20d-8aa0-42b2-b7cd-d2f03d0be2f9")))
+                    {
+                        <Button Color="Color.Secondary" Clicked="@AddTemplates">Add templates</Button>
+                    }*@
                 </CardBody>
             </Card>
         </Column>
@@ -289,6 +295,14 @@ else if (skyDocsService.CurrentDocument != null)
     private void NewDocument()
     {
         skyDocsService.StartNewDocument();
+    }
+
+    private async Task AddTemplates()
+    {
+        var samples = await httpClient.GetFromJsonAsync<List<DocumentSummary>>("templates.json");
+
+        if (samples != null)
+            skyDocsService.DocumentList.AddRange(samples);
     }
 
     public async Task GoToList()
