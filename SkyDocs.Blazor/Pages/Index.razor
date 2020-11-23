@@ -28,7 +28,7 @@
                 <Validation Validator="@ValidationRule.IsNotEmpty">
                     <Field>
                         <FieldLabel>Password</FieldLabel>
-                        <TextEdit Placeholder="Password" @bind-Text="@Password" KeyUp="@OnTextChanged">
+                        <TextEdit Placeholder="Password" Role="TextRole.Password" @bind-Text="@Password" KeyUp="@OnTextChanged">
                             <Feedback>
                                 <ValidationError>Please enter a password</ValidationError>
                             </Feedback>
