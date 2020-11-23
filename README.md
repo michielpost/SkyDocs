@@ -16,6 +16,8 @@ SkyDocs is build with Blazor and runs on WebAssembly. The [SiaSkynet C# SDK](htt
 
 Demo video: https://siasky.net/AADh9ZruJIm-UqRKWNCA_uCh1sYYg4NvrWZUKKw3UbwXiw
 
+Try the app hosted on Sia Skynet (first load can be slow, after that it's fast): https://siasky.net/RAB-QAQ9Ws8849yZiyhirgqsFycYAkj1MLOs0lc8nLJQfw
+
 ---
 
 ## Screenshots
@@ -28,4 +30,13 @@ View all your documents
 
 Edit a document
 ![Edit a document](screenshots/03_edit_document.png)
+
+## Instal for local development
+- Install Visual Studio Code https://code.visualstudio.com/
+- Install .Net 5 SDK https://dotnet.microsoft.com/download/dotnet/5.0
+- Compile and run the project
+
+## Open Source Project Credits
+- [SiaSkynet C# SDK](https://github.com/michielpost/SiaSkynet)
+- [Blazorise](https://github.com/stsrki/Blazorise)
 
