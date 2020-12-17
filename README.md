@@ -1,8 +1,6 @@
 # SkyDocs
 A Sia Skynet Google Docs alternative.
 
-SkyDocs was created for *[The SkyDB Debut](https://gitcoin.co/hackathon/skydb/)* hackathon. 
-
 Features:
 - Login with your personal username and password
 - See a list of your documents
@@ -40,3 +38,9 @@ Edit a document
 - [SiaSkynet C# SDK](https://github.com/michielpost/SiaSkynet)
 - [Blazorise](https://github.com/stsrki/Blazorise)
 
+## SkyDB Debut Hackathon
+SkyDocs was created for *[The SkyDB Debut](https://gitcoin.co/hackathon/skydb/)* hackathon. 
+Finished as Runner Up in the SkyDB Debut Hackathon: https://blog.sia.tech/skydb-debut-hackathon-winners-d7929970cdea  
+
+Jury notes:
+![Hackathon results](screenshots/hackathon_winner.jpg)
