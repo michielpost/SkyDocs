@@ -14,7 +14,7 @@ SkyDocs is build with Blazor and runs on WebAssembly. The [SiaSkynet C# SDK](htt
 
 Demo video: https://siasky.net/AADh9ZruJIm-UqRKWNCA_uCh1sYYg4NvrWZUKKw3UbwXiw
 
-Try the app hosted on Sia Skynet (first load can be slow, after that it's fast): https://siasky.net/RAB-QAQ9Ws8849yZiyhirgqsFycYAkj1MLOs0lc8nLJQfw
+Try the app hosted on Sia Skynet (first load can be slow, after that it's fast): https://siasky.net/RAARTZChmrfHG1Qk6I1RaUXC4lgY2wH2mJk1dR6Cs_Pjag
 
 ---
 
