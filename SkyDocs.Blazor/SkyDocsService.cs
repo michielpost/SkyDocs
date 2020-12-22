@@ -27,6 +27,11 @@ namespace SkyDocs.Blazor
         public Document? CurrentDocument { get; set; }
         public string? Error { get; set; }
 
+        public void SetPortalDomain(string baseUrl)
+        {
+            client = new SiaSkynetClient(baseUrl);
+        }
+
         /// <summary>
         /// Login with username/password
         /// </summary>
