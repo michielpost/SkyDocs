@@ -13,7 +13,7 @@ jobs:
         with:
           dotnet-version: 5.0.x
       - name: Build with dotnet
-        run: dotnet build SiaSkynet.sln --configuration Release
+        run: dotnet build --configuration Release
       - name: Publish Website
         run: dotnet publish SkyDocs.Blazor -o publish/SkyDocs.Blazor -c Release
       - name: Deploy to Skynet
