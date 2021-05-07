@@ -1,4 +1,6 @@
 # SkyDocs
+[![Build .NET](https://github.com/michielpost/SkyDocs/actions/workflows/build.yml/badge.svg)](https://github.com/michielpost/SkyDocs/actions/workflows/build.yml)
+
 A Sia Skynet Google Docs alternative.
 
 Features:
@@ -14,7 +16,7 @@ SkyDocs is build with Blazor and runs on WebAssembly. The [SiaSkynet C# SDK](htt
 
 Demo video: https://siasky.net/AADh9ZruJIm-UqRKWNCA_uCh1sYYg4NvrWZUKKw3UbwXiw
 
-Try the app hosted on Sia Skynet (first load can be slow, after that it's fast): https://siasky.net/RAARTZChmrfHG1Qk6I1RaUXC4lgY2wH2mJk1dR6Cs_Pjag
+Try the app hosted on Sia Skynet (first load can be slow, after that it's fast): https://skydocs.hns.siasky.net
 
 ---
 
