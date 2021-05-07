@@ -1,0 +1,23 @@
+name: publish to skynet
+on:
+  push:
+
+jobs:
+  publish:
+    name: build and publish to skynet
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup dotnet
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 5.0.x
+      - name: Build with dotnet
+        run: dotnet build SiaSkynet.sln --configuration Release
+      - name: Publish Website
+        run: dotnet publish SkyDocs.Blazor -o publish/SkyDocs.Blazor -c Release
+      - name: Deploy to Skynet
+        uses: kwypchlo/deploy-to-skynet-action@main
+        with:
+          upload-dir: publish/SiaSkynet.Sample.Blazo
+          github-token: ${{ secrets.GITHUB_TOKEN }}
