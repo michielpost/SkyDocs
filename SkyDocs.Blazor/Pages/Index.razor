@@ -33,7 +33,38 @@ else if (skyDocsService.CurrentDocument != null)
     <RadzenHtmlEditor @bind-Value=@skyDocsService.CurrentDocument.Content
                       id="rte"
                       Visible="skyDocsService.CurrentDocument.Content != null"
-                      style="height: 500px; margin-bottom: 1rem;" />
+                      style="height: 500px; margin-bottom: 1rem;">
+        <RadzenHtmlEditorUndo />
+        <RadzenHtmlEditorRedo />
+        <RadzenHtmlEditorSeparator />
+        <RadzenHtmlEditorBold />
+        <RadzenHtmlEditorItalic />
+        <RadzenHtmlEditorUnderline />
+        <RadzenHtmlEditorStrikeThrough />
+        <RadzenHtmlEditorSeparator />
+        <RadzenHtmlEditorAlignLeft />
+        <RadzenHtmlEditorAlignCenter />
+        <RadzenHtmlEditorAlignRight />
+        <RadzenHtmlEditorJustify />
+        <RadzenHtmlEditorSeparator />
+        <RadzenHtmlEditorIndent />
+        <RadzenHtmlEditorOutdent />
+        <RadzenHtmlEditorUnorderedList />
+        <RadzenHtmlEditorOrderedList />
+        <RadzenHtmlEditorSeparator />
+        <RadzenHtmlEditorColor />
+        <RadzenHtmlEditorBackground />
+        <RadzenHtmlEditorRemoveFormat />
+        <RadzenHtmlEditorSeparator />
+        <RadzenHtmlEditorSubscript />
+        <RadzenHtmlEditorSuperscript />
+        <RadzenHtmlEditorSeparator />
+        <RadzenHtmlEditorLink />
+        <RadzenHtmlEditorUnlink />
+        <RadzenHtmlEditorFontName />
+        <RadzenHtmlEditorFontSize />
+        <RadzenHtmlEditorFormatBlock />
+    </RadzenHtmlEditor>
 
     <div style="text-align:right">
         <RadzenButton ButtonStyle="ButtonStyle.Danger" Click="@OnDelete">Delete</RadzenButton>
