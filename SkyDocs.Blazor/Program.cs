@@ -37,10 +37,6 @@ namespace SkyDocs.Blazor
 
             var host = builder.Build();
 
-            host.Services
-              .UseMaterialProviders()
-              .UseMaterialIcons();
-
             await host.RunAsync();
 
         }
