@@ -28,7 +28,7 @@
 }
 else if (skyDocsService.CurrentDocument != null)
 {
-    <RadzenTextBox Placeholder="Title" @bind-Value="@skyDocsService.CurrentDocument.Title" />
+    <RadzenTextBox Placeholder="Title" @bind-Value="@skyDocsService.CurrentDocument.Title" Style="width:100%" />
 
     <RadzenHtmlEditor @bind-Value=@DocumentSource
                       id="rte"
