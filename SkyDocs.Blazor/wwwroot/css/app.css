@@ -35,6 +35,13 @@ a, .btn-link {
     color: red;
 }
 
+.docCard {
+    width: 300px;
+    margin-bottom: 20px;
+    margin-left: 20px;
+    height: 250px;
+}
+
 #blazor-error-ui {
     background: lightyellow;
     bottom: 0;

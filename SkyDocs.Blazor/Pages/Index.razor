@@ -96,38 +96,28 @@
 @if (skyDocsService.IsLoggedIn && skyDocsService.CurrentDocument == null && !skyDocsService.IsLoading)
 {
     <Row>
-        <Column ColumnSize="ColumnSize.Is4.OnTablet.Is3.OnWidescreen.Is12.OnMobile">
-            <Card Margin="Margin.Is4.OnY">
-                <CardBody>
-                    <CardTitle Size="5">New Document</CardTitle>
-                    <Button Color="Color.Primary" Clicked="@NewDocument">Blank</Button>
-
-                    @*@if (!skyDocsService.DocumentList.Any(x => x.Id == Guid.Parse("4c17a20d-8aa0-42b2-b7cd-d2f03d0be2f9")))
-                        {
-                            <Button Color="Color.Secondary" Clicked="@AddTemplates">Add templates</Button>
-                        }*@
-                </CardBody>
-            </Card>
-        </Column>
+        <RadzenCard class="docCard">
+            <h2>New Document</h2>
+            <Button Color="Color.Primary" Clicked="@NewDocument">Blank</Button>
+        </RadzenCard>
 
         @foreach (var document in skyDocsService.DocumentList.OrderByDescending(x => x.ModifiedDate))
         {
-            <Column ColumnSize="ColumnSize.Is4.OnTablet.Is3.OnWidescreen.Is12.OnMobile">
-                <Card Margin="Margin.Is4.OnY" @onclick="@(x => OpenDocument(document.Id))">
-                    @if (document.PreviewImage != null)
-                    {
-                        <CardImage Source="@string.Format("https://siasky.net/{0}", document.PreviewImage)" Style="width:100%;height:auto" Alt="@document.Title">
-                        </CardImage>
-                    }
+            <RadzenCard class="docCard" @onclick="@(x => OpenDocument(document.Id))">
+                @if (document.PreviewImage != null)
+                {
+                    <RadzenImage Path="@string.Format("https://siasky.net/{0}", document.PreviewImage)" Style="width:100%;height:auto" Alt="@document.Title">
+                    </RadzenImage>
+                }
 
-                    <CardBody>
-                        <CardTitle Size="5">@document.Title</CardTitle>
-                        <CardLink>Edit</CardLink>
-                    </CardBody>
-                </Card>
-            </Column>
+                <h3>@document.Title</h3>
+                <Button Color="Color.Primary">Edit</Button>
+
+            </RadzenCard>
         }
+
     </Row>
+
 }
 else if (skyDocsService.CurrentDocument != null)
 {
@@ -138,9 +128,6 @@ else if (skyDocsService.CurrentDocument != null)
                       Visible="DocumentSource != null"
                       style="height: 500px; margin-bottom: 1rem;" />
 }
-
-
-
 
 
 @if (skyDocsService.CurrentDocument != null)
