@@ -13,7 +13,7 @@
     <script>
         // set base href dynamically based on hosting location
         var base = document.createElement('base');
-        var newBase = `${window.location.pathname}`;
+        var newBase = '${window.location.pathname}';
 
         var secondSlash = newBase.indexOf("/", 1);
         newBase = newBase.substr(0, secondSlash);
@@ -23,7 +23,7 @@
         // Ensure trailing slash present
         newBase += (newBase.endsWith("/") ? "" : "/");
         base.href = newBase;
-        console.log(`Base href set to ${newBase}`);
+        console.log('Base href set to ${newBase}');
         document.getElementsByTagName('head')[0].appendChild(base);
     </script>
 </head>
