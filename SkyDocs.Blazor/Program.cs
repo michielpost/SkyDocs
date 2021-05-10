@@ -1,11 +1,11 @@
 using Blazorise;
 using Blazorise.Icons.Material;
 using Blazorise.Material;
-using Blazorise.RichTextEdit;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Radzen;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -26,9 +26,13 @@ namespace SkyDocs.Blazor
                   options.ChangeTextOnKeyPress = true;
               })
               .AddMaterialProviders()
-              .AddMaterialIcons()
-              .AddBlazoriseRichTextEdit();
-            
+              .AddMaterialIcons();
+
+
+            builder.Services.AddScoped<DialogService>();
+            builder.Services.AddScoped<NotificationService>();
+            builder.Services.AddScoped<TooltipService>();
+            builder.Services.AddScoped<ContextMenuService>();
 
             builder.RootComponents.Add<App>("#app");
 
