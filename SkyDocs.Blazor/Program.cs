@@ -1,6 +1,3 @@
-using Blazorise;
-using Blazorise.Icons.Material;
-using Blazorise.Material;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,15 +16,6 @@ namespace SkyDocs.Blazor
         public static async Task Main(string[] args)
         {
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
-
-            builder.Services
-              .AddBlazorise(options =>
-              {
-                  options.ChangeTextOnKeyPress = true;
-              })
-              .AddMaterialProviders()
-              .AddMaterialIcons();
-
 
             builder.Services.AddScoped<DialogService>();
             builder.Services.AddScoped<NotificationService>();

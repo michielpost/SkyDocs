@@ -1,7 +1,8 @@
-﻿using Blazorise;
-using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using Radzen;
 using SkyDocs.Blazor.Models;
+using SkyDocs.Blazor.Pages.Modals;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,14 +14,9 @@ namespace SkyDocs.Blazor.Pages
 {
     public partial class Index
     {
-        private Modal modalRef;
-        private bool centered = false;
-        private ModalSize modalSize = ModalSize.Default;
-
         private bool LoginDisabled = true;
         private bool IsSaving = false;
-        public string Username { get; set; }
-        public string Password { get; set; }
+
         private Dictionary<string, object> at = new Dictionary<string, object>() { { "id", "rte" } };
 
         [Inject]
@@ -33,6 +29,9 @@ namespace SkyDocs.Blazor.Pages
 
         [Inject]
         public HttpClient httpClient { get; set; }
+
+        [Inject]
+        public DialogService DialogService { get; set; }
 
         public string? DocumentSource { get; set; }
 
@@ -55,7 +54,17 @@ namespace SkyDocs.Blazor.Pages
             if (firstRender)
             {
                 if (!skyDocsService.IsLoggedIn)
-                    modalRef.Show();
+                {
+                    Console.WriteLine("Show login");
+                    await DialogService.OpenAsync<LoginModal>("Login", options: new DialogOptions() { ShowClose = false });
+
+                    DialogService.Open<MessageModal>("Loading...");
+                    await skyDocsService.LoadDocumentList();
+                    DialogService.Close();
+                    Console.WriteLine("Loading finished");
+                    StateHasChanged();
+
+                }
 
                 if (skyDocsService.CurrentDocument != null)
                 {
@@ -67,53 +76,9 @@ namespace SkyDocs.Blazor.Pages
 
         }
 
-        void OnTextChanged(Microsoft.AspNetCore.Components.Web.KeyboardEventArgs e)
+        public void TestButton()
         {
-            if (!string.IsNullOrWhiteSpace(Username) && !string.IsNullOrWhiteSpace(Password))
-                LoginDisabled = false;
-            else
-                LoginDisabled = true;
-        }
-
-        private void OnModalClosing(System.ComponentModel.CancelEventArgs e)
-        {
-            if (!skyDocsService.IsLoggedIn)
-            {
-                // just set Cancel to true to prevent modal from closing
-                e.Cancel = true;
-            }
-        }
-
-        private void OnLoadingModalClosing(System.ComponentModel.CancelEventArgs e)
-        {
-            if (skyDocsService.IsLoading)
-            {
-                // just set Cancel to true to prevent modal from closing
-                e.Cancel = true;
-            }
-        }
-
-        private void OnSavingModalClosing(System.ComponentModel.CancelEventArgs e)
-        {
-            if (IsSaving)
-            {
-                // just set Cancel to true to prevent modal from closing
-                e.Cancel = true;
-            }
-        }
-
-        private void OnErrorModalClosing(System.ComponentModel.CancelEventArgs e)
-        {
-            skyDocsService.Error = null;
-        }
-
-
-        private async Task Login()
-        {
-            skyDocsService.Login(Username, Password);
-            modalRef.Hide();
-
-            await skyDocsService.LoadDocumentList();
+            DialogService.Open<MessageModal>("Login");
         }
 
         private async Task OpenDocument(Guid id)

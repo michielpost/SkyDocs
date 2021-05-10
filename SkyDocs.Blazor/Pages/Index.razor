@@ -1,104 +1,11 @@
 ﻿@page "/"
 
-<Modal @ref="modalRef" Closing="@OnModalClosing">
-    <ModalContent Size="@modalSize" Centered="@centered">
-        <ModalHeader>
-            <ModalTitle>
-                <Icon Name="IconName.User" />
-                Login
-            </ModalTitle>
-            @*<CloseButton Clicked="@HideModal" />*@
-        </ModalHeader>
-        <ModalBody>
-            <Validations Mode="ValidationMode.Auto" ValidateOnLoad="false">
-                <Validation Validator="@ValidationRule.IsNotEmpty">
-                    <Field>
-                        <FieldLabel>Username</FieldLabel>
-                        <TextEdit Placeholder="Username" @bind-Text="@Username" KeyUp="@OnTextChanged">
-                            <Feedback>
-                                <ValidationError>Please enter a username</ValidationError>
-                            </Feedback>
-                        </TextEdit>
-                    </Field>
-                </Validation>
-                <Validation Validator="@ValidationRule.IsNotEmpty">
-                    <Field>
-                        <FieldLabel>Password</FieldLabel>
-                        <TextEdit Placeholder="Password" Role="TextRole.Password" @bind-Text="@Password" KeyUp="@OnTextChanged">
-                            <Feedback>
-                                <ValidationError>Please enter a password</ValidationError>
-                            </Feedback>
-                        </TextEdit>
-                    </Field>
-                </Validation>
-            </Validations>
-            <br />
-            <p>
-                <small>
-                    You can enter any username / password combination. But please remember your username and password, there is no way to retreive them.
-                </small>
-                <br />
-                <small>NOTE: all data is publicly stored on Sia Skynet.</small>
-            </p>
-        </ModalBody>
-        <ModalFooter>
-            <Button Color="Color.Primary" Clicked="@Login" Disabled="@LoginDisabled">Login</Button>
-        </ModalFooter>
-    </ModalContent>
-</Modal>
-
-<Modal Visible="skyDocsService.IsLoading" Closing="@OnLoadingModalClosing">
-    <ModalContent>
-        <ModalHeader>
-            <ModalTitle>
-                <Icon Name="IconName.FileDownload" />
-                Loading documents from SkyNet...
-            </ModalTitle>
-        </ModalHeader>
-        <ModalBody>
-            <div class="loader">
-                Loading...
-            </div>
-        </ModalBody>
-    </ModalContent>
-</Modal>
-
-<Modal Visible="IsSaving" Closing="@OnSavingModalClosing">
-    <ModalContent>
-        <ModalHeader>
-            <ModalTitle>
-                <Icon Name="IconName.FileUpload" />
-                Saving document to Skynet...
-            </ModalTitle>
-        </ModalHeader>
-        <ModalBody>
-            <div class="loader">
-                Saving...
-            </div>
-        </ModalBody>
-    </ModalContent>
-</Modal>
-
-<Modal Visible="!string.IsNullOrEmpty(skyDocsService.Error)" Closing="@OnErrorModalClosing">
-    <ModalContent>
-        <ModalHeader>
-            <ModalTitle>
-                <Icon Name="IconName.Exclamation" />
-                Error
-            </ModalTitle>
-        </ModalHeader>
-        <ModalBody>
-            @skyDocsService.Error
-        </ModalBody>
-    </ModalContent>
-</Modal>
-
 @if (skyDocsService.IsLoggedIn && skyDocsService.CurrentDocument == null && !skyDocsService.IsLoading)
 {
-    <Row>
+    <div class="row">
         <RadzenCard class="docCard">
             <h2>New Document</h2>
-            <Button Color="Color.Primary" Clicked="@NewDocument">Blank</Button>
+            <RadzenButton @onclick="@NewDocument">Blank</RadzenButton>
         </RadzenCard>
 
         @foreach (var document in skyDocsService.DocumentList.OrderByDescending(x => x.ModifiedDate))
@@ -111,17 +18,17 @@
                 }
 
                 <h3>@document.Title</h3>
-                <Button Color="Color.Primary">Edit</Button>
+                <RadzenButton>Edit</RadzenButton>
 
             </RadzenCard>
         }
 
-    </Row>
+    </div>
 
 }
 else if (skyDocsService.CurrentDocument != null)
 {
-    <TextEdit Placeholder="Title" @bind-Text="@skyDocsService.CurrentDocument.Title" />
+    <RadzenTextBox Placeholder="Title" @bind-Value="@skyDocsService.CurrentDocument.Title" />
 
     <RadzenHtmlEditor @bind-Value=@DocumentSource
                       id="rte"
@@ -132,11 +39,11 @@ else if (skyDocsService.CurrentDocument != null)
 
 @if (skyDocsService.CurrentDocument != null)
 {
-    <Button Class="btn-icon" Size="Size.ExtraSmall" Clicked="@OnDelete"><Icon Name="IconName.Delete" /></Button>
-    <Button Class="btn-icon" Size="Size.ExtraSmall" Clicked="@OnSave"><Icon Name="IconName.Save" /></Button>
+    <button Class="btn-icon" Size="Size.ExtraSmall" @onclick="@OnDelete">delete icon</button>
+    <button Class="btn-icon" Size="Size.ExtraSmall" @onclick="@OnSave">save icon</button>
 
     <div style="text-align:right" id="test">
-        <Button Color="Color.Danger" Clicked="@GoToList">Back</Button>
-        <Button Color="Color.Success" Clicked="@OnSave">Save</Button>
+        <button Color="Color.Danger" @onclick="@GoToList">Back</button>
+        <button Color="Color.Success" @onclick="@OnSave">Save</button>
     </div>
 }
