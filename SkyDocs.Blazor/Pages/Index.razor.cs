@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using HtmlAgilityPack;
+using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using Radzen;
 using SkyDocs.Blazor.Models;
@@ -122,7 +123,7 @@ namespace SkyDocs.Blazor.Pages
                 DialogService.Open<LoadingModal>("Save to Skynet...", options: new DialogOptions() { ShowClose = false });
 
                 var htmlContent = skyDocsService.CurrentDocument.Content;
-                var textContent = htmlContent ?? string.Empty; //TODO: Strip html
+                var textContent = StripHtml(htmlContent) ?? string.Empty;
 
                 var fallbackTitle = textContent.Substring(0, Math.Min(textContent.Length, 15));
 
@@ -130,7 +131,7 @@ namespace SkyDocs.Blazor.Pages
                 var data = Convert.FromBase64String(imageBytes); // get the image as byte array
                 Console.WriteLine("Image captured: " + data.Length);
 
-                await skyDocsService.SaveCurrentDocument(textContent, data);
+                await skyDocsService.SaveCurrentDocument(fallbackTitle, data);
                 DialogService.Close();
 
                 if(!string.IsNullOrEmpty(skyDocsService.Error))
@@ -139,6 +140,17 @@ namespace SkyDocs.Blazor.Pages
             }
 
 
+        }
+
+        public static string StripHtml(string value)
+        {
+            HtmlDocument htmlDoc = new HtmlDocument();
+            htmlDoc.LoadHtml(value);
+
+            if (htmlDoc == null)
+                return value;
+
+            return htmlDoc.DocumentNode.InnerText;
         }
 
         public async Task OnDelete()
