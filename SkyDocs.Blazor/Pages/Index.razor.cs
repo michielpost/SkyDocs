@@ -14,9 +14,6 @@ namespace SkyDocs.Blazor.Pages
 {
     public partial class Index
     {
-        private bool LoginDisabled = true;
-        private bool IsSaving = false;
-
         private Dictionary<string, object> at = new Dictionary<string, object>() { { "id", "rte" } };
 
         [Inject]
@@ -32,9 +29,6 @@ namespace SkyDocs.Blazor.Pages
 
         [Inject]
         public DialogService DialogService { get; set; }
-
-        public string? DocumentSource { get; set; }
-
 
         protected override void OnInitialized()
         {
@@ -55,13 +49,11 @@ namespace SkyDocs.Blazor.Pages
             {
                 if (!skyDocsService.IsLoggedIn)
                 {
-                    Console.WriteLine("Show login");
                     await DialogService.OpenAsync<LoginModal>("Login", options: new DialogOptions() { ShowClose = false });
 
-                    DialogService.Open<MessageModal>("Loading...");
+                    DialogService.Open<LoadingModal>("Loading...", options: new DialogOptions() { ShowClose = false });
                     await skyDocsService.LoadDocumentList();
                     DialogService.Close();
-                    Console.WriteLine("Loading finished");
                     StateHasChanged();
 
                 }
@@ -78,27 +70,27 @@ namespace SkyDocs.Blazor.Pages
 
         public void TestButton()
         {
-            DialogService.Open<MessageModal>("Login");
+            DialogService.Open<LoadingModal>("Login", options: new DialogOptions() { ShowClose = false });
         }
 
         private async Task OpenDocument(Guid id)
         {
+            DialogService.Open<LoadingModal>("Loading...", options: new DialogOptions() { ShowClose = false });
             await skyDocsService.LoadDocument(id);
+            DialogService.Close();
 
             await InitDocument();
         }
 
         private async Task InitDocument()
         {
-            Console.WriteLine("Init document");
-
             if (skyDocsService.CurrentDocument != null && !string.IsNullOrEmpty(skyDocsService.CurrentDocument.Content))
             {
                 skyDocsService.CurrentDocument.Title = skyDocsService.CurrentDocument.Title;
-
-                DocumentSource = skyDocsService.CurrentDocument.Content;
-
-                Console.WriteLine("Value set: " + DocumentSource);
+            }
+            else
+            {
+                DialogService.Open<ErrorModal>("Error loading document from Skynet. Please try again.");
             }
         }
 
@@ -106,7 +98,7 @@ namespace SkyDocs.Blazor.Pages
         {
             skyDocsService.StartNewDocument();
 
-            DocumentSource = string.Empty;
+            StateHasChanged();
         }
 
         private async Task AddTemplates()
@@ -119,20 +111,18 @@ namespace SkyDocs.Blazor.Pages
 
         public async Task GoToList()
         {
-            DocumentSource = null;
             skyDocsService.CurrentDocument = null;
         }
 
         public async Task OnSave()
         {
-            IsSaving = true;
-
-            var htmlContent = DocumentSource;
-            var textContent = DocumentSource ?? string.Empty; //TODO: Strip html
 
             if (skyDocsService.CurrentDocument != null)
             {
-                skyDocsService.CurrentDocument.Content = htmlContent ?? string.Empty;
+                DialogService.Open<LoadingModal>("Save to Skynet...", options: new DialogOptions() { ShowClose = false });
+
+                var htmlContent = skyDocsService.CurrentDocument.Content;
+                var textContent = htmlContent ?? string.Empty; //TODO: Strip html
 
                 var fallbackTitle = textContent.Substring(0, Math.Min(textContent.Length, 15));
 
@@ -141,28 +131,32 @@ namespace SkyDocs.Blazor.Pages
                 Console.WriteLine("Image captured: " + data.Length);
 
                 await skyDocsService.SaveCurrentDocument(textContent, data);
+                DialogService.Close();
+
+                if(!string.IsNullOrEmpty(skyDocsService.Error))
+                    DialogService.Open<ErrorModal>(skyDocsService.Error);
 
             }
 
-            DocumentSource = null;
-
-            IsSaving = false;
 
         }
 
         public async Task OnDelete()
         {
-            IsSaving = true;
 
             if (skyDocsService.CurrentDocument != null)
             {
+                DialogService.Open<LoadingModal>("Deleting from Skynet...", options: new DialogOptions() { ShowClose = false });
                 await skyDocsService.DeleteCurrentDocument();
+                DialogService.Close();
 
+                if (skyDocsService.CurrentDocument != null)
+                {
+                    DialogService.Open<ErrorModal>("Unable to delete document.Please try again.");
+                }
             }
 
-            DocumentSource = null;
-
-            IsSaving = false;
+            StateHasChanged();
 
         }
     }

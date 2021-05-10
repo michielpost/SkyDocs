@@ -97,36 +97,44 @@ namespace SkyDocs.Blazor
 
                 CurrentDocument.Title = title;
 
-                DocumentSummary sum = new DocumentSummary()
-                {
-                    Id = CurrentDocument.Id,
-                    Title = CurrentDocument.Title,
-                    CreatedDate = created,
-                    ModifiedDate = DateTimeOffset.UtcNow
-                };
-                DocumentList.Add(sum);
-
-                string? imgLink = null;
-                if (img != null)
-                {
-                    using (Stream stream = new MemoryStream(img))
-                    {
-                        //Save preview image to Skynet file
-                        var response = await client.UploadFileAsync("document.jpg", stream);
-
-                        imgLink = response.Skylink;
-                    }
-                }
-                sum.PreviewImage = imgLink;
-
+                //Save document
                 bool success = await SaveDocument(CurrentDocument);
-                if (success)
-                    CurrentDocument = null;
-                else
-                    Error = "Unable to save document to Skynet. Please try again.";
 
-                //Save updated document list
-                await SaveDocumentList(DocumentList);
+                if (success)
+                {
+                    Console.WriteLine("Document saved");
+
+                    DocumentSummary sum = new DocumentSummary()
+                    {
+                        Id = CurrentDocument.Id,
+                        Title = CurrentDocument.Title,
+                        CreatedDate = created,
+                        ModifiedDate = DateTimeOffset.UtcNow
+                    };
+                    DocumentList.Add(sum);
+
+                    string? imgLink = null;
+                    if (img != null)
+                    {
+                        using (Stream stream = new MemoryStream(img))
+                        {
+                            //Save preview image to Skynet file
+                            var response = await client.UploadFileAsync("document.jpg", stream);
+
+                            imgLink = response.Skylink;
+                            Console.WriteLine("Image saved");
+
+                        }
+                    }
+                    sum.PreviewImage = imgLink;
+
+                    //Save updated document list
+                    await SaveDocumentList(DocumentList);
+                    Console.WriteLine("Document list saved");
+                }
+
+                if (!success)
+                    Error = "Error saving document. Please try again";
             }
 
         }
@@ -146,8 +154,6 @@ namespace SkyDocs.Blazor
                 bool success = await SaveDocumentList(DocumentList);
                 if (success)
                     CurrentDocument = null;
-                else
-                    Error = "Unable to delete document. Please try again.";
             }
         }
 
@@ -172,7 +178,10 @@ namespace SkyDocs.Blazor
                 if (string.IsNullOrEmpty(json))
                     return new List<DocumentSummary>();
                 else
-                    return JsonSerializer.Deserialize<List<DocumentSummary>>(json) ?? new List<DocumentSummary>();
+                {
+                    var loadedList = JsonSerializer.Deserialize<List<DocumentSummary>>(json) ?? new List<DocumentSummary>();
+                    return loadedList.Where(x => x != null).ToList();
+                }
             }
             catch
             {
@@ -206,7 +215,7 @@ namespace SkyDocs.Blazor
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        private async Task<Document> GetDocument(Guid id)
+        private async Task<Document?> GetDocument(Guid id)
         {
             try
             {
@@ -222,7 +231,7 @@ namespace SkyDocs.Blazor
                 Error = "Unable to load document from Skynet. Please try again.";
             }
 
-            return new Document();
+            return null;
         }
 
         /// <summary>
@@ -238,8 +247,9 @@ namespace SkyDocs.Blazor
             {
                 success = await client.SkyDbSet(privateKey, publicKey, doc.Id.ToString(), json);
             }
-            catch
+            catch(Exception ex)
             {
+                Console.WriteLine(ex);
                 success = false;
             }
             return success;

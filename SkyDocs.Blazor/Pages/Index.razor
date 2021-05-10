@@ -5,7 +5,7 @@
     <div class="row">
         <RadzenCard class="docCard">
             <h2>New Document</h2>
-            <RadzenButton @onclick="@NewDocument">Blank</RadzenButton>
+            <RadzenButton Click="@NewDocument">Blank</RadzenButton>
         </RadzenCard>
 
         @foreach (var document in skyDocsService.DocumentList.OrderByDescending(x => x.ModifiedDate))
@@ -30,20 +30,14 @@ else if (skyDocsService.CurrentDocument != null)
 {
     <RadzenTextBox Placeholder="Title" @bind-Value="@skyDocsService.CurrentDocument.Title" Style="width:100%" />
 
-    <RadzenHtmlEditor @bind-Value=@DocumentSource
+    <RadzenHtmlEditor @bind-Value=@skyDocsService.CurrentDocument.Content
                       id="rte"
-                      Visible="DocumentSource != null"
+                      Visible="skyDocsService.CurrentDocument.Content != null"
                       style="height: 500px; margin-bottom: 1rem;" />
-}
 
-
-@if (skyDocsService.CurrentDocument != null)
-{
-    <button Class="btn-icon" Size="Size.ExtraSmall" @onclick="@OnDelete">delete icon</button>
-    <button Class="btn-icon" Size="Size.ExtraSmall" @onclick="@OnSave">save icon</button>
-
-    <div style="text-align:right" id="test">
-        <button Color="Color.Danger" @onclick="@GoToList">Back</button>
-        <button Color="Color.Success" @onclick="@OnSave">Save</button>
+    <div style="text-align:right">
+        <RadzenButton ButtonStyle="ButtonStyle.Danger" Click="@OnDelete">Delete</RadzenButton>
+        <RadzenButton ButtonStyle="ButtonStyle.Secondary" Click="@GoToList">Back</RadzenButton>
+        <RadzenButton ButtonStyle="ButtonStyle.Success" Click="@OnSave">Save</RadzenButton>
     </div>
 }
