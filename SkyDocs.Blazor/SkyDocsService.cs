@@ -16,7 +16,7 @@ namespace SkyDocs.Blazor
     public class SkyDocsService
     {
         private readonly string salt = "skydocs";
-        private readonly string listDataKey = "skydocs-list";
+        private readonly RegistryKey listDataKey = new RegistryKey("skydocs-list");
         private SiaSkynetClient client = new SiaSkynetClient();
         private byte[]? privateKey;
         private byte[]? publicKey;
@@ -135,6 +135,8 @@ namespace SkyDocs.Blazor
 
                 if (!success)
                     Error = "Error saving document. Please try again";
+                else
+                    CurrentDocument = null;
             }
 
         }
@@ -220,7 +222,7 @@ namespace SkyDocs.Blazor
             try
             {
                 Error = null;
-                var json = await client.SkyDbGetAsString(publicKey, id.ToString(), TimeSpan.FromSeconds(10));
+                var json = await client.SkyDbGetAsString(publicKey, new RegistryKey(id.ToString()), TimeSpan.FromSeconds(10));
                 if (string.IsNullOrEmpty(json))
                     return new Document();
                 else
@@ -245,7 +247,7 @@ namespace SkyDocs.Blazor
             bool success = false;
             try
             {
-                success = await client.SkyDbSet(privateKey, publicKey, doc.Id.ToString(), json);
+                success = await client.SkyDbSet(privateKey, publicKey, new RegistryKey(doc.Id.ToString()), json);
             }
             catch(Exception ex)
             {
