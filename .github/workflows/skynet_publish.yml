@@ -15,7 +15,7 @@ jobs:
       - name: Build with dotnet
         run: dotnet build --configuration Release
       - name: Publish Website
-        run: dotnet publish SkyDocs.Blazor -o publish/SkyDocs.Blazor -c Release
+        run: dotnet publish SkyDocs.Blazor -o publish/SkyDocs.Blazor -c Release --version-suffix ${GITHUB_REF#refs/heads/}-$(git rev-parse --short "$GITHUB_SHA")
       - name: Deploy to Skynet
         uses: kwypchlo/deploy-to-skynet-action@main
         with:
