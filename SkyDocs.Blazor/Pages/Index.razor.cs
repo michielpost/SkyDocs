@@ -134,8 +134,8 @@ namespace SkyDocs.Blazor.Pages
                 await skyDocsService.SaveCurrentDocument(fallbackTitle, data);
                 DialogService.Close();
 
-                if(!string.IsNullOrEmpty(skyDocsService.Error))
-                    DialogService.Open<ErrorModal>(skyDocsService.Error);
+                if(!string.IsNullOrEmpty(SkyDocsService.Error))
+                    DialogService.Open<ErrorModal>(SkyDocsService.Error);
 
             }
 
