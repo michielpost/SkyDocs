@@ -1,6 +1,6 @@
 ﻿@page "/"
 
-@if (skyDocsService.IsLoggedIn && skyDocsService.CurrentDocument == null && !skyDocsService.IsLoading)
+@if ((skyDocsService.IsLoggedIn || skyDocsService.DocumentList.Any()) && skyDocsService.CurrentDocument == null && !skyDocsService.IsLoading)
 {
     <div class="row">
         <RadzenCard class="docCard">

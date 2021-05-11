@@ -59,6 +59,25 @@ namespace SkyDocs.Blazor
             IsLoading = false;
         }
 
+        public void AddDocumentSummary(Guid docId, byte[] pubKey, byte[]? privKey, string contentSeed)
+        {
+            var existing = DocumentList.Where(x => x.Id == docId).FirstOrDefault();
+            if (existing != null)
+                return;
+
+            DocumentSummary sum = new DocumentSummary()
+            {
+                Id = docId,
+                PublicKey = pubKey,
+                PrivateKey = privKey,
+                ContentSeed = contentSeed,
+                CreatedDate = DateTimeOffset.UtcNow,
+                ModifiedDate = DateTimeOffset.UtcNow,
+                Title = "TODO: Shared document",
+            };
+            DocumentList.Add(sum);
+        }
+
         /// <summary>
         /// Load document based on id
         /// </summary>

@@ -1,7 +1,9 @@
 ﻿using HtmlAgilityPack;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.JSInterop;
 using Radzen;
+using SiaSkynet;
 using SkyDocs.Blazor.Models;
 using SkyDocs.Blazor.Pages.Modals;
 using System;
@@ -21,7 +23,7 @@ namespace SkyDocs.Blazor.Pages
         public IJSRuntime JsRuntime { get; set; }
 
         [Inject]
-        public NavigationManager MyNavigationManager { get; set; }
+        public NavigationManager NavigationManager { get; set; }
         [Inject]
         public SkyDocsService skyDocsService { get; set; }
 
@@ -31,7 +33,7 @@ namespace SkyDocs.Blazor.Pages
         [Inject]
         public DialogService DialogService { get; set; }
 
-        protected override void OnInitialized()
+        protected override async Task OnInitializedAsync()
         {
             base.OnInitialized();
 
@@ -42,11 +44,10 @@ namespace SkyDocs.Blazor.Pages
         skyDocsService.SetPortalDomain(portalDomain);
 #endif
 
-        }
+            await CheckUriAndOpenDocument();
 
-        protected override async void OnAfterRender(bool firstRender)
-        {
-            if (firstRender)
+            //No document open, ask user to login
+            if(skyDocsService.CurrentDocument == null)
             {
                 if (!skyDocsService.IsLoggedIn)
                 {
@@ -56,17 +57,43 @@ namespace SkyDocs.Blazor.Pages
                     await skyDocsService.LoadDocumentList();
                     DialogService.Close();
                     StateHasChanged();
-
                 }
+            }
+        }
 
-                if (skyDocsService.CurrentDocument != null)
-                {
-                    await Task.Delay(100);
-                    await InitDocument();
-                }
+        private async Task CheckUriAndOpenDocument()
+        {
+            var uri = NavigationManager.ToAbsoluteUri(NavigationManager.Uri);
+            string? documentId = GetQueryParam(uri, "id");
+            string? pub = GetQueryParam(uri, "pub");
+            string? priv = GetQueryParam(uri, "priv");
+            string? contentSeed = GetQueryParam(uri, "c");
+            byte[]? pubKey = null;
+            byte[]? privKey = null;
 
+            if (!string.IsNullOrEmpty(pub))
+                pubKey = Utils.HexStringToByteArray(pub);
+            if (!string.IsNullOrEmpty(priv))
+                privKey = Utils.HexStringToByteArray(priv);
+
+            if (Guid.TryParse(documentId, out Guid docId) && pubKey != null && !string.IsNullOrEmpty(contentSeed))
+            {
+                skyDocsService.AddDocumentSummary(docId, pubKey, privKey, contentSeed);
+
+                await OpenDocument(docId);
+            }
+        }
+
+        private string? GetQueryParam(Uri uri, string paramName)
+        {
+            if (QueryHelpers.ParseQuery(uri.Query).TryGetValue(paramName, out var param))
+            {
+                var value = param.First();
+                Console.WriteLine($"QueryParam: {paramName}: {value}");
+                return value;
             }
 
+            return null;
         }
 
         public void TestButton()
@@ -88,6 +115,25 @@ namespace SkyDocs.Blazor.Pages
             if (skyDocsService.CurrentDocument != null && !string.IsNullOrEmpty(skyDocsService.CurrentDocument.Content))
             {
                 skyDocsService.CurrentDocument.Title = skyDocsService.CurrentDocument.Title;
+
+                //Share url:
+                var sum = skyDocsService.DocumentList.Where(x => x.Id == skyDocsService.CurrentDocument.Id).FirstOrDefault();
+                if (sum != null)
+                {
+                    var pubString = BitConverter.ToString(sum.PublicKey).Replace("-", "");
+                    var privString = BitConverter.ToString(sum.PrivateKey).Replace("-", "");
+
+                    var query = new Dictionary<string, string> { 
+                        { "id", sum.Id.ToString() }, 
+                        { "pub", pubString }, 
+                        { "priv", privString }, 
+                        { "c", sum.ContentSeed },
+                    };
+
+                    var shareUrl = QueryHelpers.AddQueryString(NavigationManager.Uri, query);
+                    Console.WriteLine($"Share URI: {shareUrl}");
+                    //NavigationManager.NavigateTo();
+                }
             }
             else
             {
