@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace SkyDocs.Blazor.Pages
 {
-    public partial class Index
+    public partial class Index : IDisposable
     {
         private Dictionary<string, object> at = new Dictionary<string, object>() { { "id", "rte" } };
 
@@ -23,7 +23,7 @@ namespace SkyDocs.Blazor.Pages
         public IJSRuntime JsRuntime { get; set; }
 
         [Inject]
-        public NavigationManager NavigationManager { get; set; }
+        public NavigationManager NavigationManager { get; set; } = default!;
         [Inject]
         public SkyDocsService skyDocsService { get; set; }
 
@@ -33,8 +33,15 @@ namespace SkyDocs.Blazor.Pages
         [Inject]
         public DialogService DialogService { get; set; }
 
+        private void NavigationManager_LocationChanged(object? sender, Microsoft.AspNetCore.Components.Routing.LocationChangedEventArgs e)
+        {
+            CheckUriAndOpenDocument();
+        }
+
         protected override async Task OnInitializedAsync()
         {
+            NavigationManager.LocationChanged += NavigationManager_LocationChanged;
+
             base.OnInitialized();
 
 #if RELEASE
@@ -51,14 +58,25 @@ namespace SkyDocs.Blazor.Pages
             {
                 if (!skyDocsService.IsLoggedIn)
                 {
-                    await DialogService.OpenAsync<LoginModal>("Login", options: new DialogOptions() { ShowClose = false });
-
-                    DialogService.Open<LoadingModal>("Loading...", options: new DialogOptions() { ShowClose = false });
-                    await skyDocsService.LoadDocumentList();
-                    DialogService.Close();
-                    StateHasChanged();
+                    await Login();
                 }
             }
+        }
+
+        void IDisposable.Dispose()
+        {
+            // Unsubscribe from the event when our component is disposed
+            NavigationManager.LocationChanged -= NavigationManager_LocationChanged;
+        }
+
+        private async Task Login()
+        {
+            await DialogService.OpenAsync<LoginModal>("Login", options: new DialogOptions() { ShowClose = false });
+
+            DialogService.Open<LoadingModal>("Loading...", options: new DialogOptions() { ShowClose = false });
+            await skyDocsService.LoadDocumentList();
+            DialogService.Close();
+            StateHasChanged();
         }
 
         private async Task CheckUriAndOpenDocument()
@@ -82,6 +100,12 @@ namespace SkyDocs.Blazor.Pages
 
                 await OpenDocument(docId);
             }
+            else
+            {
+                skyDocsService.CurrentDocument = null;
+            }
+
+            StateHasChanged();
         }
 
         private string? GetQueryParam(Uri uri, string paramName)
@@ -89,16 +113,11 @@ namespace SkyDocs.Blazor.Pages
             if (QueryHelpers.ParseQuery(uri.Query).TryGetValue(paramName, out var param))
             {
                 var value = param.First();
-                Console.WriteLine($"QueryParam: {paramName}: {value}");
+                //Console.WriteLine($"QueryParam: {paramName}: {value}");
                 return value;
             }
 
             return null;
-        }
-
-        public void TestButton()
-        {
-            DialogService.Open<LoadingModal>("Login", options: new DialogOptions() { ShowClose = false });
         }
 
         private async Task OpenDocument(Guid id)
@@ -107,38 +126,40 @@ namespace SkyDocs.Blazor.Pages
             await skyDocsService.LoadDocument(id);
             DialogService.Close();
 
-            await InitDocument();
-        }
-
-        private async Task InitDocument()
-        {
-            if (skyDocsService.CurrentDocument != null && !string.IsNullOrEmpty(skyDocsService.CurrentDocument.Content))
-            {
-                skyDocsService.CurrentDocument.Title = skyDocsService.CurrentDocument.Title;
-
-                //Share url:
-                var sum = skyDocsService.DocumentList.Where(x => x.Id == skyDocsService.CurrentDocument.Id).FirstOrDefault();
-                if (sum != null)
-                {
-                    var pubString = BitConverter.ToString(sum.PublicKey).Replace("-", "");
-                    var privString = BitConverter.ToString(sum.PrivateKey).Replace("-", "");
-
-                    var query = new Dictionary<string, string> { 
-                        { "id", sum.Id.ToString() }, 
-                        { "pub", pubString }, 
-                        { "priv", privString }, 
-                        { "c", sum.ContentSeed },
-                    };
-
-                    var shareUrl = QueryHelpers.AddQueryString(NavigationManager.Uri, query);
-                    Console.WriteLine($"Share URI: {shareUrl}");
-                    //NavigationManager.NavigateTo();
-                }
-            }
-            else
+            if (skyDocsService.CurrentDocument == null || string.IsNullOrEmpty(skyDocsService.CurrentDocument.Content))
             {
                 DialogService.Open<ErrorModal>("Error loading document from Skynet. Please try again.");
             }
+        }
+
+        private void NavigateToDocument(Guid id)
+        {
+            var sum = skyDocsService.DocumentList.Where(x => x.Id == id).FirstOrDefault();
+            if (sum != null)
+            {
+                //Share url:
+                string? shareUrl = GetShareUrl(sum, true);
+                if (!string.IsNullOrEmpty(shareUrl))
+                    NavigationManager.NavigateTo(shareUrl);
+            }
+        }
+
+        private string GetShareUrl(DocumentSummary sum, bool readOnly)
+        {
+            var pubString = BitConverter.ToString(sum.PublicKey).Replace("-", "");
+            var privString = sum.PrivateKey != null ? BitConverter.ToString(sum.PrivateKey).Replace("-", "") : null;
+
+            var query = new Dictionary<string, string> {
+                        { "id", sum.Id.ToString() },
+                        { "pub", pubString },
+                        { "c", sum.ContentSeed },
+                    };
+
+            if (!string.IsNullOrEmpty(privString) && !readOnly)
+                query.Add("priv", privString);
+
+            var shareUrl = QueryHelpers.AddQueryString(NavigationManager.Uri, query);
+            return shareUrl;
         }
 
         private void NewDocument()
@@ -156,9 +177,10 @@ namespace SkyDocs.Blazor.Pages
                 skyDocsService.DocumentList.AddRange(samples);
         }
 
-        public async Task GoToList()
+        public void GoToList()
         {
             skyDocsService.CurrentDocument = null;
+            NavigationManager.NavigateTo("/");
         }
 
         public async Task OnSave()
@@ -166,7 +188,7 @@ namespace SkyDocs.Blazor.Pages
 
             if (skyDocsService.CurrentDocument != null)
             {
-                DialogService.Open<LoadingModal>("Save to Skynet...", options: new DialogOptions() { ShowClose = false });
+                DialogService.Open<LoadingModal>("Saving to Skynet...", options: new DialogOptions() { ShowClose = false });
 
                 var htmlContent = skyDocsService.CurrentDocument.Content;
                 var textContent = StripHtml(htmlContent) ?? string.Empty;
@@ -179,6 +201,9 @@ namespace SkyDocs.Blazor.Pages
 
                 await skyDocsService.SaveCurrentDocument(fallbackTitle, data);
                 DialogService.Close();
+
+                if(skyDocsService.CurrentDocument == null)
+                    GoToList();
 
                 if(!string.IsNullOrEmpty(SkyDocsService.Error))
                     DialogService.Open<ErrorModal>(SkyDocsService.Error);
@@ -211,6 +236,10 @@ namespace SkyDocs.Blazor.Pages
                 if (skyDocsService.CurrentDocument != null)
                 {
                     DialogService.Open<ErrorModal>("Unable to delete document.Please try again.");
+                }
+                else
+                {
+                    GoToList();
                 }
             }
 

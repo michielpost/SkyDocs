@@ -35,10 +35,15 @@ namespace SkyDocs.Blazor.Models
         public Guid Id { get; set; }
         public string Title { get; set; }
         public string Content { get; set; } = string.Empty;
+        public string? PreviewImage { get; set; }
+        public DateTimeOffset CreatedDate { get; set; }
+        public DateTimeOffset ModifiedDate { get; set; }
 
         public Document()
         {
             Id = Guid.NewGuid();
+            CreatedDate = DateTimeOffset.UtcNow;
+            ModifiedDate = DateTimeOffset.UtcNow;
         }
 
     }

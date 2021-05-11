@@ -26,6 +26,7 @@ namespace SkyDocs.Blazor
         public bool IsLoading { get; set; }
         public List<DocumentSummary> DocumentList { get; set; } = new List<DocumentSummary>();
         public Document? CurrentDocument { get; set; }
+        public DocumentSummary? CurrentSum => DocumentList.Where(x => x.Id == CurrentDocument?.Id).FirstOrDefault();
         public static string? Error { get; set; }
 
         public void SetPortalDomain(string baseUrl)
@@ -55,7 +56,8 @@ namespace SkyDocs.Blazor
         public async Task LoadDocumentList()
         {
             IsLoading = true;
-            DocumentList = await GetDocumentList();
+            var loadedDocuments = await GetDocumentList();
+            DocumentList.AddRange(loadedDocuments);
             IsLoading = false;
         }
 
@@ -73,7 +75,7 @@ namespace SkyDocs.Blazor
                 ContentSeed = contentSeed,
                 CreatedDate = DateTimeOffset.UtcNow,
                 ModifiedDate = DateTimeOffset.UtcNow,
-                Title = "TODO: Shared document",
+                Title = "Shared document",
             };
             DocumentList.Add(sum);
         }
@@ -102,7 +104,14 @@ namespace SkyDocs.Blazor
             Error = null;
             if (CurrentDocument != null)
             {
-                var sum = DocumentList.Where(x => x.Id == CurrentDocument.Id).FirstOrDefault();
+                var sum = CurrentSum;
+                if (sum?.PrivateKey == null)
+                {
+                    DocumentList.Remove(sum);
+                    sum = null;
+                    CurrentDocument.Id = Guid.NewGuid();
+                }
+
                 if (sum == null)
                 {
                     string contentSeed = Guid.NewGuid().ToString();
@@ -124,6 +133,10 @@ namespace SkyDocs.Blazor
                     DocumentList.Add(sum);
                 }
 
+                if(sum.PrivateKey == null)
+                {
+                }
+
 
                 //Fix title if there is no title
                 var title = CurrentDocument.Title;
@@ -134,7 +147,19 @@ namespace SkyDocs.Blazor
 
                 CurrentDocument.Title = title;
                 sum.Title = title;
+
+                CurrentDocument.ModifiedDate = DateTimeOffset.UtcNow;
                 sum.ModifiedDate = DateTimeOffset.UtcNow;
+
+                //Save image
+                string? imgLink = null;
+                try
+                {
+                    imgLink = await SaveDocumentImage(img);
+                    sum.PreviewImage = imgLink;
+                    CurrentDocument.PreviewImage = imgLink;
+                }
+                catch { }
 
                 //Save document
                 bool success = await SaveDocument(CurrentDocument, sum);
@@ -142,21 +167,6 @@ namespace SkyDocs.Blazor
                 if (success)
                 {
                     Console.WriteLine("Document saved");
-
-                    string? imgLink = null;
-                    if (img != null)
-                    {
-                        using (Stream stream = new MemoryStream(img))
-                        {
-                            //Save preview image to Skynet file
-                            var response = await client.UploadFileAsync("document.jpg", stream);
-
-                            imgLink = response.Skylink;
-                            Console.WriteLine("Image saved");
-
-                        }
-                    }
-                    sum.PreviewImage = imgLink;
 
                     //Save updated document list
                     await SaveDocumentList(DocumentList);
@@ -171,12 +181,32 @@ namespace SkyDocs.Blazor
 
         }
 
+        private static async Task<string?> SaveDocumentImage(byte[] img)
+        {
+            string? imgLink = null;
+
+            if (img != null)
+            {
+                using (Stream stream = new MemoryStream(img))
+                {
+                    //Save preview image to Skynet file
+                    var response = await client.UploadFileAsync("document.jpg", stream);
+
+                    imgLink = response.Skylink;
+                    Console.WriteLine("Image saved");
+
+                }
+            }
+
+            return imgLink;
+        }
+
         public async Task DeleteCurrentDocument()
         {
             Error = null;
             if (CurrentDocument != null)
             {
-                var existing = DocumentList.Where(x => x.Id == CurrentDocument.Id).FirstOrDefault();
+                var existing = CurrentSum;
                 if (existing != null)
                 {
                     DocumentList.Remove(existing);
@@ -258,6 +288,7 @@ namespace SkyDocs.Blazor
             try
             {
                 Error = null;
+                Console.WriteLine("Loading document");
                 var encryptedData = await client.SkyDbGet(sum.PublicKey, new RegistryKey(sum.Id.ToString()), TimeSpan.FromSeconds(10));
                 if (!encryptedData.HasValue)
                     return new Document();
@@ -268,7 +299,13 @@ namespace SkyDocs.Blazor
                     var jsonBytes = Utils.Decrypt(encryptedData.Value.file, key.privateKey);
                     var json = Encoding.UTF8.GetString(jsonBytes);
 
-                    return JsonSerializer.Deserialize<Document>(json) ?? new Document();
+                    var document = JsonSerializer.Deserialize<Document>(json) ?? new Document();
+                    sum.Title = document.Title;
+                    sum.PreviewImage = document.PreviewImage;
+                    sum.CreatedDate = document.CreatedDate;
+                    sum.ModifiedDate = document.ModifiedDate;
+
+                    return document;
                 }
             }
             catch
