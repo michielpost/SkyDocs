@@ -1,7 +1,9 @@
 ﻿using HtmlAgilityPack;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.JSInterop;
 using Radzen;
+using SiaSkynet;
 using SkyDocs.Blazor.Models;
 using SkyDocs.Blazor.Pages.Modals;
 using System;
@@ -13,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace SkyDocs.Blazor.Pages
 {
-    public partial class Index
+    public partial class Index : IDisposable
     {
         private Dictionary<string, object> at = new Dictionary<string, object>() { { "id", "rte" } };
 
@@ -21,7 +23,7 @@ namespace SkyDocs.Blazor.Pages
         public IJSRuntime JsRuntime { get; set; }
 
         [Inject]
-        public NavigationManager MyNavigationManager { get; set; }
+        public NavigationManager NavigationManager { get; set; } = default!;
         [Inject]
         public SkyDocsService skyDocsService { get; set; }
 
@@ -31,47 +33,91 @@ namespace SkyDocs.Blazor.Pages
         [Inject]
         public DialogService DialogService { get; set; }
 
-        protected override void OnInitialized()
+        private void NavigationManager_LocationChanged(object? sender, Microsoft.AspNetCore.Components.Routing.LocationChangedEventArgs e)
         {
+            CheckUriAndOpenDocument();
+        }
+
+        protected override async Task OnInitializedAsync()
+        {
+            NavigationManager.LocationChanged += NavigationManager_LocationChanged;
+
             base.OnInitialized();
 
 #if RELEASE
-        string baseUrl = MyNavigationManager.BaseUri;
+        string baseUrl = NavigationManager.BaseUri;
         var uri = new Uri(baseUrl);
         var portalDomain = $"{uri.Scheme}://{uri.Authority}/";
         skyDocsService.SetPortalDomain(portalDomain);
 #endif
 
-        }
+            await CheckUriAndOpenDocument();
 
-        protected override async void OnAfterRender(bool firstRender)
-        {
-            if (firstRender)
+            //No document open, ask user to login
+            if(skyDocsService.CurrentDocument == null)
             {
                 if (!skyDocsService.IsLoggedIn)
                 {
-                    await DialogService.OpenAsync<LoginModal>("Login", options: new DialogOptions() { ShowClose = false });
-
-                    DialogService.Open<LoadingModal>("Loading...", options: new DialogOptions() { ShowClose = false });
-                    await skyDocsService.LoadDocumentList();
-                    DialogService.Close();
-                    StateHasChanged();
-
+                    await Login();
                 }
-
-                if (skyDocsService.CurrentDocument != null)
-                {
-                    await Task.Delay(100);
-                    await InitDocument();
-                }
-
             }
-
         }
 
-        public void TestButton()
+        void IDisposable.Dispose()
         {
-            DialogService.Open<LoadingModal>("Login", options: new DialogOptions() { ShowClose = false });
+            // Unsubscribe from the event when our component is disposed
+            NavigationManager.LocationChanged -= NavigationManager_LocationChanged;
+        }
+
+        private async Task Login()
+        {
+            await DialogService.OpenAsync<LoginModal>("Login", options: new DialogOptions() { ShowClose = false });
+
+            DialogService.Open<LoadingModal>("Loading...", options: new DialogOptions() { ShowClose = false });
+            await skyDocsService.LoadDocumentList();
+            DialogService.Close();
+            StateHasChanged();
+        }
+
+        private async Task CheckUriAndOpenDocument()
+        {
+            var uri = NavigationManager.ToAbsoluteUri(NavigationManager.Uri);
+            string? documentId = GetQueryParam(uri, "id");
+            string? pub = GetQueryParam(uri, "pub");
+            string? priv = GetQueryParam(uri, "priv");
+            string? contentSeed = GetQueryParam(uri, "c");
+            byte[]? pubKey = null;
+            byte[]? privKey = null;
+
+            if (!string.IsNullOrEmpty(pub))
+                pubKey = Utils.HexStringToByteArray(pub);
+            if (!string.IsNullOrEmpty(priv))
+                privKey = Utils.HexStringToByteArray(priv);
+
+            if (Guid.TryParse(documentId, out Guid docId) && pubKey != null && !string.IsNullOrEmpty(contentSeed))
+            {
+                skyDocsService.AddDocumentSummary(docId, pubKey, privKey, contentSeed);
+
+                await OpenDocument(docId);
+            }
+            else
+            {
+                skyDocsService.CurrentDocument = null;
+            }
+
+            StateHasChanged();
+        }
+
+        private string? GetQueryParam(Uri uri, string paramName)
+        {
+            if (QueryHelpers.ParseQuery(uri.Query).TryGetValue(paramName, out var param))
+            {
+                var value = param.First();
+                //Console.WriteLine($"QueryParam: {paramName}: {value}");
+                return value;
+            }
+
+            return null;
         }
 
         private async Task OpenDocument(Guid id)
@@ -80,19 +126,40 @@ namespace SkyDocs.Blazor.Pages
             await skyDocsService.LoadDocument(id);
             DialogService.Close();
 
-            await InitDocument();
-        }
-
-        private async Task InitDocument()
-        {
-            if (skyDocsService.CurrentDocument != null && !string.IsNullOrEmpty(skyDocsService.CurrentDocument.Content))
-            {
-                skyDocsService.CurrentDocument.Title = skyDocsService.CurrentDocument.Title;
-            }
-            else
+            if (skyDocsService.CurrentDocument == null || string.IsNullOrEmpty(skyDocsService.CurrentDocument.Content))
             {
                 DialogService.Open<ErrorModal>("Error loading document from Skynet. Please try again.");
             }
+        }
+
+        private void NavigateToDocument(Guid id)
+        {
+            var sum = skyDocsService.DocumentList.Where(x => x.Id == id).FirstOrDefault();
+            if (sum != null)
+            {
+                //Share url:
+                string? shareUrl = GetShareUrl(sum, true);
+                if (!string.IsNullOrEmpty(shareUrl))
+                    NavigationManager.NavigateTo(shareUrl);
+            }
+        }
+
+        private string GetShareUrl(DocumentSummary sum, bool readOnly)
+        {
+            var pubString = BitConverter.ToString(sum.PublicKey).Replace("-", "");
+            var privString = sum.PrivateKey != null ? BitConverter.ToString(sum.PrivateKey).Replace("-", "") : null;
+
+            var query = new Dictionary<string, string> {
+                        { "id", sum.Id.ToString() },
+                        { "pub", pubString },
+                        { "c", sum.ContentSeed },
+                    };
+
+            if (!string.IsNullOrEmpty(privString) && !readOnly)
+                query.Add("priv", privString);
+
+            var shareUrl = QueryHelpers.AddQueryString(NavigationManager.Uri, query);
+            return shareUrl;
         }
 
         private void NewDocument()
@@ -110,9 +177,10 @@ namespace SkyDocs.Blazor.Pages
                 skyDocsService.DocumentList.AddRange(samples);
         }
 
-        public async Task GoToList()
+        public void GoToList()
         {
             skyDocsService.CurrentDocument = null;
+            NavigationManager.NavigateTo("/");
         }
 
         public async Task OnSave()
@@ -120,7 +188,7 @@ namespace SkyDocs.Blazor.Pages
 
             if (skyDocsService.CurrentDocument != null)
             {
-                DialogService.Open<LoadingModal>("Save to Skynet...", options: new DialogOptions() { ShowClose = false });
+                DialogService.Open<LoadingModal>("Saving to Skynet...", options: new DialogOptions() { ShowClose = false });
 
                 var htmlContent = skyDocsService.CurrentDocument.Content;
                 var textContent = StripHtml(htmlContent) ?? string.Empty;
@@ -133,6 +201,9 @@ namespace SkyDocs.Blazor.Pages
 
                 await skyDocsService.SaveCurrentDocument(fallbackTitle, data);
                 DialogService.Close();
+
+                if(skyDocsService.CurrentDocument == null)
+                    GoToList();
 
                 if(!string.IsNullOrEmpty(SkyDocsService.Error))
                     DialogService.Open<ErrorModal>(SkyDocsService.Error);
@@ -165,6 +236,10 @@ namespace SkyDocs.Blazor.Pages
                 if (skyDocsService.CurrentDocument != null)
                 {
                     DialogService.Open<ErrorModal>("Unable to delete document.Please try again.");
+                }
+                else
+                {
+                    GoToList();
                 }
             }
 
