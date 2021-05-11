@@ -9,6 +9,7 @@ using System.Net.Http;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Toolbelt.Blazor.Extensions.DependencyInjection;
 
 namespace SkyDocs.Blazor
 {
@@ -24,6 +25,8 @@ namespace SkyDocs.Blazor
             builder.Services.AddScoped<NotificationService>();
             builder.Services.AddScoped<TooltipService>();
             builder.Services.AddScoped<ContextMenuService>();
+
+            builder.Services.AddHeadElementHelper();
 
             builder.RootComponents.Add<App>("#app");
 

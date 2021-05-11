@@ -28,6 +28,8 @@
 }
 else if (skyDocsService.CurrentDocument != null)
 {
+    <Title>SkyDocs - @skyDocsService.CurrentDocument.Title</Title>
+
     <div>
         <RadzenTextBox Placeholder="Title" @bind-Value="@skyDocsService.CurrentDocument.Title" Style="width:100%" />
 
@@ -76,6 +78,10 @@ else if (skyDocsService.CurrentDocument != null)
             @if (skyDocsService.IsLoggedIn)
             {
                 if (skyDocsService.CurrentSum?.PrivateKey != null)
+                {
+                    <RadzenButton ButtonStyle="ButtonStyle.Success" Click="@OnSave">Save</RadzenButton>
+                }
+                else if (skyDocsService.CurrentSum == null)
                 {
                     <RadzenButton ButtonStyle="ButtonStyle.Success" Click="@OnSave">Save</RadzenButton>
                 }
