@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
@@ -176,11 +177,15 @@ namespace SkyDocs.Blazor
             try
             {
                 Error = null;
-                var json = await client.SkyDbGetAsString(publicKey, listDataKey, TimeSpan.FromSeconds(5));
-                if (string.IsNullOrEmpty(json))
+                var encryptedJson = await client.SkyDbGet(publicKey, listDataKey, TimeSpan.FromSeconds(5));
+                if (!encryptedJson.HasValue)
                     return new List<DocumentSummary>();
                 else
                 {
+                    //Decrypt data
+                    var jsonBytes = Utils.Decrypt(encryptedJson.Value.file, privateKey);
+                    var json = Encoding.UTF8.GetString(jsonBytes);
+
                     var loadedList = JsonSerializer.Deserialize<List<DocumentSummary>>(json) ?? new List<DocumentSummary>();
                     return loadedList.Where(x => x != null).ToList();
                 }
@@ -203,7 +208,9 @@ namespace SkyDocs.Blazor
             bool success = false;
             try
             {
-                success = await client.SkyDbSet(privateKey, publicKey, listDataKey, json);
+                var data = Encoding.UTF8.GetBytes(json);
+                var encryptedData = Utils.Encrypt(data, privateKey);
+                success = await client.SkyDbSet(privateKey, publicKey, listDataKey, encryptedData);
             }
             catch
             {
