@@ -57,6 +57,10 @@ namespace SkyDocs.Blazor
         {
             IsLoading = true;
             var loadedDocuments = await GetDocumentList();
+
+            //Remove existing items;
+            DocumentList.RemoveAll(x => loadedDocuments.Select(l => l.Id).Contains(x.Id));
+
             DocumentList.AddRange(loadedDocuments);
             IsLoading = false;
         }
