@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
@@ -17,7 +18,7 @@ namespace SkyDocs.Blazor
     {
         private readonly string salt = "skydocs";
         private readonly RegistryKey listDataKey = new RegistryKey("skydocs-list");
-        private SiaSkynetClient client = new SiaSkynetClient();
+        private static SiaSkynetClient client = new SiaSkynetClient();
         private byte[]? privateKey;
         private byte[]? publicKey;
 
@@ -25,7 +26,8 @@ namespace SkyDocs.Blazor
         public bool IsLoading { get; set; }
         public List<DocumentSummary> DocumentList { get; set; } = new List<DocumentSummary>();
         public Document? CurrentDocument { get; set; }
-        public string? Error { get; set; }
+        public DocumentSummary? CurrentSum => DocumentList.Where(x => x.Id == CurrentDocument?.Id).FirstOrDefault();
+        public static string? Error { get; set; }
 
         public void SetPortalDomain(string baseUrl)
         {
@@ -54,8 +56,32 @@ namespace SkyDocs.Blazor
         public async Task LoadDocumentList()
         {
             IsLoading = true;
-            DocumentList = await GetDocumentList();
+            var loadedDocuments = await GetDocumentList();
+
+            //Remove existing items;
+            DocumentList.RemoveAll(x => loadedDocuments.Select(l => l.Id).Contains(x.Id));
+
+            DocumentList.AddRange(loadedDocuments);
             IsLoading = false;
+        }
+
+        public void AddDocumentSummary(Guid docId, byte[] pubKey, byte[]? privKey, string contentSeed)
+        {
+            var existing = DocumentList.Where(x => x.Id == docId).FirstOrDefault();
+            if (existing != null)
+                return;
+
+            DocumentSummary sum = new DocumentSummary()
+            {
+                Id = docId,
+                PublicKey = pubKey,
+                PrivateKey = privKey,
+                ContentSeed = contentSeed,
+                CreatedDate = DateTimeOffset.UtcNow,
+                ModifiedDate = DateTimeOffset.UtcNow,
+                Title = "Shared document",
+            };
+            DocumentList.Add(sum);
         }
 
         /// <summary>
@@ -66,7 +92,9 @@ namespace SkyDocs.Blazor
         public async Task LoadDocument(Guid id)
         {
             IsLoading = true;
-            CurrentDocument = await GetDocument(id);
+            var sum = DocumentList.Where(x => x.Id == id).FirstOrDefault();
+            if(sum != null)
+                CurrentDocument = await GetDocument(sum);
             IsLoading = false;
         }
 
@@ -80,53 +108,69 @@ namespace SkyDocs.Blazor
             Error = null;
             if (CurrentDocument != null)
             {
-                var existing = DocumentList.Where(x => x.Id == CurrentDocument.Id).FirstOrDefault();
-                if (existing != null)
+                var sum = CurrentSum;
+                if (sum?.PrivateKey == null)
                 {
-                    DocumentList.Remove(existing);
+                    DocumentList.Remove(sum);
+                    sum = null;
+                    CurrentDocument.Id = Guid.NewGuid();
                 }
 
-                var created = existing?.CreatedDate ?? DateTimeOffset.UtcNow;
+                if (sum == null)
+                {
+                    string contentSeed = Guid.NewGuid().ToString();
+                    string fileSeed = Guid.NewGuid().ToString();
+                    string seedPhrase = $"{fileSeed}-{salt}";
+                    var key = SiaSkynetClient.GenerateKeys(seedPhrase);
+
+                    sum = new DocumentSummary()
+                    {
+                        Id = CurrentDocument.Id,
+                        Title = CurrentDocument.Title,
+                        CreatedDate = DateTimeOffset.UtcNow,
+                        ModifiedDate = DateTimeOffset.UtcNow,
+                        ContentSeed = contentSeed,
+                        PrivateKey = key.privateKey,
+                        PublicKey = key.publicKey
+                    };
+
+                    DocumentList.Add(sum);
+                }
+
+                if(sum.PrivateKey == null)
+                {
+                }
+
 
                 //Fix title if there is no title
                 var title = CurrentDocument.Title;
                 if (string.IsNullOrWhiteSpace(title))
                     title = fallbackTitle;
                 if (string.IsNullOrWhiteSpace(title))
-                    title = "Untitled document " + created;
+                    title = "Untitled document " + sum.CreatedDate;
 
                 CurrentDocument.Title = title;
+                sum.Title = title;
+
+                CurrentDocument.ModifiedDate = DateTimeOffset.UtcNow;
+                sum.ModifiedDate = DateTimeOffset.UtcNow;
+
+                //Save image
+                string? imgLink = null;
+                try
+                {
+                    imgLink = await SaveDocumentImage(img);
+                    sum.PreviewImage = imgLink;
+                    CurrentDocument.PreviewImage = imgLink;
+                }
+                catch { }
 
                 //Save document
-                bool success = await SaveDocument(CurrentDocument);
+                bool success = await SaveDocument(CurrentDocument, sum);
 
                 if (success)
                 {
                     Console.WriteLine("Document saved");
-
-                    DocumentSummary sum = new DocumentSummary()
-                    {
-                        Id = CurrentDocument.Id,
-                        Title = CurrentDocument.Title,
-                        CreatedDate = created,
-                        ModifiedDate = DateTimeOffset.UtcNow
-                    };
-                    DocumentList.Add(sum);
-
-                    string? imgLink = null;
-                    if (img != null)
-                    {
-                        using (Stream stream = new MemoryStream(img))
-                        {
-                            //Save preview image to Skynet file
-                            var response = await client.UploadFileAsync("document.jpg", stream);
-
-                            imgLink = response.Skylink;
-                            Console.WriteLine("Image saved");
-
-                        }
-                    }
-                    sum.PreviewImage = imgLink;
 
                     //Save updated document list
                     await SaveDocumentList(DocumentList);
@@ -141,12 +185,32 @@ namespace SkyDocs.Blazor
 
         }
 
+        private static async Task<string?> SaveDocumentImage(byte[] img)
+        {
+            string? imgLink = null;
+
+            if (img != null)
+            {
+                using (Stream stream = new MemoryStream(img))
+                {
+                    //Save preview image to Skynet file
+                    var response = await client.UploadFileAsync("document.jpg", stream);
+
+                    imgLink = response.Skylink;
+                    Console.WriteLine("Image saved");
+
+                }
+            }
+
+            return imgLink;
+        }
+
         public async Task DeleteCurrentDocument()
         {
             Error = null;
             if (CurrentDocument != null)
             {
-                var existing = DocumentList.Where(x => x.Id == CurrentDocument.Id).FirstOrDefault();
+                var existing = CurrentSum;
                 if (existing != null)
                 {
                     DocumentList.Remove(existing);
@@ -176,11 +240,15 @@ namespace SkyDocs.Blazor
             try
             {
                 Error = null;
-                var json = await client.SkyDbGetAsString(publicKey, listDataKey, TimeSpan.FromSeconds(5));
-                if (string.IsNullOrEmpty(json))
+                var encryptedJson = await client.SkyDbGet(publicKey, listDataKey, TimeSpan.FromSeconds(5));
+                if (!encryptedJson.HasValue)
                     return new List<DocumentSummary>();
                 else
                 {
+                    //Decrypt data
+                    var jsonBytes = Utils.Decrypt(encryptedJson.Value.file, privateKey);
+                    var json = Encoding.UTF8.GetString(jsonBytes);
+
                     var loadedList = JsonSerializer.Deserialize<List<DocumentSummary>>(json) ?? new List<DocumentSummary>();
                     return loadedList.Where(x => x != null).ToList();
                 }
@@ -203,7 +271,9 @@ namespace SkyDocs.Blazor
             bool success = false;
             try
             {
-                success = await client.SkyDbSet(privateKey, publicKey, listDataKey, json);
+                var data = Encoding.UTF8.GetBytes(json);
+                var encryptedData = Utils.Encrypt(data, privateKey);
+                success = await client.SkyDbSet(privateKey, publicKey, listDataKey, encryptedData);
             }
             catch
             {
@@ -217,16 +287,30 @@ namespace SkyDocs.Blazor
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        private async Task<Document?> GetDocument(Guid id)
+        private async static Task<Document?> GetDocument(DocumentSummary sum)
         {
             try
             {
                 Error = null;
-                var json = await client.SkyDbGetAsString(publicKey, new RegistryKey(id.ToString()), TimeSpan.FromSeconds(10));
-                if (string.IsNullOrEmpty(json))
+                Console.WriteLine("Loading document");
+                var encryptedData = await client.SkyDbGet(sum.PublicKey, new RegistryKey(sum.Id.ToString()), TimeSpan.FromSeconds(10));
+                if (!encryptedData.HasValue)
                     return new Document();
                 else
-                    return JsonSerializer.Deserialize<Document>(json) ?? new Document();
+                {
+                    //Decrypt data
+                    var key = SiaSkynetClient.GenerateKeys(sum.ContentSeed);
+                    var jsonBytes = Utils.Decrypt(encryptedData.Value.file, key.privateKey);
+                    var json = Encoding.UTF8.GetString(jsonBytes);
+
+                    var document = JsonSerializer.Deserialize<Document>(json) ?? new Document();
+                    sum.Title = document.Title;
+                    sum.PreviewImage = document.PreviewImage;
+                    sum.CreatedDate = document.CreatedDate;
+                    sum.ModifiedDate = document.ModifiedDate;
+
+                    return document;
+                }
             }
             catch
             {
@@ -241,13 +325,22 @@ namespace SkyDocs.Blazor
         /// </summary>
         /// <param name="doc"></param>
         /// <returns></returns>
-        private async Task<bool> SaveDocument(Document doc)
+        private async static Task<bool> SaveDocument(Document doc, DocumentSummary sum)
         {
+            //Only allowed to save if you have a private key for this document
+            if (sum.PrivateKey == null)
+                return false;
+
             var json = JsonSerializer.Serialize(doc);
             bool success = false;
             try
             {
-                success = await client.SkyDbSet(privateKey, publicKey, new RegistryKey(doc.Id.ToString()), json);
+                //Encrypt with ContentSeed
+                var key = SiaSkynetClient.GenerateKeys(sum.ContentSeed);
+                var data = Encoding.UTF8.GetBytes(json);
+                var encryptedData = Utils.Encrypt(data, key.privateKey);
+
+                success = await client.SkyDbSet(sum.PrivateKey, sum.PublicKey, new RegistryKey(doc.Id.ToString()), encryptedData);
             }
             catch(Exception ex)
             {

@@ -11,12 +11,9 @@ Features:
 - Screenshot preview of all documents
 - Edit documents
 - Delete documents
-
-NOTE: All data is publicly stored on Sia Skynet. Encryption of your documents is not yet implemented.
+- Data is encrypted (except preview images)
 
 SkyDocs is build with Blazor and runs on WebAssembly. The [SiaSkynet C# SDK](https://github.com/michielpost/SiaSkynet) is used to communicate with Skynet and SkyDB.
-
-Demo video: https://siasky.net/AADh9ZruJIm-UqRKWNCA_uCh1sYYg4NvrWZUKKw3UbwXiw
 
 Try the app hosted on Sia Skynet (first load can be slow, after that it's fast): https://skydocs.hns.siasky.net
 
@@ -42,6 +39,7 @@ Jury notes:
 ![Hackathon results](screenshots/hackathon_winner.jpg)
 
 ## Original screenshots
+Demo video: https://siasky.net/AADh9ZruJIm-UqRKWNCA_uCh1sYYg4NvrWZUKKw3UbwXiw
 
 Login
 ![Login](screenshots/01_login.png)
