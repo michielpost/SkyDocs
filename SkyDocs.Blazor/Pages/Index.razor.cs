@@ -45,7 +45,7 @@ namespace SkyDocs.Blazor.Pages
             base.OnInitialized();
 
 #if RELEASE
-        string baseUrl = MyNavigationManager.BaseUri;
+        string baseUrl = NavigationManager.BaseUri;
         var uri = new Uri(baseUrl);
         var portalDomain = $"{uri.Scheme}://{uri.Authority}/";
         skyDocsService.SetPortalDomain(portalDomain);
