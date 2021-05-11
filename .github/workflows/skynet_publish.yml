@@ -1,6 +1,8 @@
 name: publish to skynet
 on:
+  pull_request:
   push:
+    branches: [master]
 
 jobs:
   publish:

@@ -1,6 +1,6 @@
 ﻿@page "/"
 
-@if (skyDocsService.IsLoggedIn && skyDocsService.CurrentDocument == null && !skyDocsService.IsLoading)
+@if ((skyDocsService.IsLoggedIn || skyDocsService.DocumentList.Any()) && skyDocsService.CurrentDocument == null && !skyDocsService.IsLoading)
 {
     <div class="row">
         <RadzenCard class="docCard">
@@ -10,7 +10,7 @@
 
         @foreach (var document in skyDocsService.DocumentList.OrderByDescending(x => x.ModifiedDate))
         {
-            <RadzenCard class="docCard" @onclick="@(x => OpenDocument(document.Id))">
+            <RadzenCard class="docCard" @onclick="@(x => NavigateToDocument(document.Id))">
                 @if (document.PreviewImage != null)
                 {
                     <RadzenImage Path="@string.Format("https://siasky.net/{0}", document.PreviewImage)" Style="width:100%;height:auto" Alt="@document.Title">
@@ -68,9 +68,26 @@ else if (skyDocsService.CurrentDocument != null)
         </RadzenHtmlEditor>
 
         <div style="text-align:right">
-            <RadzenButton ButtonStyle="ButtonStyle.Danger" Click="@OnDelete">Delete</RadzenButton>
+            @if (skyDocsService.IsLoggedIn && skyDocsService.CurrentSum?.PrivateKey != null)
+            {
+                <RadzenButton ButtonStyle="ButtonStyle.Danger" Click="@OnDelete">Delete</RadzenButton>
+            }
             <RadzenButton ButtonStyle="ButtonStyle.Secondary" Click="@GoToList">Back</RadzenButton>
-            <RadzenButton ButtonStyle="ButtonStyle.Success" Click="@OnSave">Save</RadzenButton>
+            @if (skyDocsService.IsLoggedIn)
+            {
+                if (skyDocsService.CurrentSum?.PrivateKey != null)
+                {
+                    <RadzenButton ButtonStyle="ButtonStyle.Success" Click="@OnSave">Save</RadzenButton>
+                }
+                else
+                {
+                    <RadzenButton ButtonStyle="ButtonStyle.Success" Click="@OnSave">Save a copy</RadzenButton>
+                }
+            }
+            @if (!skyDocsService.IsLoggedIn)
+            {
+                <RadzenButton ButtonStyle="ButtonStyle.Success" Click="@Login">Login</RadzenButton>
+            }
         </div>
 
     </div>
