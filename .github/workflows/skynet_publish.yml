@@ -14,12 +14,12 @@ jobs:
         uses: rlespinasse/github-slug-action@v3.x
       - name: "Set master version"
         if: ${{ github.ref == 'refs/heads/master'}}
-        run: echo "Version $APP_VERSION"
+        run: echo "APP_VERSION=$APP_VERSION" >> $GITHUB_ENV
         env:
           APP_VERSION: $(git rev-parse --short "$GITHUB_SHA")
       - name: "Set branch version"
         if: ${{ github.ref != 'refs/heads/master'}}
-        run: echo "Version test $APP_VERSION"
+        run: echo "APP_VERSION=$APP_VERSION" >> $GITHUB_ENV
         env:
           APP_VERSION: ${{ env.GITHUB_REF_SLUG }}-$(git rev-parse --short "$GITHUB_SHA")
       - name: Setup dotnet
@@ -29,7 +29,7 @@ jobs:
       - name: Build with dotnet
         run: dotnet build --configuration Release
       - name: Publish Website
-        run: dotnet publish SkyDocs.Blazor -o publish/SkyDocs.Blazor -c Release --version-suffix ${{ env.GITHUB_REF_SLUG }}-$(git rev-parse --short "$GITHUB_SHA")
+        run: dotnet publish SkyDocs.Blazor -o publish/SkyDocs.Blazor -c Release --version-suffix ${{ env.APP_VERSION }}
       - name: Deploy to Skynet
         uses: kwypchlo/deploy-to-skynet-action@main
         with:
