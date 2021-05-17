@@ -29,9 +29,19 @@ namespace SkyDocs.Blazor
         public DocumentSummary? CurrentSum => DocumentList.Where(x => x.Id == CurrentDocument?.Id).FirstOrDefault();
         public static string? Error { get; set; }
 
-        public void SetPortalDomain(string baseUrl)
+        public void SetPortalDomain(string scheme, string domain)
         {
-            client = new SiaSkynetClient(baseUrl);
+            string[] urlParts = domain.Split('.');
+
+            //Only take last two parts
+            var lastParts = urlParts.Skip(urlParts.Count() - 2).Take(2);
+
+            if (lastParts.Count() == 2)
+            {
+                var url = $"{scheme}://{string.Join('.', lastParts)}";
+                Console.WriteLine($"Using API domain: {url}");
+                client = new SiaSkynetClient(url);
+            }
         }
 
         /// <summary>
