@@ -4,16 +4,21 @@
     <TargetFramework>net5.0</TargetFramework>
     <Nullable>enable</Nullable>
     <WarningsAsErrors>CS8600;CS8601;CS8602;CS8603;CS8625;CS8613;CS8610</WarningsAsErrors>
+    <VersionPrefix>2.0.0</VersionPrefix>
+    <BlazorEnableTimeZoneSupport>false</BlazorEnableTimeZoneSupport>
+    <BlazorWebAssemblyPreserveCollationData>false</BlazorWebAssemblyPreserveCollationData>
+    <InvariantGlobalization>true</InvariantGlobalization>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="SiaSkynet" Version="2.0.2" />
-    <PackageReference Include="Blazorise.Icons.Material" Version="0.9.3.6" />
-    <PackageReference Include="Blazorise.Material" Version="0.9.3.6" />
-    <PackageReference Include="Blazorise.RichTextEdit" Version="0.9.3.6" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="5.0.5" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="5.0.5" PrivateAssets="all" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.11.33" />
+    <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.2.0" />
+    <PackageReference Include="Radzen.Blazor" Version="3.2.9" />
+    <PackageReference Include="SiaSkynet" Version="3.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="5.0.6" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="5.0.6" PrivateAssets="all" />
     <PackageReference Include="System.Net.Http.Json" Version="5.0.0" />
+    <PackageReference Include="Toolbelt.Blazor.HeadElement" Version="5.4.2" />
   </ItemGroup>
 
 </Project>

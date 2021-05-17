@@ -5,21 +5,16 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>SkyDocs</title>
-    <link href="css/material.min.css" rel="stylesheet">
 
-    <!-- Add Material font (Roboto) and Material icon as needed -->
-    <link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i,700,700i|Roboto+Mono:300,400,700|Roboto+Slab:300,400,700" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
-    <link href="_content/Blazorise/blazorise.css" rel="stylesheet" />
-    <link href="_content/Blazorise.Material/blazorise.material.css" rel="stylesheet" />
+    <link rel="stylesheet" href="_content/Radzen.Blazor/css/default.css">
 
     <link href="css/app.css" rel="stylesheet" />
     <link href="SkyDocs.Blazor.styles.css" rel="stylesheet" />
+    <link href="favicon.ico" rel="icon" type="image/x-icon" />
     <script>
         // set base href dynamically based on hosting location
         var base = document.createElement('base');
-        var newBase = `${window.location.pathname}`;
+        var newBase = '${window.location.pathname}';
 
         var secondSlash = newBase.indexOf("/", 1);
         newBase = newBase.substr(0, secondSlash);
@@ -29,7 +24,7 @@
         // Ensure trailing slash present
         newBase += (newBase.endsWith("/") ? "" : "/");
         base.href = newBase;
-        console.log(`Base href set to ${newBase}`);
+        console.log('Base href set to ${newBase}');
         document.getElementsByTagName('head')[0].appendChild(base);
     </script>
 </head>
@@ -47,8 +42,7 @@
     </div>
     <script src="js/html2canvas.min.js"></script>
     <script src="js/interop.js"></script>
-    <script src="_content/Blazorise/blazorise.js"></script>
-    <script src="_content/Blazorise.Material/blazorise.material.js"></script>
+    <script src="_content/Radzen.Blazor/Radzen.Blazor.js"></script>
     <script src="_framework/blazor.webassembly.js"></script>
 </body>
 

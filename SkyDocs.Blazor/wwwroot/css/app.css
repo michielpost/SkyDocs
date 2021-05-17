@@ -1,6 +1,4 @@
-﻿@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
-
-html, body {
+﻿html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     height: 100%;
 }
@@ -33,6 +31,13 @@ a, .btn-link {
 
 .validation-message {
     color: red;
+}
+
+.docCard {
+    width: 300px;
+    margin-bottom: 20px;
+    margin-left: 20px;
+    height: 250px;
 }
 
 #blazor-error-ui {

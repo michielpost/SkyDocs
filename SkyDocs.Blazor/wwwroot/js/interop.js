@@ -1,6 +1,6 @@
 ﻿//DrawImage
 window.Snap = async (src, format) => {
-    let rte = document.getElementById(src);
+    let rte = document.getElementById(src).children[1];
 
     let canvas = await html2canvas(rte, {
         scale: 0.3,
