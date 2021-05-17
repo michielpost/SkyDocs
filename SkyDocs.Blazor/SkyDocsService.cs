@@ -16,7 +16,7 @@ namespace SkyDocs.Blazor
     /// </summary>
     public class SkyDocsService
     {
-        private readonly string salt = "skydocs";
+        private readonly string salt = "skydocs-2";
         private readonly RegistryKey listDataKey = new RegistryKey("skydocs-list");
         private static SiaSkynetClient client = new SiaSkynetClient();
         private byte[]? privateKey;
