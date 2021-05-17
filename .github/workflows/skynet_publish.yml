@@ -10,6 +10,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: Inject slug/short variables
+        uses: rlespinasse/github-slug-action@v3.x
+      - name: "Set master version"
+        if: ${{ github.ref == 'refs/heads/master'}}
+        env:
+          APP_VERSION: $(git rev-parse --short "$GITHUB_SHA")
+      - name: "Set branch version"
+        if: ${{ github.ref != 'refs/heads/master'}}
+        env:
+          APP_VERSION: ${{ env.GITHUB_REF_SLUG }}-$(git rev-parse --short "$GITHUB_SHA")
       - name: Setup dotnet
         uses: actions/setup-dotnet@v1
         with:
@@ -17,7 +27,7 @@ jobs:
       - name: Build with dotnet
         run: dotnet build --configuration Release
       - name: Publish Website
-        run: dotnet publish SkyDocs.Blazor -o publish/SkyDocs.Blazor -c Release --version-suffix ${GITHUB_REF##*/}-$(git rev-parse --short "$GITHUB_SHA")
+        run: dotnet publish SkyDocs.Blazor -o publish/SkyDocs.Blazor -c Release --version-suffix ${{ env.APP_VERSION }}
       - name: Deploy to Skynet
         uses: kwypchlo/deploy-to-skynet-action@main
         with:
