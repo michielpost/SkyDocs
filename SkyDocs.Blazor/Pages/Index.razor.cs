@@ -127,6 +127,7 @@ namespace SkyDocs.Blazor.Pages
 
             if (skyDocsService.CurrentDocument == null || string.IsNullOrEmpty(skyDocsService.CurrentDocument.Content))
             {
+                GoToList();
                 DialogService.Open<ErrorModal>("Error loading document from Skynet. Please try again.");
             }
         }
