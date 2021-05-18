@@ -56,14 +56,17 @@ namespace SkyDocs.Blazor.Pages.Modals
                     var storedLogin = await LocalStorageService.GetItemAsync<MetaMaskLogin>(MetaMaskLocalStorageKey);
                     if (!isSiteConnected || storedLogin == null)
                     {
-                        string signHash = await MetaMaskService.SignTypedData(SignLabel, SignValue);
                         string address = await MetaMaskService.GetSelectedAddress();
 
-                        storedLogin = new MetaMaskLogin(address, signHash);
-
-                        //Store hash in cookie
-                        await LocalStorageService.SetItemAsync(MetaMaskLocalStorageKey, storedLogin);
-
+                        storedLogin = await GetAndStoreHash(storedLogin, address);
+                    }
+                    else
+                    {
+                        string address = await MetaMaskService.GetSelectedAddress();
+                        if(storedLogin.address != address)
+                        {
+                            storedLogin = await GetAndStoreHash(storedLogin, address);
+                        }
                     }
 
                     SkyDocsService.Login(storedLogin.address, storedLogin.hash);
@@ -84,6 +87,16 @@ namespace SkyDocs.Blazor.Pages.Modals
 
             }
 
+        }
+
+        private async Task<MetaMaskLogin> GetAndStoreHash(MetaMaskLogin? storedLogin, string address)
+        {
+            string signHash = await MetaMaskService.SignTypedData(SignLabel, SignValue);
+            storedLogin = new MetaMaskLogin(address, signHash);
+
+            //Store hash in cookie
+            await LocalStorageService.SetItemAsync(MetaMaskLocalStorageKey, storedLogin);
+            return storedLogin;
         }
     }
 
