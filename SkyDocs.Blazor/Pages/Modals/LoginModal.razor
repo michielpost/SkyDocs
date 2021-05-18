@@ -39,6 +39,26 @@
             </RadzenFieldset>
         </div>
     </div>
+    <div class="row">
+        <div class="col">
+            @if (ShowMetaMaskMessage)
+            {
+                <br />
+                <div class="alert alert-warning" role="alert">
+                    Please install MetaMask from <a href="https://metamask.io" target="_blank">https://metamask.io</a>
+                    <br />
+                </div>
+            }
+
+            @if (!string.IsNullOrEmpty(Error))
+            {
+                <br />
+                <div class="alert alert-warning" role="alert">
+                    @Error
+                </div>
+            }
+        </div>
+        </div>
 </div>
 
 

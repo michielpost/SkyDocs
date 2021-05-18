@@ -13,7 +13,7 @@
   <ItemGroup>
     <PackageReference Include="Blazored.LocalStorage" Version="4.1.1" />
     <PackageReference Include="HtmlAgilityPack" Version="1.11.33" />
-    <PackageReference Include="MetaMask.Blazor" Version="0.0.1-beta01" />
+    <PackageReference Include="MetaMask.Blazor" Version="1.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.2.0" />
     <PackageReference Include="Radzen.Blazor" Version="3.3.0" />
     <PackageReference Include="SiaSkynet" Version="3.2.0-beta01" />

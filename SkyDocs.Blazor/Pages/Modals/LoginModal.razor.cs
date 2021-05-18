@@ -20,6 +20,9 @@ namespace SkyDocs.Blazor.Pages.Modals
 
         public LoginModel loginModel { get; set; } = new LoginModel();
 
+        public string? Error { get; set; }
+        public bool ShowMetaMaskMessage { get; set; }
+
         [Inject]
         public DialogService DialogService { get; set; }
 
@@ -37,16 +40,17 @@ namespace SkyDocs.Blazor.Pages.Modals
             SkyDocsService.Login(loginModel.Username, loginModel.Password);
 
             DialogService.Close();
-
-            
         }
 
         private async Task MetaMaskLogin()
         {
+            ShowMetaMaskMessage = false;
+            Error = null;
+
             bool hasMetaMask = await MetaMaskService.HasMetaMask();
             if (!hasMetaMask)
             {
-                DialogService.Open<MetaMaskModal>("MetaMask not detected.");
+                ShowMetaMaskMessage = true;
             }
             else
             {
@@ -71,18 +75,19 @@ namespace SkyDocs.Blazor.Pages.Modals
 
                     SkyDocsService.Login(storedLogin.address, storedLogin.hash);
                     DialogService.Close();
+
                 }
-                catch(NoMetaMaskException)
+                catch (NoMetaMaskException)
                 {
-                    DialogService.Open<MetaMaskModal>("MetaMask not detected.");
+                    ShowMetaMaskMessage = true;
                 }
                 catch (UserDeniedException)
                 {
-                    DialogService.Open<ErrorModal>("MetaMask not allowed to connect to SkyDocs. Please try again.");
+                    Error = "MetaMask not allowed to connect to SkyDocs. Please try again.";
                 }
                 catch
                 {
-                    DialogService.Open<ErrorModal>("Failed to sign message. Please try again.");
+                    Error = "Failed to sign message. Please try again.";
                 }
 
             }
