@@ -1,3 +1,4 @@
+using Blazored.LocalStorage;
 using MetaMask.Blazor;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -30,6 +31,7 @@ namespace SkyDocs.Blazor
             builder.Services.AddHeadElementHelper();
 
             builder.Services.AddMetaMaskBlazor();
+            builder.Services.AddBlazoredLocalStorage();
 
             builder.RootComponents.Add<App>("#app");
 

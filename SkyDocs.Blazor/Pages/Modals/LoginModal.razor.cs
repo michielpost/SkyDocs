@@ -1,6 +1,9 @@
-﻿using MetaMask.Blazor;
+﻿using Blazored.LocalStorage;
+using MetaMask.Blazor;
+using MetaMask.Blazor.Exceptions;
 using Microsoft.AspNetCore.Components;
 using Radzen;
+using SkyDocs.Blazor.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +16,7 @@ namespace SkyDocs.Blazor.Pages.Modals
         //Changing these values invalidates logins
         private readonly string SignLabel = "SkyDocs login";
         private readonly string SignValue = "Sign this message to login with SkyDocs";
+        private readonly string MetaMaskLocalStorageKey = "metamask";
 
         public LoginModel loginModel { get; set; } = new LoginModel();
 
@@ -24,6 +28,9 @@ namespace SkyDocs.Blazor.Pages.Modals
 
         [Inject]
         public MetaMaskService MetaMaskService { get; set; } = default!;
+
+        [Inject]
+        public ILocalStorageService LocalStorageService { get; set; } = default!;
 
         private async Task Login()
         {
@@ -43,24 +50,37 @@ namespace SkyDocs.Blazor.Pages.Modals
             }
             else
             {
-                bool isSiteConnected = await MetaMaskService.IsSiteConnected();
-                if (isSiteConnected)
+                try
                 {
-                    //TODO: Check if there is a hash in a cookie
+                    bool isSiteConnected = await MetaMaskService.IsSiteConnected();
+                    var storedLogin = await LocalStorageService.GetItemAsync<MetaMaskLogin>(MetaMaskLocalStorageKey);
+                    if (!isSiteConnected || storedLogin == null)
+                    {
+                        string signHash = await MetaMaskService.SignTypedData(SignLabel, SignValue);
+                        string address = await MetaMaskService.GetSelectedAddress();
 
-                   
+                        storedLogin = new MetaMaskLogin(address, signHash);
+
+                        //Store hash in cookie
+                        await LocalStorageService.SetItemAsync(MetaMaskLocalStorageKey, storedLogin);
+
+                    }
+
+                    SkyDocsService.Login(storedLogin.address, storedLogin.hash);
+                    DialogService.Close();
                 }
-                else
+                catch(NoMetaMaskException)
                 {
-                    //
+                    DialogService.Open<MetaMaskModal>("MetaMask not detected.");
                 }
-
-                string signHash = await MetaMaskService.SignTypedData(SignLabel, SignValue);
-                string address = await MetaMaskService.GetSelectedAddress();
-                //TODO: Store hash in cookie
-
-                SkyDocsService.Login(address, signHash);
-                DialogService.Close();
+                catch (UserDeniedException)
+                {
+                    DialogService.Open<ErrorModal>("MetaMask not allowed to connect to SkyDocs. Please try again.");
+                }
+                catch
+                {
+                    DialogService.Open<ErrorModal>("Failed to sign message. Please try again.");
+                }
 
             }
 
