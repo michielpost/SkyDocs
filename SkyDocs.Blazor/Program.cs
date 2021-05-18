@@ -1,3 +1,4 @@
+using MetaMask.Blazor;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,6 +28,8 @@ namespace SkyDocs.Blazor
             builder.Services.AddScoped<ContextMenuService>();
 
             builder.Services.AddHeadElementHelper();
+
+            builder.Services.AddMetaMaskBlazor();
 
             builder.RootComponents.Add<App>("#app");
 
