@@ -39,7 +39,7 @@ namespace SkyDocs.Blazor.Pages.Modals
             bool hasMetaMask = await MetaMaskService.HasMetaMask();
             if (!hasMetaMask)
             {
-                DialogService.Open<ErrorModal>("Please install MetaMask.");
+                DialogService.Open<MetaMaskModal>("MetaMask not detected.");
             }
             else
             {
@@ -56,10 +56,10 @@ namespace SkyDocs.Blazor.Pages.Modals
                 }
 
                 string signHash = await MetaMaskService.SignTypedData(SignLabel, SignValue);
-
+                string address = await MetaMaskService.GetSelectedAddress();
                 //TODO: Store hash in cookie
 
-                SkyDocsService.Login("metamask", signHash);
+                SkyDocsService.Login(address, signHash);
                 DialogService.Close();
 
             }
