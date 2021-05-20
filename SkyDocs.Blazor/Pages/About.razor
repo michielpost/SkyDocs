@@ -29,6 +29,13 @@
     </p>
 
     <p>
-        Version: @Program.GetVersionWithoutHash()-<a href="https://github.com/michielpost/SkyDocs/tree/@Program.GetVersionHash()" target="_blank">@Program.GetVersionHash()</a>
+        @{
+            string? versionHash = Program.GetVersionHash();
+        }
+        Version: @Program.GetVersionWithoutHash()
+        @if (!string.IsNullOrEmpty(versionHash))
+        {
+            <text>-</text><a href="https://github.com/michielpost/SkyDocs/tree/@versionHash" target="_blank">@versionHash</a>
+        }
     </p>
 </div>

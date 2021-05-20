@@ -42,10 +42,8 @@ namespace SkyDocs.Blazor
             var host = builder.Build();
 
             Version = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
-            Version = "2.0.0-2eeb71b";
-
+            
             await host.RunAsync();
-
         }
 
         public static string? GetVersionHash()
@@ -53,7 +51,7 @@ namespace SkyDocs.Blazor
             if(Version != null)
             {
                 int sep = Version.LastIndexOf('-');
-                if(sep < Version.Length)
+                if(sep >= 0 && sep < Version.Length)
                     return Version.Substring(sep+1);
             }
             return null;
@@ -64,9 +62,10 @@ namespace SkyDocs.Blazor
             if (Version != null)
             {
                 int sep = Version.LastIndexOf('-');
-                return Version.Substring(0, sep);
+                if(sep >= 0)
+                    return Version.Substring(0, sep);
             }
-            return null;
+            return Version;
         }
     }
 }
