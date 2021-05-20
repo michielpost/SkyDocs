@@ -29,7 +29,13 @@ TODO: New screenshots have to be made
 
 ## Open Source Project Credits
 - [SiaSkynet C# SDK](https://github.com/michielpost/SiaSkynet)
+- [MetaMask.Blazor](https://github.com/michielpost/MetaMask.Blazor)
 - [Radzen.Blazor UI Components](https://github.com/radzenhq/radzen-blazor)
+- [Blazored.LocalStorage](https://github.com/blazored/LocalStorage)
+- [Toolbelt.Blazor.HeadElement](https://github.com/jsakamoto/Toolbelt.Blazor.HeadElement)
+
+## Acknowledgements
+Development of SkyDocs v2 has been made possible with a grant from [The Graph](https://thegraph.com/blog/wave-one-funding).
 
 ## SkyDB Debut Hackathon
 SkyDocs was created for *[The SkyDB Debut](https://gitcoin.co/hackathon/skydb/)* hackathon. 
