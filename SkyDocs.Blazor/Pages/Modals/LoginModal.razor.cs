@@ -16,7 +16,6 @@ namespace SkyDocs.Blazor.Pages.Modals
         //Changing these values invalidates logins
         private readonly string SignLabel = "SkyDocs login";
         private readonly string SignValue = "Sign this message to login with SkyDocs";
-        private readonly string MetaMaskLocalStorageKey = "metamask";
 
         public LoginModel loginModel { get; set; } = new LoginModel();
 
@@ -33,7 +32,7 @@ namespace SkyDocs.Blazor.Pages.Modals
         public MetaMaskService MetaMaskService { get; set; } = default!;
 
         [Inject]
-        public ILocalStorageService LocalStorageService { get; set; } = default!;
+        public MetaMaskStorageService MetaMaskStorageService { get; set; } = default!;
 
         private async Task Login()
         {
@@ -57,19 +56,19 @@ namespace SkyDocs.Blazor.Pages.Modals
                 try
                 {
                     bool isSiteConnected = await MetaMaskService.IsSiteConnected();
-                    var storedLogin = await LocalStorageService.GetItemAsync<MetaMaskLogin>(MetaMaskLocalStorageKey);
-                    if (!isSiteConnected || storedLogin == null)
+                    MetaMaskLogin? storedLogin = null;
+                    if (!isSiteConnected)
                     {
-                        string address = await MetaMaskService.GetSelectedAddress();
-
-                        storedLogin = await GetAndStoreHash(storedLogin, address);
+                        storedLogin = await GetAndStoreHash();
                     }
                     else
                     {
                         string address = await MetaMaskService.GetSelectedAddress();
-                        if(storedLogin.address != address)
+                        storedLogin = await MetaMaskStorageService.GetStoredhash(address);
+
+                        if (storedLogin == null)
                         {
-                            storedLogin = await GetAndStoreHash(storedLogin, address);
+                            storedLogin = await GetAndStoreHash();
                         }
                     }
 
@@ -85,22 +84,25 @@ namespace SkyDocs.Blazor.Pages.Modals
                 {
                     Error = "MetaMask not allowed to connect to SkyDocs. Please try again.";
                 }
-                catch
+                catch(Exception ex)
                 {
                     Error = "Failed to sign message. Please try again.";
+                    Console.WriteLine(ex);
                 }
 
             }
 
         }
 
-        private async Task<MetaMaskLogin> GetAndStoreHash(MetaMaskLogin? storedLogin, string address)
+        private async Task<MetaMaskLogin> GetAndStoreHash()
         {
             string signHash = await MetaMaskService.SignTypedData(SignLabel, SignValue);
-            storedLogin = new MetaMaskLogin(address, signHash);
+            string address = await MetaMaskService.GetSelectedAddress();
+
+            MetaMaskLogin storedLogin = new MetaMaskLogin(address, signHash);
 
             //Store hash in cookie
-            await LocalStorageService.SetItemAsync(MetaMaskLocalStorageKey, storedLogin);
+            await MetaMaskStorageService.SaveStoredHash(storedLogin);
             return storedLogin;
         }
     }
