@@ -1,3 +1,5 @@
+using Blazored.LocalStorage;
+using MetaMask.Blazor;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -28,17 +30,42 @@ namespace SkyDocs.Blazor
 
             builder.Services.AddHeadElementHelper();
 
+            builder.Services.AddMetaMaskBlazor();
+            builder.Services.AddBlazoredLocalStorage();
+
             builder.RootComponents.Add<App>("#app");
 
             builder.Services.AddSingleton<SkyDocsService>();
+            builder.Services.AddScoped<MetaMaskStorageService>();
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
             var host = builder.Build();
 
             Version = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
-
+            
             await host.RunAsync();
+        }
 
+        public static string? GetVersionHash()
+        {
+            if(Version != null)
+            {
+                int sep = Version.LastIndexOf('-');
+                if(sep >= 0 && sep < Version.Length)
+                    return Version.Substring(sep+1);
+            }
+            return null;
+        }
+
+        public static string? GetVersionWithoutHash()
+        {
+            if (Version != null)
+            {
+                int sep = Version.LastIndexOf('-');
+                if(sep >= 0)
+                    return Version.Substring(0, sep);
+            }
+            return Version;
         }
     }
 }
