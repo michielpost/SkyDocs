@@ -19,6 +19,9 @@ namespace SkyDocs.Blazor.Pages
     {
         private Dictionary<string, object> at = new Dictionary<string, object>() { { "id", "rte" } };
 
+        public bool HasMetaMask { get; set; }
+        public string? SelectedAddress { get; set; }
+
         [Inject]
         public IJSRuntime JsRuntime { get; set; }
 
@@ -41,6 +44,11 @@ namespace SkyDocs.Blazor.Pages
         protected override async Task OnInitializedAsync()
         {
             NavigationManager.LocationChanged += NavigationManager_LocationChanged;
+
+            //HasMetaMask = await MetaMaskService.HasMetaMask();
+            //bool isSiteConnected = await MetaMaskService.IsSiteConnected();
+            //if (isSiteConnected)
+            //    SelectedAddress = await MetaMaskService.GetSelectedAddress();
 
             base.OnInitialized();
 
