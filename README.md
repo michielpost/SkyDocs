@@ -35,10 +35,10 @@ Development of SkyDocs v2 has been made possible with a grant from [The Graph](h
 
 ## Screenshots
 Login
-![Login](screenshots/v2_01_login.png)
+![Login](screenshots/v2_01_login.PNG)
 
 View all your documents
-![View all your documents](screenshots/v2_02_documents.png)
+![View all your documents](screenshots/v2_02_documents.PNG)
 
 Edit a document
 ![Edit a document](screenshots/v2_03_edit_document.png)
