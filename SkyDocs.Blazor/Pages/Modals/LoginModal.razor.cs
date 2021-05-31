@@ -34,7 +34,7 @@ namespace SkyDocs.Blazor.Pages.Modals
         [Inject]
         public MetaMaskStorageService MetaMaskStorageService { get; set; } = default!;
 
-        private async Task Login()
+        private void Login()
         {
             SkyDocsService.Login(loginModel.Username, loginModel.Password);
 

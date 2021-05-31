@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace SkyDocs.Blazor.Models
@@ -38,6 +39,9 @@ namespace SkyDocs.Blazor.Models
         public string? PreviewImage { get; set; }
         public DateTimeOffset CreatedDate { get; set; }
         public DateTimeOffset ModifiedDate { get; set; }
+
+        [JsonIgnore]
+        public int Revision { get; set; }
 
         public Document()
         {
