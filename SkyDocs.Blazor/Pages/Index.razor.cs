@@ -79,11 +79,9 @@ namespace SkyDocs.Blazor.Pages
         private async Task Login()
         {
             await DialogService.OpenAsync<LoginModal>("Login", options: new DialogOptions() { ShowClose = false });
-            Console.WriteLine("Login finished");
 
             DialogService.Open<LoadingModal>("Loading...", options: new DialogOptions() { ShowClose = false });
             await skyDocsService.LoadDocumentList();
-            Console.WriteLine("Loading doc list finished");
             DialogService.Close();
             StateHasChanged();
         }

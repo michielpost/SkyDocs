@@ -267,8 +267,6 @@ namespace SkyDocs.Blazor
                     var loadedList = JsonSerializer.Deserialize<List<DocumentSummary>>(json) ?? new List<DocumentSummary>();
                     var list = new DocumentList(loadedList.Where(x => x != null).ToList());
                     list.Revision = encryptedJson.Value.registryEntry?.Revision ?? 0;
-                    Console.WriteLine($"Value list: {encryptedJson.Value.registryEntry?.Revision}");
-                    Console.WriteLine($"Revision list: {list.Revision}");
                     return list;
                 }
             }
@@ -293,7 +291,6 @@ namespace SkyDocs.Blazor
                 var data = Encoding.UTF8.GetBytes(json);
                 var encryptedData = Utils.Encrypt(data, privateKey);
                 list.Revision++;
-                Console.WriteLine($"Save revision list: {list.Revision}");
 
                 success = await client.SkyDbSet(privateKey, publicKey, listDataKey, encryptedData, list.Revision);
             }
