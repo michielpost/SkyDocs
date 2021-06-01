@@ -1,10 +1,13 @@
 ﻿using MetaMask.Blazor;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using Nethereum.ABI.FunctionEncoding;
+using Nethereum.ABI.Model;
 using Radzen;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Threading.Tasks;
 
 namespace SkyDocs.Blazor.Pages.Modals
@@ -33,6 +36,7 @@ namespace SkyDocs.Blazor.Pages.Modals
         public ShareFormModel ShareFormModel { get; set; } = new ShareFormModel();
 
         public string CopyText { get; set; } = "Copy";
+        public string? TxInfo { get; set; }
 
         public string? Error { get; set; }
 
@@ -52,9 +56,47 @@ namespace SkyDocs.Blazor.Pages.Modals
             StateHasChanged();
         }
 
-        private void OnMetaMaskShare()
+        private async Task OnMetaMaskShare()
         {
+            Error = null;
 
+            var chain = await MetaMaskService.GetSelectedChain();
+            if(chain.chain !=  MetaMask.Blazor.Enums.Chain.Kovan)
+            {
+                Error = "Please select the Kovan network in MetaMask. Sharing currently only works on the Kovan testnet.";
+                return;
+            }
+
+            //Store data to share and get URL
+            string url = "sia://";
+
+            //Smart contract has a function called "share"
+            FunctionABI function = new FunctionABI("share", false);
+
+            //With 4 inputs
+            var inputsParameters = new[] {
+                    new Parameter("address", "receiver"),
+                    new Parameter("string", "appId"),
+                    new Parameter("string", "shareType"),
+                    new Parameter("string", "data")
+                };
+            function.InputParameters = inputsParameters;
+
+            var functionCallEncoder = new FunctionCallEncoder();
+
+            var data = functionCallEncoder.EncodeRequest(function.Sha3Signature, inputsParameters,
+                ShareFormModel.EthAddress,
+                "SkyDocs",
+                string.Empty,
+                url);
+
+            //Using The Share It Network: https://github.com/michielpost/TheShareItNetwork
+            string address = "0x6E8c5AFd3CFf5f6Ec85c032B68eF2997323a00FD";
+            BigInteger weiValue = 0;
+
+            data = data[2..]; //Remove the 0x from the generated string
+            var result = await MetaMaskService.SendTransaction(address, weiValue, data);
+            TxInfo = $"TX Hash: {result}";
         }
 
         private async Task CopyTextToClipboard()

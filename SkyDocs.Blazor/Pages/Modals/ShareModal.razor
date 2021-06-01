@@ -51,6 +51,14 @@
                     }
                 </RadzenFieldset>
             </RadzenTemplateForm>
+
+            @if (!string.IsNullOrEmpty(TxInfo))
+            {
+                <br />
+                <div class="alert alert-success" role="alert">
+                    @TxInfo
+                </div>
+            }
         </div>
     </div>
     <div class="row">
