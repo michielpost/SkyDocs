@@ -16,7 +16,7 @@
     </div>
     <div class="row">
         <div class="col-md">
-            <RadzenFieldset Text="Share by URL"  style="margin-bottom: 12px">
+            <RadzenFieldset Text="Share by URL" style="margin-bottom: 12px">
                 <div class="row" style="margin-bottom: 12px">
                     <div class="col">
                         <p>@ShareText</p>
@@ -33,9 +33,9 @@
                 <RadzenFieldset Text="Share with Ethereum address">
                     @if (!SkyDocsService.IsMetaMaskLogin)
                     {
-                        <div class="alert alert-warning" role="alert">
-                            Login with MetaMask to share this document with other MetaMask users.
-                        </div>
+                    <div class="alert alert-warning" role="alert">
+                        Login with MetaMask to share this document with other MetaMask users.
+                    </div>
                     }
                     else
                     {
@@ -47,17 +47,26 @@
                                 <RadzenRegexValidator Component="EthAddress" Text="Invalid Ethereum address" Pattern="^0x([A-Fa-f0-9]{40})$" Style="position: absolute" />
                             </div>
                         </div>
-                        <RadzenButton ButtonStyle="ButtonStyle.Info" ButtonType="ButtonType.Submit" Text="Share"></RadzenButton>
+                        @if (!string.IsNullOrEmpty(Progress))
+                            {
+                        <div class="alert alert-info" role="alert">
+                            @Progress
+                        </div>
+                        }
+                        else
+                        {
+                            <RadzenButton ButtonStyle="ButtonStyle.Info" ButtonType="ButtonType.Submit" Text="Share"></RadzenButton>
+                        }
                     }
                 </RadzenFieldset>
             </RadzenTemplateForm>
 
             @if (!string.IsNullOrEmpty(TxInfo))
             {
-                <br />
-                <div class="alert alert-success" role="alert">
-                    @TxInfo
-                </div>
+            <br />
+            <div class="alert alert-success" role="alert">
+                @TxInfo
+            </div>
             }
         </div>
     </div>
@@ -65,10 +74,10 @@
         <div class="col">
             @if (!string.IsNullOrEmpty(Error))
             {
-                <br />
-                <div class="alert alert-warning" role="alert">
-                    @Error
-                </div>
+            <br />
+            <div class="alert alert-warning" role="alert">
+                @Error
+            </div>
             }
         </div>
     </div>

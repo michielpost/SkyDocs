@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using ShareServer.Models;
@@ -29,6 +30,7 @@ namespace ShareServer.Controllers
 
         [HttpPost]
         [Route("add")]
+        [EnableCors("MyPolicy")]
         public async Task<string> StoreMessage([FromBody] AddMessageRequest req)
         {
             string address = req.Address.ToLowerInvariant();
@@ -51,6 +53,7 @@ namespace ShareServer.Controllers
 
         [HttpPost]
         [Route("get")]
+        [EnableCors("MyPolicy")]
         public async Task<string> GetMessage([FromBody] GetMessageRequest req)
         {
             //Check hash
