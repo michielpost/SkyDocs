@@ -11,6 +11,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="..\ShareServer\Models\AddMessageRequest.cs" Link="Models\AddMessageRequest.cs" />
+    <Compile Include="..\ShareServer\Models\GetMessageRequest.cs" Link="Models\GetMessageRequest.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Blazored.LocalStorage" Version="4.1.1" />
     <PackageReference Include="HtmlAgilityPack" Version="1.11.33" />
     <PackageReference Include="MetaMask.Blazor" Version="1.1.0" />
