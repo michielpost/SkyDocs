@@ -20,7 +20,8 @@
                 <div class="row" style="margin-bottom: 12px">
                     <div class="col">
                         <p>@ShareText</p>
-                        <RadzenTextBox Value="@ShareService.CurrentShareUrl" class="form-control" />
+                        <RadzenTextBox Value="@ShareService.CurrentShareUrl" readonly class="form-control" Style="width:70%;display:inline" />
+                        <RadzenButton ButtonStyle="ButtonStyle.Primary" Click="CopyTextToClipboard">@CopyText</RadzenButton>
                     </div>
                 </div>
             </RadzenFieldset>

@@ -1,5 +1,6 @@
 ﻿using MetaMask.Blazor;
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 using Radzen;
 using System;
 using System.Collections.Generic;
@@ -22,11 +23,16 @@ namespace SkyDocs.Blazor.Pages.Modals
         [Inject]
         public ShareService ShareService { get; set; } = default!;
 
+        [Inject]
+        public IJSRuntime JSRuntime { get; set; } = default!;
+
         public bool ShareReadOnly { get; set; } = true;
 
         public string ShareText  => ShareReadOnly ? "Anyone with the link can view the document" : "Anyone with the link can edit the document";
 
         public ShareFormModel ShareFormModel { get; set; } = new ShareFormModel();
+
+        public string CopyText { get; set; } = "Copy";
 
         public string? Error { get; set; }
 
@@ -42,12 +48,19 @@ namespace SkyDocs.Blazor.Pages.Modals
         void OnRadioButtonChange(bool value)
         {
             SetShareUrl(value);
+            CopyText = "Copy";
             StateHasChanged();
         }
 
         private void OnMetaMaskShare()
         {
 
+        }
+
+        private async Task CopyTextToClipboard()
+        {
+            await JSRuntime.InvokeVoidAsync("clipboardCopy.copyText", ShareService.CurrentShareUrl);
+            CopyText = "Copied!";
         }
     }
 
