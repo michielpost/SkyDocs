@@ -1,0 +1,22 @@
+﻿<div>
+    <div class="row">
+        <div class="col-md-12">
+            Share this document
+
+            <div class="form-group">
+                <RadzenRadioButtonList @bind-Value=@ShareReadOnly TValue="bool" Change=@((args) => OnRadioButtonChange(args))>
+                    <Items>
+                        <RadzenRadioButtonListItem Text="Viewer" Value="true" />
+                        <RadzenRadioButtonListItem Text="Editor" Value="false" />
+                    </Items>
+                </RadzenRadioButtonList>
+            </div>
+
+            <span>@ShareText</span>
+
+            <div class="form-group">
+                <RadzenTextBox Value="@ShareService.CurrentShareUrl" class="form-control" />
+            </div>
+        </div>
+    </div>
+</div>

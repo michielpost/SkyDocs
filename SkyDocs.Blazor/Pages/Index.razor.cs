@@ -36,6 +36,9 @@ namespace SkyDocs.Blazor.Pages
         [Inject]
         public DialogService DialogService { get; set; }
 
+        [Inject]
+        public ShareService ShareService { get; set; }
+
         private void NavigationManager_LocationChanged(object? sender, Microsoft.AspNetCore.Components.Routing.LocationChangedEventArgs e)
         {
             CheckUriAndOpenDocument();
@@ -146,29 +149,13 @@ namespace SkyDocs.Blazor.Pages
             if (sum != null)
             {
                 //Share url:
-                string? shareUrl = GetShareUrl(sum, true);
+                string? shareUrl = ShareService.GetShareUrl(sum, true);
                 if (!string.IsNullOrEmpty(shareUrl))
                     NavigationManager.NavigateTo(shareUrl);
             }
         }
 
-        private string GetShareUrl(DocumentSummary sum, bool readOnly)
-        {
-            var pubString = BitConverter.ToString(sum.PublicKey).Replace("-", "");
-            var privString = sum.PrivateKey != null ? BitConverter.ToString(sum.PrivateKey).Replace("-", "") : null;
-
-            var query = new Dictionary<string, string> {
-                        { "id", sum.Id.ToString() },
-                        { "pub", pubString },
-                        { "c", sum.ContentSeed },
-                    };
-
-            if (!string.IsNullOrEmpty(privString) && !readOnly)
-                query.Add("priv", privString);
-
-            var shareUrl = QueryHelpers.AddQueryString(NavigationManager.Uri, query);
-            return shareUrl;
-        }
+        
 
         private void NewDocument()
         {
@@ -253,6 +240,15 @@ namespace SkyDocs.Blazor.Pages
 
             StateHasChanged();
 
+        }
+
+        public void OnShare()
+        {
+            if (skyDocsService.CurrentDocument != null && skyDocsService.CurrentSum != null)
+            {
+                ShareService.CurrentShareUrl = ShareService.GetShareUrl(skyDocsService.CurrentSum, true);
+                DialogService.Open<ShareModal>("Share document: " + skyDocsService.CurrentDocument.Title, options: new DialogOptions() { ShowClose = true });
+            }
         }
     }
 }

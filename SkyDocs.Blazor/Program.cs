@@ -37,6 +37,7 @@ namespace SkyDocs.Blazor
 
             builder.Services.AddSingleton<SkyDocsService>();
             builder.Services.AddScoped<MetaMaskStorageService>();
+            builder.Services.AddScoped<ShareService>();
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
             var host = builder.Build();
