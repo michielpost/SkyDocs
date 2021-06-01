@@ -10,12 +10,14 @@ using System.Net.Http.Json;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using TheGraph;
 
 namespace SkyDocs.Blazor
 {
     public class ShareService
     {
         private readonly NavigationManager navigationManager;
+        private readonly string baseUrl = "https://skydocs-shareserver.azurewebsites.net";
 
         public string CurrentShareUrl { get; set; } = string.Empty;
 
@@ -44,8 +46,7 @@ namespace SkyDocs.Blazor
 
         public async Task<string?> StoreShareMessage(string ethAddress, DocumentSummary currentSum)
         {
-            string url = "https://skydocs-shareserver.azurewebsites.net/share/add";
-            //string url = "https://localhost:44392/share/add";
+            string url = baseUrl + "/share/add";
 
             ShareModel shareMsg = new ShareModel()
             {
@@ -53,14 +54,14 @@ namespace SkyDocs.Blazor
             };
             string json = JsonSerializer.Serialize(shareMsg);
 
-            AddMessageRequest shareModel = new AddMessageRequest()
+            AddMessageRequest reqModel = new AddMessageRequest()
             {
                  Address = ethAddress,
                  Message = json
             };
 
             HttpClient client = new HttpClient();
-            var result = await client.PostAsJsonAsync(url, shareModel);
+            var result = await client.PostAsJsonAsync(url, reqModel);
 
             if(result.IsSuccessStatusCode)
             {
@@ -69,6 +70,55 @@ namespace SkyDocs.Blazor
             }
 
             return null;
+        }
+
+        public async Task<ShareModel?> GetMessage(string ethAddress, string hash, string skylink)
+        {
+            string url = baseUrl + "/share/get";
+            skylink = skylink.Replace("sia://", string.Empty);
+
+            GetMessageRequest reqModel = new GetMessageRequest()
+            {
+                Address = ethAddress,
+                SecretHash = hash,
+                Skylink = skylink
+            };
+
+            HttpClient client = new HttpClient();
+            var result = await client.PostAsJsonAsync(url, reqModel);
+
+            if (result.IsSuccessStatusCode)
+            {
+                var json = await result.Content.ReadAsStringAsync();
+                var shareModel  = JsonSerializer.Deserialize<ShareModel>(json);
+                return shareModel;
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Get shared documents from The Graph
+        /// </summary>
+        /// <param name="ethAddress"></param>
+        /// <returns></returns>
+        public async Task<List<TheGraphShare>> GetSharedDocuments(string ethAddress)
+        {
+            var client = new TheGraphClient("michielpost/the-shareit-network");
+
+            string query = @"
+                        {
+                          shares(where: { appId:""SkyDocs"", receiver: ""0x92b143f46c3f8b4242ba85f800579cdf73882e98"" }) {
+                            id
+                            sender
+                            shareData
+                          }
+                        }
+                        ";
+
+            var result = await client.SendQueryAsync<TheGraphShareResultModel>(query);
+
+            return result.Data.Shares.Where(x => x.Skylink?.Length > 10).ToList();
         }
     }
 }

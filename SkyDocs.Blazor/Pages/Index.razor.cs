@@ -1,4 +1,5 @@
 ﻿using HtmlAgilityPack;
+using MetaMask.Blazor;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.JSInterop;
@@ -6,6 +7,7 @@ using Radzen;
 using SiaSkynet;
 using SkyDocs.Blazor.Models;
 using SkyDocs.Blazor.Pages.Modals;
+using SkyDocs.Blazor.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,6 +40,12 @@ namespace SkyDocs.Blazor.Pages
 
         [Inject]
         public ShareService ShareService { get; set; }
+
+        [Inject]
+        public MetaMaskService MetaMaskService { get; set; } = default!;
+
+        [CascadingParameter]
+        public MainLayout Layout { get; set; }
 
         private void NavigationManager_LocationChanged(object? sender, Microsoft.AspNetCore.Components.Routing.LocationChangedEventArgs e)
         {
@@ -87,6 +95,13 @@ namespace SkyDocs.Blazor.Pages
             await skyDocsService.LoadDocumentList();
             DialogService.Close();
             StateHasChanged();
+
+            if(skyDocsService.IsMetaMaskLogin)
+            {
+                var address = await MetaMaskService.GetSelectedAddress();
+                var shares = await ShareService.GetSharedDocuments(address);
+                Layout.SetNewShares(skyDocsService.SetShares(shares));
+            }
         }
 
         private async Task CheckUriAndOpenDocument()

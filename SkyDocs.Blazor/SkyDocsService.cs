@@ -18,6 +18,7 @@ namespace SkyDocs.Blazor
     {
         private readonly string salt = "skydocs-2";
         private readonly RegistryKey listDataKey = new RegistryKey("skydocs-list");
+        private readonly ShareService shareService;
         private static SiaSkynetClient client = new SiaSkynetClient();
         private byte[]? privateKey;
         private byte[]? publicKey;
@@ -30,6 +31,7 @@ namespace SkyDocs.Blazor
         public Document? CurrentDocument { get; set; }
         public DocumentSummary? CurrentSum => DocumentList.Where(x => x.Id == CurrentDocument?.Id).FirstOrDefault();
         public static string? Error { get; set; }
+        public List<TheGraphShare> Shares { get; set; } = new List<TheGraphShare>();
 
         public void SetPortalDomain(string scheme, string domain)
         {
@@ -97,6 +99,12 @@ namespace SkyDocs.Blazor
                 Title = "Shared document",
             };
             DocumentList.Add(sum);
+        }
+
+        internal int SetShares(List<TheGraphShare> shares)
+        {
+            Shares = shares;
+            return Shares.Count;
         }
 
         /// <summary>

@@ -1,18 +1,26 @@
 ﻿@inherits LayoutComponentBase
+@inject SkyDocsService SkyDocsService
 
 <RadzenDialog />
 <div class="page">
     @*<div class="sidebar">
-        <NavMenu />
-    </div>*@
+            <NavMenu />
+        </div>*@
+    <CascadingValue Value="this">
+        <div class="main">
+            <div class="top-row px-4">
+                @if (NewShares > 0)
+                {
+                    <b>New Shares (@NewShares)!</b>
+                }
 
-    <div class="main">
-        <div class="top-row px-4">
-            <a href="/about">SkyDocs</a>
-        </div>
+                <a href="/about">SkyDocs</a>
+            </div>
 
-        <div class="content px-4" style="height:100vh;padding-top:-3.5rem">
-            @Body
+            <div class="content px-4" style="height:100vh;padding-top:-3.5rem">
+                @Body
+            </div>
         </div>
-    </div>
+    </CascadingValue>
 </div>
+
