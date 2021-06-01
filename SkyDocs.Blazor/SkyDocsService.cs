@@ -23,6 +23,8 @@ namespace SkyDocs.Blazor
         private byte[]? publicKey;
 
         public bool IsLoggedIn { get; set; }
+        public bool IsMetaMaskLogin { get; set; }
+
         public bool IsLoading { get; set; }
         public DocumentList DocumentList { get; set; } = new DocumentList();
         public Document? CurrentDocument { get; set; }
@@ -49,7 +51,7 @@ namespace SkyDocs.Blazor
         /// </summary>
         /// <param name="username"></param>
         /// <param name="password"></param>
-        public void Login(string username, string password)
+        public void Login(string username, string password, bool isMetaMaskLogin = false)
         {
             string seedPhrase = $"{username}-{password}-{salt}";
             var key = SiaSkynetClient.GenerateKeys(seedPhrase);
@@ -57,6 +59,7 @@ namespace SkyDocs.Blazor
             publicKey = key.publicKey;
 
             IsLoggedIn = true;
+            IsMetaMaskLogin = isMetaMaskLogin;
         }
 
         /// <summary>

@@ -26,6 +26,8 @@ namespace SkyDocs.Blazor.Pages.Modals
 
         public string ShareText  => ShareReadOnly ? "Anyone with the link can view the document" : "Anyone with the link can edit the document";
 
+        public string? ShareAddress { get; set; }
+        public string? Error { get; set; }
 
         private void SetShareUrl(bool readOnly)
         {
@@ -40,6 +42,11 @@ namespace SkyDocs.Blazor.Pages.Modals
         {
             SetShareUrl(value);
             StateHasChanged();
+        }
+
+        private void OnMetaMaskShare()
+        {
+
         }
     }
 }

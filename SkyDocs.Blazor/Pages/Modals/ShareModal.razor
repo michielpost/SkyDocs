@@ -17,6 +17,37 @@
             <div class="form-group">
                 <RadzenTextBox Value="@ShareService.CurrentShareUrl" class="form-control" />
             </div>
+
+            <h3>Share with Ethereum address</h3>
+            @if (!SkyDocsService.IsMetaMaskLogin)
+            {
+                <div class="alert alert-warning" role="alert">
+                    Login with MetaMask to share this document with other MetaMask users.
+                </div>
+            }
+            else
+            {
+                <RadzenTemplateForm TItem="string" Data=@ShareAddress Submit=@OnMetaMaskShare>
+                    <div class="form-group">
+                        <label for="formGroupExampleInput">Ethereum address</label>
+                        <RadzenTextBox @bind-Value="@ShareAddress" Name="EthAddress" style="display: block" />
+                        <RadzenRequiredValidator Component="EthAddress" Text="Address is required" Style="position: absolute" />
+                        <RadzenRegexValidator Component="EthAddress" Text="Invalid Ethereum address" Pattern="/0x[a-fA-F0-9]{40}/g" Style="position: absolute" />
+                    </div>
+                    <div class="form-group">
+                        <RadzenButton ButtonStyle="ButtonStyle.Info" ButtonType="ButtonType.Submit">Share</RadzenButton>
+                    </div>
+                </RadzenTemplateForm>
+
+            }
+
+            @if (!string.IsNullOrEmpty(Error))
+            {
+                <br />
+                <div class="alert alert-warning" role="alert">
+                    @Error
+                </div>
+            }
         </div>
     </div>
 </div>

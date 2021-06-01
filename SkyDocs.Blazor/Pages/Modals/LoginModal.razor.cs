@@ -72,7 +72,7 @@ namespace SkyDocs.Blazor.Pages.Modals
                         }
                     }
 
-                    SkyDocsService.Login(storedLogin.address, storedLogin.hash);
+                    SkyDocsService.Login(storedLogin.address, storedLogin.hash, isMetaMaskLogin: true);
                     DialogService.Close();
 
                 }
