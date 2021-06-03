@@ -36,6 +36,13 @@ namespace SkyDocs.Blazor.Pages
             if (share == null)
                 return;
 
+            var existing = skyDocsService.DocumentList.Where(x => x.ShareOrigin == graphShareId).FirstOrDefault();
+            if (existing != null)
+            {
+                NavigateToDocument(existing.Id);
+                return;
+            }
+
             var address = await metaMaskService.GetSelectedAddress();
             var hash = await metaMaskStorageService.GetEncryptedMetamaskHash();
 
@@ -43,7 +50,7 @@ namespace SkyDocs.Blazor.Pages
 
             if (shareModel?.Sum != null)
             {
-                var existing = skyDocsService.DocumentList.Where(x => x.Id == shareModel.Sum.Id).FirstOrDefault();
+                existing = skyDocsService.DocumentList.Where(x => x.Id == shareModel.Sum.Id).FirstOrDefault();
                 if (existing == null)
                 {
                     shareModel.Sum.ShareOrigin = graphShareId;
