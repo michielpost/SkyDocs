@@ -112,7 +112,7 @@ namespace SkyDocs.Blazor
 
             string query = @"
                         {
-                          shares(where: { appId:""SkyDocs"", receiver: ""0x92b143f46c3f8b4242ba85f800579cdf73882e98"" }) {
+                          shares(where: { appId:""SkyDocs"", receiver: """ + ethAddress + @""" }) {
                             id
                             sender
                             shareData

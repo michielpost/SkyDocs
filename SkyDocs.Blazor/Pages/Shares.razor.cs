@@ -1,6 +1,8 @@
 ﻿using MetaMask.Blazor;
 using Microsoft.AspNetCore.Components;
+using Radzen;
 using SkyDocs.Blazor.Models;
+using SkyDocs.Blazor.Pages.Modals;
 using SkyDocs.Blazor.Shared;
 using System;
 using System.Collections.Generic;
@@ -27,6 +29,9 @@ namespace SkyDocs.Blazor.Pages
         [Inject]
         public NavigationManager NavigationManager { get; set; } = default!;
 
+        [Inject]
+        public DialogService DialogService { get; set; }
+
         [CascadingParameter]
         public MainLayout Layout { get; set; }
 
@@ -46,6 +51,8 @@ namespace SkyDocs.Blazor.Pages
             var address = await metaMaskService.GetSelectedAddress();
             var hash = await metaMaskStorageService.GetEncryptedMetamaskHash();
 
+            DialogService.Open<LoadingModal>("Loading...", options: new DialogOptions() { ShowClose = false });
+
             ShareModel? shareModel = await shareService.GetMessage(address, hash, share.Skylink);
 
             if (shareModel?.Sum != null)
@@ -57,7 +64,9 @@ namespace SkyDocs.Blazor.Pages
                     skyDocsService.DocumentList.Add(shareModel.Sum);
 
                     //Save documentlist
-                    await skyDocsService.SaveDocumentList(skyDocsService.DocumentList);
+                    bool success = await skyDocsService.SaveDocumentList(skyDocsService.DocumentList);
+                    Console.WriteLine(skyDocsService.DocumentList.Count);
+                    Console.WriteLine("Save document list " + success);
 
                     Layout.SetNewShares(Layout.TotalShares, Layout.NewShares - 1);
 
@@ -70,6 +79,8 @@ namespace SkyDocs.Blazor.Pages
                 //Open document
                 NavigateToDocument(shareModel.Sum.Id);
             }
+
+            DialogService.Close();
         }
 
         private void NavigateToDocument(Guid id)

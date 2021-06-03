@@ -5,6 +5,7 @@ using Microsoft.JSInterop;
 using Nethereum.ABI.FunctionEncoding;
 using Nethereum.ABI.Model;
 using Radzen;
+using SkyDocs.Blazor.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -82,7 +83,21 @@ namespace SkyDocs.Blazor.Pages.Modals
 
             try
             {
-                string? url = await ShareService.StoreShareMessage(ShareFormModel.EthAddress, SkyDocsService.CurrentSum);
+                var existing = SkyDocsService.CurrentSum;
+                DocumentSummary shareSum = new DocumentSummary()
+                {
+                    ContentSeed = existing.ContentSeed,
+                    CreatedDate = existing.CreatedDate,
+                    Id = existing.Id,
+                    ShareOrigin = existing.ShareOrigin,
+                    Title = existing.Title,
+                    PublicKey = existing.PublicKey,
+                    ModifiedDate = existing.ModifiedDate,
+                    PreviewImage = existing.PreviewImage,
+                    PrivateKey = ShareReadOnly ? null : existing.PrivateKey,
+                };
+
+                string? url = await ShareService.StoreShareMessage(ShareFormModel.EthAddress, shareSum);
                 if (string.IsNullOrEmpty(url))
                 {
                     Error = "Error storing shared data. Please try again";
