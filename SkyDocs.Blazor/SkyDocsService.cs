@@ -33,6 +33,18 @@ namespace SkyDocs.Blazor
         public static string? Error { get; set; }
         public List<TheGraphShare> Shares { get; set; } = new List<TheGraphShare>();
 
+        public List<TheGraphShare> NewShares()
+        {
+            var existing = DocumentList.Select(x => x.ShareOrigin);
+            return Shares.Where(x => !existing.Contains(x.Id)).ToList();
+        }
+
+        public List<TheGraphShare> ExistingShares()
+        {
+            var existing = DocumentList.Select(x => x.ShareOrigin);
+            return Shares.Where(x => existing.Contains(x.Id)).ToList();
+        }
+
         public void SetPortalDomain(string scheme, string domain)
         {
             string[] urlParts = domain.Split('.');
@@ -101,10 +113,11 @@ namespace SkyDocs.Blazor
             DocumentList.Add(sum);
         }
 
-        internal int SetShares(List<TheGraphShare> shares)
+        internal (int total, int newShares) SetShares(List<TheGraphShare> shares)
         {
             Shares = shares;
-            return Shares.Count;
+
+            return (Shares.Count, this.NewShares().Count);
         }
 
         /// <summary>
@@ -128,8 +141,6 @@ namespace SkyDocs.Blazor
         /// <returns></returns>
         public async Task SaveCurrentDocument(string fallbackTitle, byte[] img)
         {
-            int? revision = null;
-
             Error = null;
             if (CurrentDocument != null)
             {
@@ -139,7 +150,6 @@ namespace SkyDocs.Blazor
                     DocumentList.Remove(sum);
                     sum = null;
                     CurrentDocument.Id = Guid.NewGuid();
-                    revision = 0;
                 }
 
                 if (sum == null)
@@ -293,7 +303,7 @@ namespace SkyDocs.Blazor
         /// </summary>
         /// <param name="list"></param>
         /// <returns></returns>
-        private async Task<bool> SaveDocumentList(DocumentList list)
+        public async Task<bool> SaveDocumentList(DocumentList list)
         {
             var json = JsonSerializer.Serialize(list);
             bool success = false;

@@ -1,0 +1,50 @@
+﻿@page "/shares"
+
+@if (skyDocsService.Shares.Any())
+{
+
+    var newShares = skyDocsService.NewShares();
+    @if (newShares.Any())
+    {
+        <h2>Unopened shared documents</h2>
+        <div>
+            <table class="table table-bordered">
+                <tbody>
+
+                    @foreach (var share in newShares)
+                    {
+                        <tr>
+                            <td>@share.Sender wants to share a document with you</td>
+                            <td>&nbsp;&nbsp;</td>
+                            <td> <RadzenButton ButtonStyle="ButtonStyle.Primary" Click=@(args => Open(share.Id))>Open</RadzenButton></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+    }
+
+    var existingShares = skyDocsService.ExistingShares();
+    @if (existingShares.Any())
+    {
+        <h2>Opened shared documents</h2>
+        <div>
+            <table class="table table-bordered">
+                <tbody>
+
+                    @foreach (var share in existingShares)
+                    {
+                        <tr>
+                            <td>@share.Sender shared a document with you</td>
+                            <td>&nbsp;&nbsp;</td>
+                            <td> <RadzenButton ButtonStyle="ButtonStyle.Primary" Click=@(args => Open(share.Id))>Open</RadzenButton></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+    }
+
+}

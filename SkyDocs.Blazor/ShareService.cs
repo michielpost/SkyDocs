@@ -40,7 +40,7 @@ namespace SkyDocs.Blazor
             if (!string.IsNullOrEmpty(privString) && !readOnly)
                 query.Add("priv", privString);
 
-            var shareUrl = QueryHelpers.AddQueryString(navigationManager.Uri, query);
+            var shareUrl = QueryHelpers.AddQueryString(navigationManager.ToAbsoluteUri("/").ToString(), query);
             return shareUrl;
         }
 
@@ -91,6 +91,10 @@ namespace SkyDocs.Blazor
             {
                 var json = await result.Content.ReadAsStringAsync();
                 var shareModel  = JsonSerializer.Deserialize<ShareModel>(json);
+
+                if (shareModel?.Sum?.ShareOrigin != null)
+                    shareModel.Sum.ShareOrigin = null;
+
                 return shareModel;
             }
 

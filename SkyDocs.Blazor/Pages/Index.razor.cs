@@ -29,6 +29,7 @@ namespace SkyDocs.Blazor.Pages
 
         [Inject]
         public NavigationManager NavigationManager { get; set; } = default!;
+
         [Inject]
         public SkyDocsService skyDocsService { get; set; }
 
@@ -100,7 +101,9 @@ namespace SkyDocs.Blazor.Pages
             {
                 var address = await MetaMaskService.GetSelectedAddress();
                 var shares = await ShareService.GetSharedDocuments(address);
-                Layout.SetNewShares(skyDocsService.SetShares(shares));
+
+                var shareData = skyDocsService.SetShares(shares);
+                Layout.SetNewShares(shareData.total, shareData.newShares);
             }
         }
 

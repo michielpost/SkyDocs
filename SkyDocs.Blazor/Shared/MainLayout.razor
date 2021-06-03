@@ -9,9 +9,16 @@
     <CascadingValue Value="this">
         <div class="main">
             <div class="top-row px-4">
-                @if (NewShares > 0)
+                @if (TotalShares > 0)
                 {
-                    <b>New Shares (@NewShares)!</b>
+                    @if (NewShares > 0)
+                    {
+                        <b><a href="/shares">New Shares (@NewShares)</a></b>
+                    }
+                    else
+                    {
+                        <a href="/shares">New Shares</a>
+                    }
                 }
 
                 <a href="/about">SkyDocs</a>

@@ -8,9 +8,11 @@ namespace SkyDocs.Blazor.Shared
     public partial class MainLayout
     {
         public int NewShares { get; set; }
+        public int TotalShares { get; set; }
 
-        public void SetNewShares(int newShares)
+        public void SetNewShares(int total, int newShares)
         {
+            TotalShares = total;
             NewShares = newShares;
             StateHasChanged();
         }
