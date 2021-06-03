@@ -22,6 +22,9 @@
                 </tbody>
             </table>
         </div>
+        <br />
+        <br />
+        <br />
 
     }
 
@@ -35,8 +38,9 @@
 
                     @foreach (var share in existingShares)
                     {
+                        var sum = skyDocsService.DocumentList.Where(x => x.ShareOrigin == share.Id).FirstOrDefault();
                         <tr>
-                            <td>@share.Sender shared a document with you</td>
+                            <td>@share.Sender shared <b>@sum?.Title</b> with you</td>
                             <td>&nbsp;&nbsp;</td>
                             <td> <RadzenButton ButtonStyle="ButtonStyle.Primary" Click=@(args => Open(share.Id))>Open</RadzenButton></td>
                         </tr>
