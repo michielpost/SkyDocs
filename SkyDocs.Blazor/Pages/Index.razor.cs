@@ -101,6 +101,9 @@ namespace SkyDocs.Blazor.Pages
             {
                 var address = await MetaMaskService.GetSelectedAddress();
                 var shares = await ShareService.GetSharedDocuments(address);
+                var myshares = await ShareService.GetDocumentsIShared(address);
+
+                shares = shares.Union(myshares).ToList();
 
                 var shareData = skyDocsService.SetShares(shares);
                 Layout.SetNewShares(shareData.total, shareData.newShares);

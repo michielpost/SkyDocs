@@ -36,13 +36,13 @@ namespace SkyDocs.Blazor
         public List<TheGraphShare> NewShares()
         {
             var existing = DocumentList.Select(x => x.ShareOrigin);
-            return Shares.Where(x => !existing.Contains(x.Id)).ToList();
+            return Shares.Where(x => x.Receiver == null).Where(x => !existing.Contains(x.Id)).OrderByDescending(x => x.BlockNumber).ToList();
         }
 
         public List<TheGraphShare> ExistingShares()
         {
             var existing = DocumentList.Select(x => x.ShareOrigin);
-            return Shares.Where(x => existing.Contains(x.Id)).ToList();
+            return Shares.Where(x => existing.Contains(x.Id) || x.Sender == null).OrderByDescending(x => x.BlockNumber).ToList();
         }
 
         public void SetPortalDomain(string scheme, string domain)

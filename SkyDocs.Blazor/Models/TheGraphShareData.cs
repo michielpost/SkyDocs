@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
@@ -24,6 +25,11 @@ namespace SkyDocs.Blazor.Models
 
         [JsonPropertyName("receiver")]
         public string? Receiver { get; set; }
+
+        [JsonPropertyName("blockNumber")]
+        public string? BlockNumber { get; set; }
+
+        
 
     }
 }

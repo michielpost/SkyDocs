@@ -112,10 +112,31 @@ namespace SkyDocs.Blazor
 
             string query = @"
                         {
-                          shares(where: { appId:""SkyDocs"", receiver: """ + ethAddress + @""" }) {
+                          shares(where: { appId:""SkyDocs"", receiver: """ + ethAddress + @""" }, order: { desc: blockNumber }) {
                             id
                             sender
                             shareData
+                            blockNumber
+                          }
+                        }
+                        ";
+
+            var result = await client.SendQueryAsync<TheGraphShareResultModel>(query);
+
+            return result.Data.Shares.Where(x => x.Skylink?.Length > 10).ToList();
+        }
+
+        public async Task<List<TheGraphShare>> GetDocumentsIShared(string ethAddress)
+        {
+            var client = new TheGraphClient("michielpost/the-shareit-network");
+
+            string query = @"
+                        {
+                          shares(where: { appId:""SkyDocs"", sender: """ + ethAddress + @""" }, order: { desc: blockNumber }) {
+                            id
+                            receiver
+                            shareData
+                            blockNumber
                           }
                         }
                         ";

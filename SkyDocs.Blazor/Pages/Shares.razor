@@ -39,11 +39,21 @@
                     @foreach (var share in existingShares)
                     {
                         var sum = skyDocsService.DocumentList.Where(x => x.ShareOrigin == share.Id).FirstOrDefault();
-                        <tr>
-                            <td>@share.Sender shared <b>@sum?.Title</b> with you</td>
-                            <td>&nbsp;&nbsp;</td>
-                            <td> <RadzenButton ButtonStyle="ButtonStyle.Primary" Click=@(args => Open(share.Id))>Open</RadzenButton></td>
-                        </tr>
+                        @if (sum != null)
+                        {
+                            <tr>
+                                @if (share.Sender == null && !string.IsNullOrEmpty(share.Receiver))
+                                {
+                                    <td>You shared <b>@sum?.Title</b> with @share.Receiver</td>
+                                }
+                                else
+                                {
+                                    <td>@share.Sender shared <b>@sum?.Title</b> with you</td>
+                                }
+                                <td>&nbsp;&nbsp;</td>
+                                <td> <RadzenButton ButtonStyle="ButtonStyle.Primary" Click=@(args => Open(share.Id))>Open</RadzenButton></td>
+                            </tr>
+                        }
                     }
                 </tbody>
             </table>
