@@ -1,7 +1,7 @@
 ﻿
 <div class="container">
     <div class="row">
-        <div class="col-md">
+        <div class="col-md" style="padding-right:0px;">
             <RadzenTemplateForm TItem="LoginModel" Data=@loginModel Submit=@Login>
                 <RadzenFieldset Text="SkyDocs login">
                     <div class="row" style="margin-bottom: 24px">
@@ -42,7 +42,7 @@
                 </RadzenFieldset>
             </RadzenTemplateForm>
         </div>
-        <div class="col-xs">
+        <div class="col-xs" style="padding-left:15px">
             <RadzenFieldset Text="Web3 login">
                 <img src="img/metamask-fox.svg" @onclick="MetaMaskLogin" style="cursor: pointer;margin:-30px" />
             </RadzenFieldset>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace SkyDocs.Blazor.Models
@@ -28,6 +29,8 @@ namespace SkyDocs.Blazor.Models
         /// Content of the file is encrypted with a key from this seed
         /// </summary>
         public string ContentSeed { get; set; }
+
+        public string? ShareOrigin { get; set; }
     }
 
     public class Document
@@ -38,6 +41,9 @@ namespace SkyDocs.Blazor.Models
         public string? PreviewImage { get; set; }
         public DateTimeOffset CreatedDate { get; set; }
         public DateTimeOffset ModifiedDate { get; set; }
+
+        [JsonIgnore]
+        public int Revision { get; set; }
 
         public Document()
         {

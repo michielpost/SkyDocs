@@ -18,16 +18,32 @@ namespace SkyDocs.Blazor
     {
         private readonly string salt = "skydocs-2";
         private readonly RegistryKey listDataKey = new RegistryKey("skydocs-list");
+        private readonly ShareService shareService;
         private static SiaSkynetClient client = new SiaSkynetClient();
         private byte[]? privateKey;
         private byte[]? publicKey;
 
         public bool IsLoggedIn { get; set; }
+        public bool IsMetaMaskLogin { get; set; }
+
         public bool IsLoading { get; set; }
-        public List<DocumentSummary> DocumentList { get; set; } = new List<DocumentSummary>();
+        public DocumentList DocumentList { get; set; } = new DocumentList();
         public Document? CurrentDocument { get; set; }
         public DocumentSummary? CurrentSum => DocumentList.Where(x => x.Id == CurrentDocument?.Id).FirstOrDefault();
         public static string? Error { get; set; }
+        public List<TheGraphShare> Shares { get; set; } = new List<TheGraphShare>();
+
+        public List<TheGraphShare> NewShares()
+        {
+            var existing = DocumentList.Select(x => x.ShareOrigin);
+            return Shares.Where(x => x.Receiver == null).Where(x => !existing.Contains(x.Id)).OrderByDescending(x => x.BlockNumber).ToList();
+        }
+
+        public List<TheGraphShare> ExistingShares()
+        {
+            var existing = DocumentList.Select(x => x.ShareOrigin);
+            return Shares.Where(x => existing.Contains(x.Id) || x.Sender == null).OrderByDescending(x => x.BlockNumber).ToList();
+        }
 
         public void SetPortalDomain(string scheme, string domain)
         {
@@ -49,7 +65,7 @@ namespace SkyDocs.Blazor
         /// </summary>
         /// <param name="username"></param>
         /// <param name="password"></param>
-        public void Login(string username, string password)
+        public void Login(string username, string password, bool isMetaMaskLogin = false)
         {
             string seedPhrase = $"{username}-{password}-{salt}";
             var key = SiaSkynetClient.GenerateKeys(seedPhrase);
@@ -57,6 +73,7 @@ namespace SkyDocs.Blazor
             publicKey = key.publicKey;
 
             IsLoggedIn = true;
+            IsMetaMaskLogin = isMetaMaskLogin;
         }
 
         /// <summary>
@@ -72,6 +89,8 @@ namespace SkyDocs.Blazor
             DocumentList.RemoveAll(x => loadedDocuments.Select(l => l.Id).Contains(x.Id));
 
             DocumentList.AddRange(loadedDocuments);
+            DocumentList.Revision = loadedDocuments.Revision;
+
             IsLoading = false;
         }
 
@@ -92,6 +111,13 @@ namespace SkyDocs.Blazor
                 Title = "Shared document",
             };
             DocumentList.Add(sum);
+        }
+
+        internal (int total, int newShares) SetShares(List<TheGraphShare> shares)
+        {
+            Shares = shares;
+
+            return (Shares.Count, this.NewShares().Count);
         }
 
         /// <summary>
@@ -245,14 +271,14 @@ namespace SkyDocs.Blazor
         /// Get list with all documents
         /// </summary>
         /// <returns></returns>
-        private async Task<List<DocumentSummary>> GetDocumentList()
+        private async Task<DocumentList> GetDocumentList()
         {
             try
             {
                 Error = null;
                 var encryptedJson = await client.SkyDbGet(publicKey, listDataKey, TimeSpan.FromSeconds(5));
                 if (!encryptedJson.HasValue)
-                    return new List<DocumentSummary>();
+                    return new DocumentList();
                 else
                 {
                     //Decrypt data
@@ -260,14 +286,16 @@ namespace SkyDocs.Blazor
                     var json = Encoding.UTF8.GetString(jsonBytes);
 
                     var loadedList = JsonSerializer.Deserialize<List<DocumentSummary>>(json) ?? new List<DocumentSummary>();
-                    return loadedList.Where(x => x != null).ToList();
+                    var list = new DocumentList(loadedList.Where(x => x != null).ToList());
+                    list.Revision = encryptedJson.Value.registryEntry?.Revision ?? 0;
+                    return list;
                 }
             }
             catch
             {
                 Error = "Unable to get list of documents from Skynet. Please try again.";
             }
-            return new List<DocumentSummary>();
+            return new DocumentList();
         }
 
         /// <summary>
@@ -275,7 +303,7 @@ namespace SkyDocs.Blazor
         /// </summary>
         /// <param name="list"></param>
         /// <returns></returns>
-        private async Task<bool> SaveDocumentList(List<DocumentSummary> list)
+        public async Task<bool> SaveDocumentList(DocumentList list)
         {
             var json = JsonSerializer.Serialize(list);
             bool success = false;
@@ -283,7 +311,9 @@ namespace SkyDocs.Blazor
             {
                 var data = Encoding.UTF8.GetBytes(json);
                 var encryptedData = Utils.Encrypt(data, privateKey);
-                success = await client.SkyDbSet(privateKey, publicKey, listDataKey, encryptedData);
+                list.Revision++;
+
+                success = await client.SkyDbSet(privateKey, publicKey, listDataKey, encryptedData, list.Revision);
             }
             catch
             {
@@ -305,7 +335,9 @@ namespace SkyDocs.Blazor
                 Console.WriteLine("Loading document");
                 var encryptedData = await client.SkyDbGet(sum.PublicKey, new RegistryKey(sum.Id.ToString()), TimeSpan.FromSeconds(10));
                 if (!encryptedData.HasValue)
+                {
                     return new Document();
+                }
                 else
                 {
                     //Decrypt data
@@ -318,6 +350,8 @@ namespace SkyDocs.Blazor
                     sum.PreviewImage = document.PreviewImage;
                     sum.CreatedDate = document.CreatedDate;
                     sum.ModifiedDate = document.ModifiedDate;
+
+                    document.Revision = encryptedData.Value.registryEntry?.Revision ?? 0;
 
                     return document;
                 }
@@ -350,7 +384,7 @@ namespace SkyDocs.Blazor
                 var data = Encoding.UTF8.GetBytes(json);
                 var encryptedData = Utils.Encrypt(data, key.privateKey);
 
-                success = await client.SkyDbSet(sum.PrivateKey, sum.PublicKey, new RegistryKey(doc.Id.ToString()), encryptedData);
+                success = await client.SkyDbSet(sum.PrivateKey, sum.PublicKey, new RegistryKey(doc.Id.ToString()), encryptedData, doc.Revision +1);
             }
             catch(Exception ex)
             {

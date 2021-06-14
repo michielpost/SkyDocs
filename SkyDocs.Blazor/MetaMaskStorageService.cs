@@ -19,9 +19,14 @@ namespace SkyDocs.Blazor
             this.localStorageService = localStorageService;
         }
 
+        public ValueTask<string> GetEncryptedMetamaskHash()
+        {
+            return localStorageService.GetItemAsStringAsync(MetaMaskLocalStorageKey);
+        }
+
         public async Task<MetaMaskLogin?> GetStoredhash(string address)
         {
-            string encryptedStoredLogin = await localStorageService.GetItemAsStringAsync(MetaMaskLocalStorageKey);
+            string encryptedStoredLogin = await GetEncryptedMetamaskHash();
             if (!string.IsNullOrEmpty(encryptedStoredLogin))
             {
                 try
