@@ -22,29 +22,32 @@ namespace SkyDocs.Blazor
         public static async Task Main(string[] args)
         {
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
-
-            builder.Services.AddScoped<DialogService>();
-            builder.Services.AddScoped<NotificationService>();
-            builder.Services.AddScoped<TooltipService>();
-            builder.Services.AddScoped<ContextMenuService>();
-
-            builder.Services.AddHeadElementHelper();
-
-            builder.Services.AddMetaMaskBlazor();
-            builder.Services.AddBlazoredLocalStorage();
-
             builder.RootComponents.Add<App>("#app");
 
-            builder.Services.AddSingleton<SkyDocsService>();
-            builder.Services.AddScoped<MetaMaskStorageService>();
-            builder.Services.AddScoped<ShareService>();
-            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+            ConfigureServices(builder.Services, builder.HostEnvironment.BaseAddress);
 
-            var host = builder.Build();
+            await builder.Build().RunAsync();
+        }
+
+        private static void ConfigureServices(IServiceCollection services, string baseAddress)
+        {
+            services.AddScoped<DialogService>();
+            services.AddScoped<NotificationService>();
+            services.AddScoped<TooltipService>();
+            services.AddScoped<ContextMenuService>();
+
+            services.AddHeadElementHelper();
+
+            services.AddMetaMaskBlazor();
+            services.AddBlazoredLocalStorage();
+
+            services.AddSingleton<SkyDocsService>();
+            services.AddScoped<MetaMaskStorageService>();
+            services.AddScoped<ShareService>();
+            services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(baseAddress) });
 
             Version = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
-            
-            await host.RunAsync();
+
         }
 
         public static string? GetVersionHash()
