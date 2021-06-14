@@ -29,6 +29,8 @@ namespace SkyDocs.Blazor.Models
         /// Content of the file is encrypted with a key from this seed
         /// </summary>
         public string ContentSeed { get; set; }
+
+        public string? ShareOrigin { get; set; }
     }
 
     public class Document

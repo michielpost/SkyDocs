@@ -1,0 +1,66 @@
+﻿@page "/shares"
+
+@if (skyDocsService.Shares.Any())
+{
+
+    var newShares = skyDocsService.NewShares();
+    @if (newShares.Any())
+    {
+        <h2>Unopened shared documents</h2>
+        <div>
+            <table class="table table-bordered">
+                <tbody>
+
+                    @foreach (var share in newShares)
+                    {
+                        <tr>
+                            <td>@share.Sender wants to share a document with you</td>
+                            <td>&nbsp;&nbsp;</td>
+                            <td> <RadzenButton ButtonStyle="ButtonStyle.Primary" Click=@(args => Open(share.Id))>Open</RadzenButton></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <br />
+        <br />
+        <br />
+
+    }
+
+    var existingShares = skyDocsService.ExistingShares();
+    @if (existingShares.Any())
+    {
+        <h2>Opened shared documents</h2>
+        <div>
+            <table class="table table-bordered">
+                <tbody>
+
+                    @foreach (var share in existingShares)
+                    {
+                        var sum = skyDocsService.DocumentList.Where(x => x.ShareOrigin == share.Id).FirstOrDefault();
+                        <tr>
+                            @if (share.Sender == null && !string.IsNullOrEmpty(share.Receiver))
+                            {
+                                <td>You shared a document with @share.Receiver</td>
+                            }
+                            else
+                            {
+                                <td>@share.Sender shared <b>@sum?.Title</b> with you</td>
+                            }
+                            <td>&nbsp;&nbsp;</td>
+                            <td> 
+                                @if (sum != null)
+                                {
+                                    <RadzenButton ButtonStyle="ButtonStyle.Primary" Click=@(args => Open(share.Id))>Open</RadzenButton>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+    }
+
+}

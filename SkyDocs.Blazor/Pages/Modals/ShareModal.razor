@@ -1,0 +1,84 @@
+﻿<div class="container">
+    <div class="row">
+        <div class="col-md">
+            Share this document
+
+            <div class="form-group">
+                <RadzenRadioButtonList @bind-Value=@ShareReadOnly TValue="bool" Change=@((args) => OnRadioButtonChange(args))>
+                    <Items>
+                        <RadzenRadioButtonListItem Text="Viewer" Value="true" />
+                        <RadzenRadioButtonListItem Text="Editor" Value="false" />
+                    </Items>
+                </RadzenRadioButtonList>
+            </div>
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md">
+            <RadzenFieldset Text="Share by URL" style="margin-bottom: 12px">
+                <div class="row" style="margin-bottom: 12px">
+                    <div class="col">
+                        <p>@ShareText</p>
+                        <RadzenTextBox Value="@ShareService.CurrentShareUrl" readonly class="form-control" Style="width:70%;display:inline" />
+                        <RadzenButton ButtonStyle="ButtonStyle.Primary" Click="CopyTextToClipboard">@CopyText</RadzenButton>
+                    </div>
+                </div>
+            </RadzenFieldset>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md">
+            <RadzenTemplateForm TItem="ShareFormModel" Data=@ShareFormModel Submit=@OnMetaMaskShare>
+                <RadzenFieldset Text="Share with Ethereum address">
+                    @if (!SkyDocsService.IsMetaMaskLogin)
+                    {
+                    <div class="alert alert-warning" role="alert">
+                        Login with MetaMask to share this document with other MetaMask users.
+                    </div>
+                    }
+                    else
+                    {
+                        <div class="row" style="margin-bottom: 18px">
+                            <div class="col">
+                                <RadzenLabel Text="Ethereum address" />
+                                <RadzenTextBox @bind-Value="@ShareFormModel.EthAddress" Name="EthAddress" class="form-control" />
+                                <RadzenRequiredValidator Component="EthAddress" Text="Ethereum address is required" Style="position: absolute" />
+                                <RadzenRegexValidator Component="EthAddress" Text="Invalid Ethereum address" Pattern="^0x([A-Fa-f0-9]{40})$" Style="position: absolute" />
+                            </div>
+                        </div>
+                        @if (!string.IsNullOrEmpty(Progress))
+                            {
+                        <div class="alert alert-info" role="alert">
+                            @Progress
+                        </div>
+                        }
+                        else
+                        {
+                            <RadzenButton ButtonStyle="ButtonStyle.Info" ButtonType="ButtonType.Submit" Text="Share"></RadzenButton>
+                        }
+                    }
+                </RadzenFieldset>
+            </RadzenTemplateForm>
+
+            @if (!string.IsNullOrEmpty(TxInfo))
+            {
+            <br />
+            <div class="alert alert-success" role="alert">
+                @TxInfo
+            </div>
+            }
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            @if (!string.IsNullOrEmpty(Error))
+            {
+            <br />
+            <div class="alert alert-warning" role="alert">
+                @Error
+            </div>
+            }
+        </div>
+    </div>
+</div>

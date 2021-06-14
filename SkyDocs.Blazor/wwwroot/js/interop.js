@@ -9,3 +9,13 @@ window.Snap = async (src, format) => {
     let dataUrl = canvas.toDataURL(format);
     return dataUrl.split(',')[1];
 }
+
+window.clipboardCopy = {
+    copyText: function (text) {
+        navigator.clipboard.writeText(text).then(function () {
+        })
+            .catch(function (error) {
+                alert(error);
+            });
+    }
+};

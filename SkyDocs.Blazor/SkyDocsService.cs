@@ -18,16 +18,32 @@ namespace SkyDocs.Blazor
     {
         private readonly string salt = "skydocs-2";
         private readonly RegistryKey listDataKey = new RegistryKey("skydocs-list");
+        private readonly ShareService shareService;
         private static SiaSkynetClient client = new SiaSkynetClient();
         private byte[]? privateKey;
         private byte[]? publicKey;
 
         public bool IsLoggedIn { get; set; }
+        public bool IsMetaMaskLogin { get; set; }
+
         public bool IsLoading { get; set; }
         public DocumentList DocumentList { get; set; } = new DocumentList();
         public Document? CurrentDocument { get; set; }
         public DocumentSummary? CurrentSum => DocumentList.Where(x => x.Id == CurrentDocument?.Id).FirstOrDefault();
         public static string? Error { get; set; }
+        public List<TheGraphShare> Shares { get; set; } = new List<TheGraphShare>();
+
+        public List<TheGraphShare> NewShares()
+        {
+            var existing = DocumentList.Select(x => x.ShareOrigin);
+            return Shares.Where(x => x.Receiver == null).Where(x => !existing.Contains(x.Id)).OrderByDescending(x => x.BlockNumber).ToList();
+        }
+
+        public List<TheGraphShare> ExistingShares()
+        {
+            var existing = DocumentList.Select(x => x.ShareOrigin);
+            return Shares.Where(x => existing.Contains(x.Id) || x.Sender == null).OrderByDescending(x => x.BlockNumber).ToList();
+        }
 
         public void SetPortalDomain(string scheme, string domain)
         {
@@ -49,7 +65,7 @@ namespace SkyDocs.Blazor
         /// </summary>
         /// <param name="username"></param>
         /// <param name="password"></param>
-        public void Login(string username, string password)
+        public void Login(string username, string password, bool isMetaMaskLogin = false)
         {
             string seedPhrase = $"{username}-{password}-{salt}";
             var key = SiaSkynetClient.GenerateKeys(seedPhrase);
@@ -57,6 +73,7 @@ namespace SkyDocs.Blazor
             publicKey = key.publicKey;
 
             IsLoggedIn = true;
+            IsMetaMaskLogin = isMetaMaskLogin;
         }
 
         /// <summary>
@@ -96,6 +113,13 @@ namespace SkyDocs.Blazor
             DocumentList.Add(sum);
         }
 
+        internal (int total, int newShares) SetShares(List<TheGraphShare> shares)
+        {
+            Shares = shares;
+
+            return (Shares.Count, this.NewShares().Count);
+        }
+
         /// <summary>
         /// Load document based on id
         /// </summary>
@@ -117,8 +141,6 @@ namespace SkyDocs.Blazor
         /// <returns></returns>
         public async Task SaveCurrentDocument(string fallbackTitle, byte[] img)
         {
-            int? revision = null;
-
             Error = null;
             if (CurrentDocument != null)
             {
@@ -128,7 +150,6 @@ namespace SkyDocs.Blazor
                     DocumentList.Remove(sum);
                     sum = null;
                     CurrentDocument.Id = Guid.NewGuid();
-                    revision = 0;
                 }
 
                 if (sum == null)
@@ -282,7 +303,7 @@ namespace SkyDocs.Blazor
         /// </summary>
         /// <param name="list"></param>
         /// <returns></returns>
-        private async Task<bool> SaveDocumentList(DocumentList list)
+        public async Task<bool> SaveDocumentList(DocumentList list)
         {
             var json = JsonSerializer.Serialize(list);
             bool success = false;
