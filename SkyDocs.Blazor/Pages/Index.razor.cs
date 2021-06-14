@@ -71,13 +71,21 @@ namespace SkyDocs.Blazor.Pages
 #endif
 
             await CheckUriAndOpenDocument();
+        }
 
-            //No document open, ask user to login
-            if(skyDocsService.CurrentDocument == null)
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            await base.OnAfterRenderAsync(firstRender);
+
+            if (firstRender)
             {
-                if (!skyDocsService.IsLoggedIn)
+                //No document open, ask user to login
+                if (skyDocsService.CurrentDocument == null)
                 {
-                    await Login();
+                    if (!skyDocsService.IsLoggedIn)
+                    {
+                        await Login();
+                    }
                 }
             }
         }
