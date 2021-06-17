@@ -43,6 +43,12 @@ View all your documents
 Edit a document
 ![Edit a document](screenshots/v2_03_edit_document.png)
 
+Share a document
+![Edit a document](screenshots/v2_04_share.png)
+
+View documents shared with you
+![Edit a document](screenshots/v2_05_share_list.png)
+
 ## SkyDB Debut Hackathon
 SkyDocs was created for *[The SkyDB Debut](https://gitcoin.co/hackathon/skydb/)* hackathon. 
 Finished as Runner Up in the SkyDB Debut Hackathon: https://blog.sia.tech/skydb-debut-hackathon-winners-d7929970cdea  
