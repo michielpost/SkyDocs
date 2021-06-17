@@ -12,6 +12,7 @@ Features:
 - Edit documents
 - Delete documents
 - Data is encrypted (except preview images)
+- Share documents with other Ethereum users using The Graph
 
 SkyDocs is build with Blazor and runs on WebAssembly. The [SiaSkynet C# SDK](https://github.com/michielpost/SiaSkynet) is used to communicate with Skynet and SkyDB.
 
@@ -22,6 +23,10 @@ Try the app hosted on Sia Skynet: https://skydocs.hns.siasky.net
 - Install Visual Studio Code https://code.visualstudio.com/
 - Install .Net 5 SDK https://dotnet.microsoft.com/download/dotnet/5.0
 - Compile and run the project
+
+## Share documents
+It's possible to share documents by url, or using a smartcontract interaction when logged in with MetaMask.
+This setup is explained [here](ShareArchitecture).
 
 ## Open Source Project Credits
 - [SiaSkynet C# SDK](https://github.com/michielpost/SiaSkynet)
