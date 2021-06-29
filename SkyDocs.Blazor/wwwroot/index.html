@@ -11,6 +11,7 @@
     <link href="css/app.css" rel="stylesheet" />
     <link href="SkyDocs.Blazor.styles.css" rel="stylesheet" />
     <link href="favicon.ico" rel="icon" type="image/x-icon" />
+    <link href="manifest.json" rel="manifest" />
     <script>
         // set base href dynamically based on hosting location
         var base = document.createElement('base');
@@ -66,6 +67,7 @@
             }
         });
     </script>
+    <script>navigator.serviceWorker.register('service-worker.js');</script>
 </body>
 
 </html>

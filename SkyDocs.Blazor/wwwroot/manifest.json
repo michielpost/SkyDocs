@@ -1,0 +1,14 @@
+{
+  "name": "SkyDocs",
+  "short_name": "SkyDocs",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "icons": [
+    {
+      "src": "document-icon.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ]
+}
