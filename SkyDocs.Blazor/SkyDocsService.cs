@@ -18,7 +18,6 @@ namespace SkyDocs.Blazor
     {
         private readonly string salt = "skydocs-2";
         private readonly RegistryKey listDataKey = new RegistryKey("skydocs-list");
-        private readonly ShareService shareService;
         private static SiaSkynetClient client = new SiaSkynetClient();
         private byte[]? privateKey;
         private byte[]? publicKey;
@@ -47,6 +46,10 @@ namespace SkyDocs.Blazor
 
         public void SetPortalDomain(string scheme, string domain)
         {
+            //Do not use Internet Computer as domain for Sia Skynet calls
+            if (domain.Contains("ic0.app", StringComparison.InvariantCultureIgnoreCase))
+                return;
+
             string[] urlParts = domain.Split('.');
 
             //Only take last two parts
