@@ -33,9 +33,10 @@ jobs:
         run: dotnet publish SkyDocs.Blazor -o publish/SkyDocs.Blazor -c Release --version-suffix ${{ env.APP_VERSION }}
       - name: Deploy canisters
         id: deploy
-        uses: fleekhq/ic-deploy-action@v1
+        uses: fleekhq/ic-deploy-action@v2
         with:
           identity: ${{ secrets.DFX_IDENTITY }}
           wallets: ${{ secrets.DFX_WALLETS }}
+          dfx_params: --no-wallet
       - name: Show success message
         run: echo success!
