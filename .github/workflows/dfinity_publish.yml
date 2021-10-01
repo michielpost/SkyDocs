@@ -1,4 +1,4 @@
-name: publish to skynet
+name: publish to DFinity Internet Computer
 on:
   pull_request:
   push:
