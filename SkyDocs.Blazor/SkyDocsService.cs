@@ -24,6 +24,7 @@ namespace SkyDocs.Blazor
 
         public bool IsLoggedIn { get; set; }
         public bool IsMetaMaskLogin { get; set; }
+        public bool IsDfinityLogin { get; set; }
 
         public bool IsLoading { get; set; }
         public DocumentList DocumentList { get; set; } = new DocumentList();
@@ -77,6 +78,15 @@ namespace SkyDocs.Blazor
 
             IsLoggedIn = true;
             IsMetaMaskLogin = isMetaMaskLogin;
+        }
+
+        public void LoginDfinity()
+        {
+            privateKey = null;
+            publicKey = null;
+
+            IsLoggedIn = true;
+            IsDfinityLogin = true;
         }
 
         /// <summary>

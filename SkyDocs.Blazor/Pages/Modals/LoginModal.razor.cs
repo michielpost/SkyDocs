@@ -118,6 +118,11 @@ namespace SkyDocs.Blazor.Pages.Modals
             {
                 await Task.Delay(TimeSpan.FromMilliseconds(500));
             }
+
+            if (await DfinityService.IsLoggedIn())
+            {
+                DialogService.Close();
+            }
         }
     }
 
