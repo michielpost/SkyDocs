@@ -2,7 +2,12 @@
   "version": 1,
   "dfx": "0.8.1",
   "canisters": {
+    "storage": {
+      "main": "Dfinity.storage/main.mo",
+      "type": "motoko"
+    },
     "skydocs_assets": {
+      "dependencies": ["storage"],
       "type": "assets",
       "source": [
         "publish/SkyDocs.Blazor/wwwroot"

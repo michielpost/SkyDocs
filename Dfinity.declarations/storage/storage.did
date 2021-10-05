@@ -1,0 +1,9 @@
+type Name = text;
+type DataList = 
+ service {
+   insert: (Name, Data) -> ();
+   lookup: (Name) -> (opt Data);
+   whoami: () -> (text);
+ };
+type Data = text;
+service : () -> DataList

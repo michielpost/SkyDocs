@@ -30,4 +30,8 @@
     <PackageReference Include="Toolbelt.Blazor.HeadElement" Version="5.4.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Dfinity.Blazor\Dfinity.Blazor.csproj" />
+  </ItemGroup>
+
 </Project>

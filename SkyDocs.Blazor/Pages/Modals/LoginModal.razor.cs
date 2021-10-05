@@ -1,4 +1,5 @@
 ﻿using Blazored.LocalStorage;
+using Dfinity.Blazor;
 using MetaMask.Blazor;
 using MetaMask.Blazor.Exceptions;
 using Microsoft.AspNetCore.Components;
@@ -30,6 +31,9 @@ namespace SkyDocs.Blazor.Pages.Modals
 
         [Inject]
         public MetaMaskService MetaMaskService { get; set; } = default!;
+
+        [Inject]
+        public DfinityService DfinityService { get; set; } = default!;
 
         [Inject]
         public MetaMaskStorageService MetaMaskStorageService { get; set; } = default!;
@@ -84,7 +88,7 @@ namespace SkyDocs.Blazor.Pages.Modals
                 {
                     Error = "MetaMask not allowed to connect to SkyDocs. Please try again.";
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     Error = "Failed to sign message. Please try again.";
                     Console.WriteLine(ex);
@@ -104,6 +108,16 @@ namespace SkyDocs.Blazor.Pages.Modals
             //Store hash in cookie
             await MetaMaskStorageService.SaveStoredHash(storedLogin);
             return storedLogin;
+        }
+
+        private async Task DfinityLogin()
+        {
+            await DfinityService.Login();
+
+            while(!await DfinityService.IsLoggedIn())
+            {
+                await Task.Delay(TimeSpan.FromMilliseconds(500));
+            }
         }
     }
 

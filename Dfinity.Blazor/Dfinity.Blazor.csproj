@@ -1,0 +1,36 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <WarningsAsErrors>nullable</WarningsAsErrors>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <IncludeSymbols>True</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <Authors>Michiel Post</Authors>
+    <Version>0.1.0</Version>
+    <Product>Dfinity.Blazor</Product>
+    <PackageProjectUrl>https://github.com/michielpost/Dfinity.Blazor</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/michielpost/Dfinity.Blazor</RepositoryUrl>
+    <RepositoryType>github</RepositoryType>
+    <PackageTags>dfinity internet computer icp blockchain web3 blazor</PackageTags>
+    <Description>Dfinity Blazor Extension</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="wwwroot\**" />
+    <Content Remove="wwwroot\**" />
+    <EmbeddedResource Remove="wwwroot\**" />
+    <None Remove="wwwroot\**" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <SupportedPlatform Include="browser" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="5.0.9" />
+  </ItemGroup>
+
+</Project>
