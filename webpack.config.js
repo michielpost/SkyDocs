@@ -115,7 +115,7 @@ module.exports = {
       },
     },
     hot: true,
-    contentBase: path.resolve(__dirname, "./src/Dfiniti.storage_test"),
+    contentBase: path.resolve(__dirname, "./Dfinity.storage_test"),
     watchContentBase: true,
   },
 };
