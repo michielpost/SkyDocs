@@ -29,8 +29,8 @@ jobs:
           include-prerelease: true
       - name: Setup npm
         uses: actions/setup-node@v2
-          with:
-            node-version: '16.9.1'
+        with:
+          node-version: '16.9.1'
         run: npm install
       - name: Build with dotnet
         run: dotnet build --configuration Release
