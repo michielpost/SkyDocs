@@ -40,7 +40,7 @@ namespace SkyDocs.Blazor
             services.AddHeadElementHelper();
 
             services.AddMetaMaskBlazor();
-            services.AddDfinityBlazor();
+            services.AddSingleton<DfinityService>();
 
             services.AddBlazoredLocalStorage();
 

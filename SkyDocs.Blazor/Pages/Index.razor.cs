@@ -160,7 +160,7 @@ namespace SkyDocs.Blazor.Pages
             if (skyDocsService.CurrentDocument == null || string.IsNullOrEmpty(skyDocsService.CurrentDocument.Content))
             {
                 GoToList();
-                DialogService.Open<ErrorModal>("Error loading document from Skynet. Please try again.");
+                DialogService.Open<ErrorModal>($"Error loading document from {skyDocsService.CurrentNetwork}. Please try again.");
             }
         }
 
@@ -204,7 +204,7 @@ namespace SkyDocs.Blazor.Pages
 
             if (skyDocsService.CurrentDocument != null)
             {
-                DialogService.Open<LoadingModal>("Saving to Skynet...", options: new DialogOptions() { ShowClose = false });
+                DialogService.Open<LoadingModal>($"Saving to {skyDocsService.CurrentNetwork}...", options: new DialogOptions() { ShowClose = false });
 
                 var htmlContent = skyDocsService.CurrentDocument.Content;
                 var textContent = StripHtml(htmlContent) ?? string.Empty;
@@ -245,7 +245,7 @@ namespace SkyDocs.Blazor.Pages
 
             if (skyDocsService.CurrentDocument != null)
             {
-                DialogService.Open<LoadingModal>("Deleting from Skynet...", options: new DialogOptions() { ShowClose = false });
+                DialogService.Open<LoadingModal>($"Deleting from {skyDocsService.CurrentNetwork}...", options: new DialogOptions() { ShowClose = false });
                 await skyDocsService.DeleteCurrentDocument();
                 DialogService.Close();
 

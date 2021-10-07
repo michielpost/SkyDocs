@@ -112,15 +112,23 @@ namespace SkyDocs.Blazor.Pages.Modals
 
         private async Task DfinityLogin()
         {
-            await DfinityService.Login();
+            var isLoggedIn = await DfinityService.IsLoggedIn();
 
-            while(!await DfinityService.IsLoggedIn())
+            if (!isLoggedIn)
             {
-                await Task.Delay(TimeSpan.FromMilliseconds(500));
+                await DfinityService.Login();
+
+                while (!await DfinityService.IsLoggedIn())
+                {
+                    await Task.Delay(TimeSpan.FromMilliseconds(500));
+                }
+
+                isLoggedIn = true;
             }
 
-            if (await DfinityService.IsLoggedIn())
+            if (isLoggedIn)
             {
+                SkyDocsService.LoginDfinity();
                 DialogService.Close();
             }
         }

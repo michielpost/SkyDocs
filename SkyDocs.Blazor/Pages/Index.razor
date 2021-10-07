@@ -73,7 +73,10 @@ else if (skyDocsService.CurrentDocument != null)
         <div style="text-align:right">
             @if (skyDocsService.IsLoggedIn && skyDocsService.CurrentSum?.PrivateKey != null)
             {
-                <RadzenButton ButtonStyle="ButtonStyle.Info" Click="@OnShare">Share</RadzenButton>
+                if (!skyDocsService.IsDfinityLogin)
+                {
+                    <RadzenButton ButtonStyle="ButtonStyle.Info" Click="@OnShare">Share</RadzenButton>
+                }
                 <RadzenButton ButtonStyle="ButtonStyle.Danger" Click="@OnDelete">Delete</RadzenButton>
             }
             <RadzenButton ButtonStyle="ButtonStyle.Secondary" Click="@GoToList">Back</RadzenButton>
