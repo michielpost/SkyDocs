@@ -17,17 +17,17 @@
 
   <ItemGroup>
     <PackageReference Include="Blazored.LocalStorage" Version="4.1.5" />
-    <PackageReference Include="HtmlAgilityPack" Version="1.11.36" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.11.37" />
     <PackageReference Include="MetaMask.Blazor" Version="1.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.2.0" />
     <PackageReference Include="Nethereum.ABI" Version="3.8.0" />
-    <PackageReference Include="Radzen.Blazor" Version="3.9.5" />
+    <PackageReference Include="Radzen.Blazor" Version="3.11.4" />
     <PackageReference Include="SiaSkynet" Version="3.3.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="5.0.9" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="5.0.9" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="5.0.11" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="5.0.11" PrivateAssets="all" />
     <PackageReference Include="System.Net.Http.Json" Version="5.0.0" />
     <PackageReference Include="TheGraph" Version="0.7.0" />
-    <PackageReference Include="Toolbelt.Blazor.HeadElement" Version="5.4.3" />
+    <PackageReference Include="Toolbelt.Blazor.HeadElement" Version="6.0.0" />
   </ItemGroup>
 
 </Project>
