@@ -6,7 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="SiaSkynet" Version="3.3.0" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.1.5" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.2" />
   </ItemGroup>
 
 </Project>
