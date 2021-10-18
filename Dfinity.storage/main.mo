@@ -6,19 +6,19 @@ shared(msg) actor class DataList() {
 
   let owner = msg.caller;
 
-    type Name = Text;
-    type Data = Text;
+  type Name = Text;
+  type Data = Text;
 
-  let phonebook = Map.HashMap<Name, Data>(0, Text.equal, Text.hash);
+  let data = Map.HashMap<Name, Data>(0, Text.equal, Text.hash);
 
   public shared(msg) func insert(name : Name, entry : Data): async () {
     let userId = Principal.toText(msg.caller);
-     phonebook.put(userId#name, entry);
+     data.put(userId#name, entry);
   };
 
   public shared(msg) func lookup(name : Name) : async ?Data {
     let userId = Principal.toText(msg.caller);
-    phonebook.get(userId#name)
+    data.get(userId#name)
   };
 
   // Return the principal identifier of the caller of this method.
