@@ -27,6 +27,7 @@ namespace SkyDocs.Blazor
         public bool IsLoggedIn { get; set; }
         public bool IsMetaMaskLogin { get; set; }
         public bool IsDfinityLogin { get; set; }
+        public bool IsDfinityNetwork { get; set; }
 
         public bool IsLoading { get; set; }
         public DocumentList DocumentList { get; set; } = new DocumentList();
@@ -34,7 +35,7 @@ namespace SkyDocs.Blazor
         public DocumentSummary? CurrentSum => DocumentList.Where(x => x.Id == CurrentDocument?.Id).FirstOrDefault();
         public static string? Error { get; set; }
         public List<TheGraphShare> Shares { get; set; } = new List<TheGraphShare>();
-        public string CurrentNetwork => IsDfinityLogin ? "Internet Computer" : "Skynet";
+        public string CurrentNetwork => IsDfinityNetwork ? "Internet Computer" : "Skynet";
 
         public SkyDocsService(DfinityService dfinityService)
         {
@@ -57,6 +58,7 @@ namespace SkyDocs.Blazor
         {
             //Do not use Internet Computer as domain for Sia Skynet calls
             if (domain.Contains("ic0.app", StringComparison.InvariantCultureIgnoreCase))
+                IsDfinityNetwork = true;
                 return;
 
             string[] urlParts = domain.Split('.');
@@ -95,6 +97,7 @@ namespace SkyDocs.Blazor
 
             IsLoggedIn = true;
             IsDfinityLogin = true;
+            IsDfinityNetwork = true;
         }
 
         /// <summary>
@@ -298,7 +301,7 @@ namespace SkyDocs.Blazor
             {
                 Error = null;
 
-                if (IsDfinityLogin)
+                if (IsDfinityNetwork)
                 {
                     string? json = await dfinityService.GetValueForUser(listDataKey.Key);
                     if (string.IsNullOrEmpty(json))
@@ -345,7 +348,7 @@ namespace SkyDocs.Blazor
             bool success = false;
             try
             {
-                if (IsDfinityLogin)
+                if (IsDfinityNetwork)
                 {
                     await dfinityService.SetValueForUser(listDataKey.Key, json);
                     success = true;
@@ -378,9 +381,9 @@ namespace SkyDocs.Blazor
             {
                 Error = null;
                 Console.WriteLine("Loading document");
-                if (IsDfinityLogin)
+                if (IsDfinityNetwork)
                 {
-                    string? json = await dfinityService.GetValueForUser(sum.Id.ToString());
+                    string? json = await dfinityService.GetValue(sum.Id.ToString());
                     if (string.IsNullOrEmpty(json))
                         return new Document();
 
@@ -441,9 +444,9 @@ namespace SkyDocs.Blazor
             bool success = false;
             try
             {
-                if (IsDfinityLogin)
+                if (IsDfinityNetwork)
                 {
-                    await dfinityService.SetValueForUser(doc.Id.ToString(), json);
+                    await dfinityService.SetValue(doc.Id.ToString(), json);
                     success = true;
                 }
                 else

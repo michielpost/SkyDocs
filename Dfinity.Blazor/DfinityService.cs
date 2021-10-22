@@ -73,5 +73,10 @@ namespace Dfinity.Blazor
             return jsRuntime.InvokeVoidAsync("EntryPoint.logout");
         }
 
+        public ValueTask<string?> WhoAmI()
+        {
+            return jsRuntime.InvokeAsync<string?>("EntryPoint.whoami");
+        }
+
     }
 }

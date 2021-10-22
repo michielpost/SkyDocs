@@ -79,4 +79,5 @@ export async function logout() {
 export async function whoami() {
   var r = await storage.whoami();      
   console.log(r);
+  return r;
 }

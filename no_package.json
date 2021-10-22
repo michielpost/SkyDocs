@@ -9,8 +9,7 @@
     "Canister"
   ],
   "scripts": {
-    "build": "",
-    "dfinitybuild": "webpack",
+    "build": "webpack",
     "prebuild": "npm run copy:types",
     "start": "webpack serve --mode development --env development",
     "prestart": "npm run copy:types",
