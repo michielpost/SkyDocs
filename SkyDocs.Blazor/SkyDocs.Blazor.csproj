@@ -21,7 +21,7 @@
     <PackageReference Include="MetaMask.Blazor" Version="1.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.2.0" />
     <PackageReference Include="Nethereum.ABI" Version="3.8.0" />
-    <PackageReference Include="Radzen.Blazor" Version="3.11.4" />
+    <PackageReference Include="Radzen.Blazor" Version="3.11.9" />
     <PackageReference Include="SiaSkynet" Version="3.3.0" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="5.0.11" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="5.0.11" PrivateAssets="all" />
