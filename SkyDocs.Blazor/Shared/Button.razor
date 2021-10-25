@@ -1,0 +1,14 @@
+@using Microsoft.AspNetCore.Components.Web
+
+<button type="button" class="@ClassName" onclick="@OnClick">@ChildContent</button>
+
+@code {
+    [Parameter]
+    public string ClassName { get; set; } = string.Empty;
+
+    [Parameter]
+    public EventCallback<MouseEventArgs> OnClick { get; set; }
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+}

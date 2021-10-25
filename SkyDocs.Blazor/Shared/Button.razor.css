@@ -1,0 +1,16 @@
+button {
+    border: 0;
+    cursor: pointer;
+    box-shadow: 0 4px 0 -2px rgb(10 10 10 / 25%);
+
+    height: 3rem;
+    padding: 0 calc(1rem - 1px);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: calc(3rem - 2px);
+    border-radius: 2px;
+}
+
+.primary {
+    background: #00c65e;
+}

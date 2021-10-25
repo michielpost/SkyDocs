@@ -1,71 +1,98 @@
 ﻿<!DOCTYPE html>
 <html>
+    <head>
+        <meta charset="utf-8" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+        />
+        <title>SkyDocs</title>
 
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>SkyDocs</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Sora:wght@400;700&display=swap"
+            rel="stylesheet"
+        />
 
-    <link rel="stylesheet" href="_content/Radzen.Blazor/css/default.css">
+        <link rel="stylesheet" href="_content/Radzen.Blazor/css/default.css" />
 
-    <link href="css/app.css" rel="stylesheet" />
-    <link href="SkyDocs.Blazor.styles.css" rel="stylesheet" />
-    <link href="favicon.ico" rel="icon" type="image/x-icon" />
-    <script>
-        // set base href dynamically based on hosting location
-        var base = document.createElement('base');
-        var newBase = `${window.location.pathname}`;
+        <link href="css/app.css" rel="stylesheet" />
+        <link href="SkyDocs.Blazor.styles.css" rel="stylesheet" />
+        <link href="favicon.ico" rel="icon" type="image/x-icon" />
+        <script>
+            // set base href dynamically based on hosting location
+            var base = document.createElement("base");
+            var newBase = `${window.location.pathname}`;
 
-        var secondSlash = newBase.indexOf("/", 1);
-        newBase = newBase.substr(0, secondSlash);
+            var secondSlash = newBase.indexOf("/", 1);
+            newBase = newBase.substr(0, secondSlash);
 
-        // Ensure initial slash present
-        newBase = (newBase.startsWith("/") ? "" : "/") + newBase;
-        // Ensure trailing slash present
-        newBase += (newBase.endsWith("/") ? "" : "/");
-        base.href = newBase;
-        console.log(`Base href set to ${newBase}`);
-        document.getElementsByTagName('head')[0].appendChild(base);
-    </script>
-</head>
+            // Ensure initial slash present
+            newBase = (newBase.startsWith("/") ? "" : "/") + newBase;
+            // Ensure trailing slash present
+            newBase += newBase.endsWith("/") ? "" : "/";
+            base.href = newBase;
+            console.log(`Base href set to ${newBase}`);
+            document.getElementsByTagName("head")[0].appendChild(base);
+        </script>
+    </head>
 
-<body>
-    <div id="app" class="loading">
-        Loading SkyDocs...
-        <link rel="stylesheet" href="data:text/css,.loading%7Bfont-family%3A'Franklin%20Gothic%20Medium'%2C'Arial%20Narrow'%2CArial%2Csans-serif%3Bcolor%3A%2388a%3Bfont-size%3A18px%3Btext-align%3Acenter%3Bwidth%3A150px%3Bheight%3A150px%3Bposition%3Afixed%3Btop%3A0%3Bbottom%3A0%3Bleft%3A0%3Bright%3A0%3Bmargin%3Aauto%7D.loading%3A%3Aafter%7Bcontent%3A''%3Bborder%3Asolid%2010px%3Bborder-color%3A%2388a%20%23eee%20%23eee%3Bborder-radius%3A60px%3Bposition%3Aabsolute%3Bwidth%3A60px%3Bheight%3A60px%3Btop%3A0%3Bbottom%3A0%3Bleft%3A0%3Bright%3A0%3Bmargin%3Aauto%3Banimation%3Arotation%201.5s%20linear%200s%20infinite%7D%40keyframes%20rotation%7B0%25%7Btransform%3Arotate(45deg)%7D100%25%7Btransform%3Arotate(405deg)%7D%7D" />
-    </div>
+    <body>
+        <div id="app" class="loading">
+            Loading SkyDocs...
+            <link
+                rel="stylesheet"
+                href="data:text/css,.loading%7Bfont-family%3A'Franklin%20Gothic%20Medium'%2C'Arial%20Narrow'%2CArial%2Csans-serif%3Bcolor%3A%2388a%3Bfont-size%3A18px%3Btext-align%3Acenter%3Bwidth%3A150px%3Bheight%3A150px%3Bposition%3Afixed%3Btop%3A0%3Bbottom%3A0%3Bleft%3A0%3Bright%3A0%3Bmargin%3Aauto%7D.loading%3A%3Aafter%7Bcontent%3A''%3Bborder%3Asolid%2010px%3Bborder-color%3A%2388a%20%23eee%20%23eee%3Bborder-radius%3A60px%3Bposition%3Aabsolute%3Bwidth%3A60px%3Bheight%3A60px%3Btop%3A0%3Bbottom%3A0%3Bleft%3A0%3Bright%3A0%3Bmargin%3Aauto%3Banimation%3Arotation%201.5s%20linear%200s%20infinite%7D%40keyframes%20rotation%7B0%25%7Btransform%3Arotate(45deg)%7D100%25%7Btransform%3Arotate(405deg)%7D%7D"
+            />
+        </div>
 
-    <div id="blazor-error-ui">
-        An unhandled error has occurred.
-        <a href="" class="reload">Reload</a>
-        <a class="dismiss">🗙</a>
-    </div>
-    <script src="js/html2canvas.min.js"></script>
-    <script src="js/interop.js"></script>
-    <script src="_content/Radzen.Blazor/Radzen.Blazor.js"></script>
-    <script src="decode.min.js"></script>
-    <script src="_framework/blazor.webassembly.js" autostart="false"></script>
-    <script>
-        Blazor.start({
-            loadBootResource: function (type, name, defaultUri, integrity) {
-                if (type !== 'dotnetjs' && location.hostname !== 'localhost') {
-                    return (async function () {
-                        const response = await fetch(defaultUri + '.br', { cache: 'no-cache' });
-                        if (!response.ok) {
-                            throw new Error(response.statusText);
-                        }
-                        const originalResponseBuffer = await response.arrayBuffer();
-                        const originalResponseArray = new Int8Array(originalResponseBuffer);
-                        const decompressedResponseArray = BrotliDecode(originalResponseArray);
-                        const contentType = type ===
-                            'dotnetwasm' ? 'application/wasm' : 'application/octet-stream';
-                        return new Response(decompressedResponseArray,
-                            { headers: { 'content-type': contentType } });
-                    })();
-                }
-            }
-        });
-    </script>
-</body>
-
+        <div id="blazor-error-ui">
+            An unhandled error has occurred.
+            <a href="" class="reload">Reload</a>
+            <a class="dismiss">🗙</a>
+        </div>
+        <script src="js/html2canvas.min.js"></script>
+        <script src="js/interop.js"></script>
+        <script src="_content/Radzen.Blazor/Radzen.Blazor.js"></script>
+        <script src="decode.min.js"></script>
+        <script
+            src="_framework/blazor.webassembly.js"
+            autostart="false"
+        ></script>
+        <script>
+            Blazor.start({
+                loadBootResource: function (type, name, defaultUri, integrity) {
+                    if (
+                        type !== "dotnetjs" &&
+                        location.hostname !== "localhost"
+                    ) {
+                        return (async function () {
+                            const response = await fetch(defaultUri + ".br", {
+                                cache: "no-cache",
+                            });
+                            if (!response.ok) {
+                                throw new Error(response.statusText);
+                            }
+                            const originalResponseBuffer =
+                                await response.arrayBuffer();
+                            const originalResponseArray = new Int8Array(
+                                originalResponseBuffer
+                            );
+                            const decompressedResponseArray = BrotliDecode(
+                                originalResponseArray
+                            );
+                            const contentType =
+                                type === "dotnetwasm"
+                                    ? "application/wasm"
+                                    : "application/octet-stream";
+                            return new Response(decompressedResponseArray, {
+                                headers: { "content-type": contentType },
+                            });
+                        })();
+                    }
+                },
+            });
+        </script>
+    </body>
 </html>

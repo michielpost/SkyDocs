@@ -1,11 +1,12 @@
 ﻿@page "/"
+@using SkyDocs.Blazor.Shared
 
 @if ((skyDocsService.IsLoggedIn || skyDocsService.DocumentList.Any()) && skyDocsService.CurrentDocument == null && !skyDocsService.IsLoading)
 {
     <div class="row">
         <RadzenCard class="docCard">
             <h2>New Document</h2>
-            <RadzenButton Click="@NewDocument">Blank</RadzenButton>
+            <Button ClassName="primary" OnClick="@NewDocument">+ Blank</Button>
         </RadzenCard>
 
         @foreach (var document in skyDocsService.DocumentList.OrderByDescending(x => x.ModifiedDate))
