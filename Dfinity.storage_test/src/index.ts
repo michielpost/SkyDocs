@@ -18,6 +18,7 @@ async function handleAuthenticated(authClient: AuthClient) {
   const identity = await authClient.getIdentity();
   storage_actor = createActor(canisterId as string, {
     agentOptions: {
+      host: 'https://ic0.app',
       identity,
     },
   });
@@ -59,7 +60,6 @@ export async function setValueForUser(key, value) {
 
 export async function getValueForUser(key) {
   let v = await storage_actor.lookup(key);
-  console.log(v);
   return v;
 }
 
