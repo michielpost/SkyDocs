@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <PackageReference Include="Blazored.LocalStorage" Version="4.1.5" />
+    <PackageReference Include="Dfinity.Blazor" Version="0.1.0" />
     <PackageReference Include="HtmlAgilityPack" Version="1.11.37" />
     <PackageReference Include="MetaMask.Blazor" Version="1.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.2.0" />
@@ -28,10 +29,6 @@
     <PackageReference Include="System.Net.Http.Json" Version="5.0.0" />
     <PackageReference Include="TheGraph" Version="0.7.0" />
     <PackageReference Include="Toolbelt.Blazor.HeadElement" Version="6.0.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Dfinity.Blazor\Dfinity.Blazor.csproj" />
   </ItemGroup>
 
 </Project>

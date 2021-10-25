@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SkyDocs.Blazor", "SkyDocs.B
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShareServer", "ShareServer\ShareServer.csproj", "{C7E78BF4-24F0-4DE2-88FF-663E24E470D2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dfinity.Blazor", "Dfinity.Blazor\Dfinity.Blazor.csproj", "{799F78CD-7636-4F06-9783-F8831D361CD9}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,10 +21,6 @@ Global
 		{C7E78BF4-24F0-4DE2-88FF-663E24E470D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C7E78BF4-24F0-4DE2-88FF-663E24E470D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C7E78BF4-24F0-4DE2-88FF-663E24E470D2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{799F78CD-7636-4F06-9783-F8831D361CD9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{799F78CD-7636-4F06-9783-F8831D361CD9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{799F78CD-7636-4F06-9783-F8831D361CD9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{799F78CD-7636-4F06-9783-F8831D361CD9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
