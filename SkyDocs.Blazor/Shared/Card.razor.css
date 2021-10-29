@@ -1,12 +1,4 @@
 section {
-    width: 300px;
-    margin-bottom: 20px;
-    margin-left: 20px;
-    height: 240px;
-    border-radius: 2px;
-    box-shadow: 0 6px 14px 0 rgb(0 0 0 / 6%);
-    background-color: #ffffff;
-    cursor: pointer;
     display: flex;
     flex-direction: column;
 }
@@ -22,7 +14,7 @@ header {
 }
 
 h2 {
-    font-size: 18px;
+    font-size: 16px;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;

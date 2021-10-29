@@ -3,7 +3,7 @@
 
 @if ((skyDocsService.IsLoggedIn || skyDocsService.DocumentList.Any()) && skyDocsService.CurrentDocument == null && !skyDocsService.IsLoading)
 {
-    <div class="row">
+    <div class="cards">
         <section class="card card-new">
             <h2>New Document</h2>
             <Button ClassName="primary" OnClick="@NewDocument">+ Blank</Button>

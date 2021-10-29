@@ -18,7 +18,6 @@
 
 .top-row {
     background-color: #fff;
-    border-bottom: 1px solid #d6d5d5;
     justify-content: flex-end;
     height: 3.5rem;
     display: flex;
@@ -42,10 +41,6 @@
 }
 
 @media (max-width: 640.98px) {
-    .top-row:not(.auth) {
-        display: none;
-    }
-
     .top-row.auth {
         justify-content: space-between;
     }
