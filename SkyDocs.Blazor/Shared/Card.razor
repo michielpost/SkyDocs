@@ -1,0 +1,24 @@
+@if (Document != null)
+{
+    <section class="card" onclick="@OnClick">
+        <header>
+            @if (Document.PreviewImage != null)
+            {
+                <RadzenImage Path="@string.Format("https://siasky.net/{0}",Document.PreviewImage)" Style="width:100%;height:auto" Alt="@Document.Title">
+                </RadzenImage>
+            }
+        </header>
+
+        <div class="title ds">
+            <h2>@Document.Title</h2>
+        </div>
+    </section>
+}
+
+@code {
+    [Parameter]
+    public DocumentSummary? Document { get; set; }
+
+    [Parameter]
+    public EventCallback<MouseEventArgs> OnClick { get; set; }
+}

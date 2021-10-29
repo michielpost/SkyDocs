@@ -11,6 +11,15 @@ button {
     border-radius: 2px;
 }
 
+button:hover {
+    transform: translateY(2px);
+    box-shadow: none;
+}
+
 .primary {
     background: #00c65e;
+}
+
+.primary:hover {
+    background: #01b856;
 }

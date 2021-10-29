@@ -4,26 +4,15 @@
 @if ((skyDocsService.IsLoggedIn || skyDocsService.DocumentList.Any()) && skyDocsService.CurrentDocument == null && !skyDocsService.IsLoading)
 {
     <div class="row">
-        <RadzenCard class="docCard">
+        <section class="card card-new">
             <h2>New Document</h2>
             <Button ClassName="primary" OnClick="@NewDocument">+ Blank</Button>
-        </RadzenCard>
+        </section>
 
         @foreach (var document in skyDocsService.DocumentList.OrderByDescending(x => x.ModifiedDate))
         {
-            <RadzenCard class="docCard" @onclick="@(x => NavigateToDocument(document.Id))">
-                @if (document.PreviewImage != null)
-                {
-                    <RadzenImage Path="@string.Format("https://siasky.net/{0}", document.PreviewImage)" Style="width:100%;height:auto" Alt="@document.Title">
-                    </RadzenImage>
-                }
-
-                <h3>@document.Title</h3>
-                <RadzenButton>Edit</RadzenButton>
-
-            </RadzenCard>
+            <Card Document="@document" OnClick="@(x => NavigateToDocument(document.Id))" />
         }
-
     </div>
 
 }
