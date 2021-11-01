@@ -92,7 +92,7 @@ namespace SkyDocs.Blazor.Pages
         {
             await DialogService.OpenAsync<LoginModal>("Log in to SkyDocs", options: new DialogOptions() { ShowClose = false, Width = "450px" });
 
-            DialogService.Open<LoadingModal>("Loading...", options: new DialogOptions() { ShowClose = false });
+            DialogService.Open<LoadingModal>("Loading...", options: new DialogOptions() { ShowClose = false, ShowTitle = false, Width = "200px" });
             await skyDocsService.LoadDocumentList();
             DialogService.Close();
             StateHasChanged();
@@ -153,7 +153,7 @@ namespace SkyDocs.Blazor.Pages
 
         private async Task OpenDocument(Guid id)
         {
-            DialogService.Open<LoadingModal>("Loading...", options: new DialogOptions() { ShowClose = false });
+            DialogService.Open<LoadingModal>("Loading...", options: new DialogOptions() { ShowClose = false, ShowTitle = false, Width = "200px" });
             await skyDocsService.LoadDocument(id);
             DialogService.Close();
 
@@ -204,7 +204,7 @@ namespace SkyDocs.Blazor.Pages
 
             if (skyDocsService.CurrentDocument != null)
             {
-                DialogService.Open<LoadingModal>("Saving to Skynet...", options: new DialogOptions() { ShowClose = false });
+                DialogService.Open<LoadingModal>("Saving to Skynet...", options: new DialogOptions() { ShowClose = false, ShowTitle = false, Width = "200px" });
 
                 var htmlContent = skyDocsService.CurrentDocument.Content;
                 var textContent = StripHtml(htmlContent) ?? string.Empty;
@@ -245,7 +245,7 @@ namespace SkyDocs.Blazor.Pages
 
             if (skyDocsService.CurrentDocument != null)
             {
-                DialogService.Open<LoadingModal>("Deleting from Skynet...", options: new DialogOptions() { ShowClose = false });
+                DialogService.Open<LoadingModal>("Deleting from Skynet...", options: new DialogOptions() { ShowClose = false, ShowTitle = false, Width = "200px" });
                 await skyDocsService.DeleteCurrentDocument();
                 DialogService.Close();
 

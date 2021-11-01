@@ -51,7 +51,7 @@ namespace SkyDocs.Blazor.Pages
             var address = await metaMaskService.GetSelectedAddress();
             var hash = await metaMaskStorageService.GetEncryptedMetamaskHash();
 
-            DialogService.Open<LoadingModal>("Loading...", options: new DialogOptions() { ShowClose = false });
+            DialogService.Open<LoadingModal>("Loading...", options: new DialogOptions() { ShowClose = false, ShowTitle = false, Width = "200px" });
 
             ShareModel? shareModel = await shareService.GetMessage(address, hash, share.Skylink);
 
