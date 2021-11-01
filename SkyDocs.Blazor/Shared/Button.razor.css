@@ -5,10 +5,11 @@ button {
 
     height: 3rem;
     padding: 0 calc(1rem - 1px);
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 400;
     line-height: calc(3rem - 2px);
     border-radius: 10px;
+    font-weight: 500;
 }
 
 button:hover {
@@ -22,4 +23,15 @@ button:hover {
 
 .primary:hover {
     background: #01b856;
+}
+
+.white-with-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+::deep img {
+    height: 70%;
+    margin-right: 10px;
 }

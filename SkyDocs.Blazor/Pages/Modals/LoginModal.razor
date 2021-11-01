@@ -1,63 +1,60 @@
 ﻿
 <div class="container">
     <div class="row">
-        <div class="col-md" style="padding-right:0px;">
+        <div class="col">
             <RadzenTemplateForm TItem="LoginModel" Data=@loginModel Submit=@Login>
-                <RadzenFieldset Text="SkyDocs login">
-                    <div class="row" style="margin-bottom: 24px">
-                        <div class="col-md-4 align-right">
-                            <RadzenLabel Text="Username" />
-                        </div>
+                <RadzenFieldset Text="With a SkyDocs account">
+                    <p class="help-info">
+                        You can enter any username / password combination. But please remember your username and password, there is no way to retrieve them.
+                    </p>
+
+                    <div class="row" style="margin-bottom: 10px">
                         <div class="col">
+                            <RadzenLabel Text="Username" />
                             <RadzenTextBox style="display: block" Name="Username" @bind-Value=@loginModel.Username />
                             <RadzenRequiredValidator Component="Username" Text="Username is required" Style="position: absolute" />
                         </div>
                     </div>
-                    <div class="row" style="margin-bottom: 24px">
-                        <div class="col-md-4">
-                            <RadzenLabel Text="Password" />
-                        </div>
+                    <div class="row" style="margin-bottom: 10px">
                         <div class="col">
+                            <RadzenLabel Text="Password" />
                             <RadzenPassword style="display: block" Name="Password" @bind-Value=@loginModel.Password />
                             <RadzenRequiredValidator Component="Password" Text="Password is required" Style="position: absolute" />
                         </div>
                     </div>
-                    <p>
-                        <small>
-                            You can enter any username / password combination. But please remember your username and password, there is no way to retrieve them.
-                        </small>
-                        <br />
-                        @{ 
-                            string? versionHash = Program.GetVersionHash();
-                        }
-                    <small>
-                        Version: @Program.GetVersionWithoutHash()
-                        @if (!string.IsNullOrEmpty(versionHash))
-                        {
-                            <text>-</text><a href="https://github.com/michielpost/SkyDocs/tree/@versionHash" target="_blank" style="color:#000000">@versionHash</a>
-                        }
-                    </small>
-                    </p>
-                    <RadzenButton ButtonType="ButtonType.Submit" Text="Login"></RadzenButton>
+                    <Button ButtonType="Submit" ClassName="primary">Login</Button>
                 </RadzenFieldset>
             </RadzenTemplateForm>
         </div>
-        <div class="col-xs" style="padding-left:15px">
-            <RadzenFieldset Text="Web3 login">
-                <img src="img/metamask-fox.svg" @onclick="MetaMaskLogin" style="cursor: pointer;margin:-30px" />
+    </div>
+    <div class="row">
+        <div class="col">
+            <RadzenFieldset Text="Or use Web3">
+                <div class="">
+                    @* <img src="img/metamask-fox.svg" @onclick="MetaMaskLogin" style="cursor: pointer;margin:-30px" /> *@
+                    <Button OnClick="MetaMaskLogin" ClassName="white-with-icon">
+                        <img src="img/metamask-fox.svg" alt="MetaMask" />
+                        Login with MetaMask
+                    </Button>
+
+                    @if (ShowMetaMaskMessage)
+                    {
+                        <div class="alert alert-warning" role="alert">
+                            Please install MetaMask from <a href="https://metamask.io" target="_blank">https://metamask.io</a>
+                        </div>
+                    }
+
+                    <Button OnClick="MetaMaskLogin" ClassName="white-with-icon">
+                        <img src="img/dfinity.svg" alt="Dfinity" style="height: 40%;" />
+                        Login with Dfinity
+                    </Button>
+                </div>
             </RadzenFieldset>
         </div>
     </div>
     <div class="row">
         <div class="col">
-            @if (ShowMetaMaskMessage)
-            {
-                <br />
-                <div class="alert alert-warning" role="alert">
-                    Please install MetaMask from <a href="https://metamask.io" target="_blank">https://metamask.io</a>
-                    <br />
-                </div>
-            }
+
 
             @if (!string.IsNullOrEmpty(Error))
             {
@@ -67,7 +64,24 @@
                 </div>
             }
         </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <p class="version">
+                @{ 
+                    string? versionHash = Program.GetVersionHash();
+                }
+                <small>
+                    Version: @Program.GetVersionWithoutHash()
+                    @if (!string.IsNullOrEmpty(versionHash))
+                    {
+                        <text>-</text><a href="https://github.com/michielpost/SkyDocs/tree/@versionHash" target="_blank" style="color:#000000">@versionHash</a>
+                    }
+                </small>
+            </p>
         </div>
+    </div>
 </div>
 
 

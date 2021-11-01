@@ -90,7 +90,7 @@ namespace SkyDocs.Blazor.Pages
 
         private async Task Login()
         {
-            await DialogService.OpenAsync<LoginModal>("Login", options: new DialogOptions() { ShowClose = false });
+            await DialogService.OpenAsync<LoginModal>("Log in to SkyDocs", options: new DialogOptions() { ShowClose = false, Width = "450px" });
 
             DialogService.Open<LoadingModal>("Loading...", options: new DialogOptions() { ShowClose = false });
             await skyDocsService.LoadDocumentList();

@@ -122,3 +122,30 @@ a {
         transform: rotate(360deg);
     }
 }
+
+.rz-dialog-titlebar {
+    background: transparent;
+    text-align: center;
+    padding-top: 2rem;
+}
+
+.rz-dialog-title {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.rz-fieldset {
+    border-bottom: none;
+    border-left: none;
+    border-right: none;
+}
+
+.rz-fieldset-legend {
+    text-align: center;
+    margin-left: 0;
+}
+
+.rz-fieldset-content {
+    padding-left: 0;
+    padding-right: 0;
+}
