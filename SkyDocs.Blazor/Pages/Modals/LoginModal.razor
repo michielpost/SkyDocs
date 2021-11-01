@@ -31,7 +31,6 @@
         <div class="col">
             <RadzenFieldset Text="Or use Web3">
                 <div class="">
-                    @* <img src="img/metamask-fox.svg" @onclick="MetaMaskLogin" style="cursor: pointer;margin:-30px" /> *@
                     <Button OnClick="MetaMaskLogin" ClassName="white-with-icon">
                         <img src="img/metamask-fox.svg" alt="MetaMask" />
                         Login with MetaMask
@@ -44,10 +43,11 @@
                         </div>
                     }
 
-                    <Button OnClick="MetaMaskLogin" ClassName="white-with-icon">
+                    @* Enable later *@
+                    @* <Button OnClick="MetaMaskLogin" ClassName="white-with-icon">
                         <img src="img/dfinity.svg" alt="Dfinity" style="height: 40%;" />
                         Login with Dfinity
-                    </Button>
+                    </Button> *@
                 </div>
             </RadzenFieldset>
         </div>
