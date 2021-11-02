@@ -5,6 +5,10 @@ body {
     background-color: #ebefee;
 }
 
+:root {
+    --color-primary: #00c65e;
+}
+
 a {
     color: #0d0d0d;
 }
@@ -148,4 +152,20 @@ a {
 .rz-fieldset-content {
     padding-left: 0;
     padding-right: 0;
+}
+
+.rz-html-editor-toolbar {
+    border-top: 1px solid #dadfe2;
+}
+
+.rz-html-editor-toolbar > * {
+    margin: 0;
+}
+
+.rz-html-editor-dropdown-value {
+    font-size: 14px;
+}
+
+.rz-html-editor-button.rz-selected {
+    background: var(--color-primary);
 }

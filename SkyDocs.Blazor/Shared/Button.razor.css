@@ -18,7 +18,7 @@ button:hover {
 }
 
 .primary {
-    background: #00c65e;
+    background: var(--color-primary);
 }
 
 .primary:hover {

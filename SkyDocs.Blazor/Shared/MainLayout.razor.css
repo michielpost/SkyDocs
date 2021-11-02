@@ -52,10 +52,6 @@
 }
 
 @media (min-width: 641px) {
-    .page {
-        flex-direction: row;
-    }
-
     .sidebar {
         width: 250px;
         height: 100vh;
