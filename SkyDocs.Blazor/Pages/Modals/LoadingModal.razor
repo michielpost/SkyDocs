@@ -1,5 +1,10 @@
-﻿<div class="loader">
+<div class="loader">
     <img src="img/loader.png" alt="Loading SkyDocs" />
 </div>
 
-<p>Loading files<br> from Skynet...</p>
+<p>@Msg</p>
+
+@code {
+    [Parameter] 
+    public string Msg { get; set; } = "Loading files from Skynet...";
+}

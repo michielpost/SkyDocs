@@ -1,4 +1,4 @@
-﻿<div class="container">
+<div class="container">
     <div class="row">
         <div class="col-md">
             Share this document
@@ -21,7 +21,7 @@
                     <div class="col">
                         <p>@ShareText</p>
                         <RadzenTextBox Value="@ShareService.CurrentShareUrl" readonly class="form-control" Style="width:70%;display:inline" />
-                        <RadzenButton ButtonStyle="ButtonStyle.Primary" Click="CopyTextToClipboard">@CopyText</RadzenButton>
+                        <Button ClassName="primary" OnClick="CopyTextToClipboard">@CopyText</Button>
                     </div>
                 </div>
             </RadzenFieldset>
