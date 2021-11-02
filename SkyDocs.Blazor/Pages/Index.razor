@@ -21,7 +21,7 @@ else if (skyDocsService.CurrentDocument != null)
     <Title>SkyDocs - @skyDocsService.CurrentDocument.Title</Title>
 
     <div>
-        <Button OnClick="@GoToList" ClassName="back"><RadzenIcon Icon="arrow_back" />Back to all files</Button>    
+        <Button OnClick="@GoToList" ClassName="link link-with-icon back"><RadzenIcon Icon="arrow_back" />Back</Button>    
 
         <div class="document">
             <RadzenTextBox Placeholder="Title" @bind-Value="@skyDocsService.CurrentDocument.Title" class="document-title" Style="width:100%" />
@@ -63,31 +63,32 @@ else if (skyDocsService.CurrentDocument != null)
             </RadzenHtmlEditor>
         </div>
 
-        <div style="text-align:right">
+        <div class="document-actions @(skyDocsService.IsLoggedIn ? "" : "not-logged-in")">
             @if (skyDocsService.IsLoggedIn && skyDocsService.CurrentSum?.PrivateKey != null)
             {
-                <RadzenButton ButtonStyle="ButtonStyle.Info" Click="@OnShare">Share</RadzenButton>
-                <RadzenButton ButtonStyle="ButtonStyle.Danger" Click="@OnDelete">Delete</RadzenButton>
+                <Button OnClick="@OnDelete" ClassName="link delete">Delete</Button>
+                <Button OnClick="@OnShare" ClassName="white-with-icon">Share</Button>
             }
 
             @if (skyDocsService.IsLoggedIn)
             {
                 if (skyDocsService.CurrentSum?.PrivateKey != null)
                 {
-                    <RadzenButton ButtonStyle="ButtonStyle.Success" Click="@OnSave">Save</RadzenButton>
+                    <Button OnClick="@OnSave" ClassName="primary">Save</Button>
                 }
                 else if (skyDocsService.CurrentSum == null)
                 {
-                    <RadzenButton ButtonStyle="ButtonStyle.Success" Click="@OnSave">Save</RadzenButton>
+                    <Button OnClick="@OnSave" ClassName="primary">Save</Button>
                 }
                 else
                 {
-                    <RadzenButton ButtonStyle="ButtonStyle.Success" Click="@OnSave">Save a copy</RadzenButton>
+                    <Button OnClick="@OnSave" ClassName="primary">Save as copy</Button>
                 }
             }
-            @if (!skyDocsService.IsLoggedIn)
+            else
             {
-                <RadzenButton ButtonStyle="ButtonStyle.Success" Click="@Login">Login</RadzenButton>
+                <span>You're not logged in.</span>
+                <Button OnClick="@Login" ClassName="primary">Login</Button>
             }
         </div>
 

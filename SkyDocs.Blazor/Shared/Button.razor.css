@@ -10,7 +10,6 @@ button {
     border-radius: 10px;
     box-shadow: 0 4px 0 -2px rgb(10 10 10 / 25%);
     height: 3rem;
-    line-height: calc(3rem - 2px);
     padding: 0 calc(1rem - 1px);
 }
 
@@ -39,14 +38,18 @@ button {
     margin-right: 10px;
 }
 
-.back {
+.link {
+    background: transparent;
     border-bottom: 1px solid;
     font-size: 14px;
     padding: 0;
+}
+
+.link-with-icon {
     margin-left: 28px;
 }
 
-.back:hover {
+.link:hover {
     border: none;
 }
 
