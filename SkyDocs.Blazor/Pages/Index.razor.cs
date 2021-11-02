@@ -92,7 +92,7 @@ namespace SkyDocs.Blazor.Pages
         {
             await DialogService.OpenAsync<LoginModal>("Log in to SkyDocs", options: new DialogOptions() { ShowClose = false, Width = "450px" });
 
-            DialogService.Open<LoadingModal>("Loading...", new Dictionary<string, object>() { { "Msg", "Loading..." } }, options: new DialogOptions() { ShowClose = false, ShowTitle = false, Width = "200px" });
+            DialogService.Open<LoadingModal>("Loading...", new Dictionary<string, object>() { { "Msg", "Loading files from Skynet..." } }, options: new DialogOptions() { ShowClose = false, ShowTitle = false, Width = "200px" });
             await skyDocsService.LoadDocumentList();
             DialogService.Close();
             StateHasChanged();
