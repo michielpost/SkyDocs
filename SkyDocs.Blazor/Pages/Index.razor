@@ -21,6 +21,8 @@ else if (skyDocsService.CurrentDocument != null)
     <Title>SkyDocs - @skyDocsService.CurrentDocument.Title</Title>
 
     <div>
+        <Button OnClick="@GoToList" ClassName="back"><RadzenIcon Icon="arrow_back" />Back to all files</Button>    
+
         <div class="document">
             <RadzenTextBox Placeholder="Title" @bind-Value="@skyDocsService.CurrentDocument.Title" class="document-title" Style="width:100%" />
 
@@ -67,7 +69,7 @@ else if (skyDocsService.CurrentDocument != null)
                 <RadzenButton ButtonStyle="ButtonStyle.Info" Click="@OnShare">Share</RadzenButton>
                 <RadzenButton ButtonStyle="ButtonStyle.Danger" Click="@OnDelete">Delete</RadzenButton>
             }
-            <RadzenButton ButtonStyle="ButtonStyle.Secondary" Click="@GoToList">Back</RadzenButton>
+
             @if (skyDocsService.IsLoggedIn)
             {
                 if (skyDocsService.CurrentSum?.PrivateKey != null)

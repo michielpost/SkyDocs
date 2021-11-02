@@ -4,6 +4,7 @@
 
     box-shadow: 0 6px 14px 0 rgb(0 0 0 / 6%);
     background: #fff;
+    min-height: 100vh;
     padding: var(--document-top-bottom-padding) var(--document-side-padding);
 }
 
@@ -40,4 +41,15 @@
 ::deep .rz-html-editor-content {
     padding: 0;
     padding-top: 2rem;
+}
+
+::deep .back {
+    margin-bottom: 20px;
+    position: relative;
+}
+
+@media (min-width: 1500px) {
+    ::deep .back {
+        position: fixed;
+    }
 }

@@ -1,18 +1,21 @@
 button {
     border: 0;
     cursor: pointer;
-    box-shadow: 0 4px 0 -2px rgb(10 10 10 / 25%);
-
-    height: 3rem;
-    padding: 0 calc(1rem - 1px);
     font-size: 16px;
-    font-weight: 400;
-    line-height: calc(3rem - 2px);
-    border-radius: 10px;
     font-weight: 500;
 }
 
-button:hover {
+.primary,
+.white-with-icon {
+    border-radius: 10px;
+    box-shadow: 0 4px 0 -2px rgb(10 10 10 / 25%);
+    height: 3rem;
+    line-height: calc(3rem - 2px);
+    padding: 0 calc(1rem - 1px);
+}
+
+.primary:hover,
+.white-with-icon:hover {
     transform: translateY(2px);
     box-shadow: none;
 }
@@ -34,4 +37,20 @@ button:hover {
 ::deep img {
     height: 70%;
     margin-right: 10px;
+}
+
+.back {
+    border-bottom: 1px solid;
+    font-size: 14px;
+    padding: 0;
+    margin-left: 28px;
+}
+
+.back:hover {
+    border: none;
+}
+
+::deep i {
+    position: absolute;
+    left: -28px;
 }
