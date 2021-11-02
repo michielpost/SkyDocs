@@ -2,6 +2,7 @@
     --document-top-bottom-padding: 1rem;
     --document-side-padding: 1rem;
 
+    box-shadow: 0 6px 14px 0 rgb(0 0 0 / 6%);
     background: #fff;
     padding: var(--document-top-bottom-padding) var(--document-side-padding);
 }
