@@ -4,6 +4,7 @@ section {
 }
 
 header {
+    padding: 0.75rem 1.5625rem 0;
     flex-shrink: 0;
     height: 165px;
     border-bottom: 1px solid rgba(211, 220, 228, 1);
