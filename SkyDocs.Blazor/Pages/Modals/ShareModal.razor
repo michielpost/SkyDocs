@@ -1,7 +1,7 @@
 <div class="container">
     <div class="row">
         <div class="col-md">
-            Share this document
+            Share this document as
 
             <div class="form-group">
                 <RadzenRadioButtonList @bind-Value=@ShareReadOnly TValue="bool" Change=@((args) => OnRadioButtonChange(args))>
@@ -16,12 +16,14 @@
     </div>
     <div class="row">
         <div class="col-md">
-            <RadzenFieldset Text="Share by URL" style="margin-bottom: 12px">
+            <RadzenFieldset Text="By URL" style="margin-bottom: 12px">
                 <div class="row" style="margin-bottom: 12px">
                     <div class="col">
                         <p>@ShareText</p>
-                        <RadzenTextBox Value="@ShareService.CurrentShareUrl" readonly class="form-control" Style="width:70%;display:inline" />
-                        <Button ClassName="primary" OnClick="CopyTextToClipboard">@CopyText</Button>
+                        <div class="copy-text-to-clipboard">
+                            <RadzenTextBox Value="@ShareService.CurrentShareUrl" readonly class="form-control" />
+                            <Button ClassName="primary copy-text-to-clipboard-btn" OnClick="CopyTextToClipboard">@CopyText</Button>
+                        </div>
                     </div>
                 </div>
             </RadzenFieldset>
@@ -30,12 +32,12 @@
     <div class="row">
         <div class="col-md">
             <RadzenTemplateForm TItem="ShareFormModel" Data=@ShareFormModel Submit=@OnMetaMaskShare>
-                <RadzenFieldset Text="Share with Ethereum address">
+                <RadzenFieldset Text="With an Ethereum address">
                     @if (!SkyDocsService.IsMetaMaskLogin)
                     {
-                    <div class="alert alert-warning" role="alert">
-                        Login with MetaMask to share this document with other MetaMask users.
-                    </div>
+                        <div class="alert alert-warning" role="alert">
+                            Login with MetaMask to share this document with other MetaMask users.
+                        </div>
                     }
                     else
                     {
@@ -55,7 +57,7 @@
                         }
                         else
                         {
-                            <RadzenButton ButtonStyle="ButtonStyle.Info" ButtonType="ButtonType.Submit" Text="Share"></RadzenButton>
+                            <Button ClassName="primary" ButtonType="submit">Share</Button>
                         }
                     }
                 </RadzenFieldset>

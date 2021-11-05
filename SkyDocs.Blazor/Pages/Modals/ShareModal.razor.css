@@ -1,0 +1,11 @@
+::deep input {
+    height: 3rem;
+}
+
+.copy-text-to-clipboard {
+    display: flex;
+}
+
+::deep .copy-text-to-clipboard-btn {
+    margin-left: 10px;
+}

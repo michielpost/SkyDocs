@@ -268,7 +268,7 @@ namespace SkyDocs.Blazor.Pages
             if (skyDocsService.CurrentDocument != null && skyDocsService.CurrentSum != null)
             {
                 ShareService.CurrentShareUrl = ShareService.GetShareUrl(skyDocsService.CurrentSum, true);
-                DialogService.Open<ShareModal>("Share document: " + skyDocsService.CurrentDocument.Title, options: new DialogOptions() { ShowClose = true });
+                DialogService.Open<ShareModal>("Share document", options: new DialogOptions() { ShowClose = true });
             }
         }
     }
