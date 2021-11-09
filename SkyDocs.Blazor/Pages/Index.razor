@@ -1,28 +1,18 @@
 ﻿@page "/"
+@using SkyDocs.Blazor.Shared
 
 @if ((skyDocsService.IsLoggedIn || skyDocsService.DocumentList.Any()) && skyDocsService.CurrentDocument == null && !skyDocsService.IsLoading)
 {
-    <div class="row">
-        <RadzenCard class="docCard">
+    <div class="cards">
+        <section class="card card-new">
             <h2>New Document</h2>
-            <RadzenButton Click="@NewDocument">Blank</RadzenButton>
-        </RadzenCard>
+            <Button ClassName="primary" OnClick="@NewDocument">+ Blank</Button>
+        </section>
 
         @foreach (var document in skyDocsService.DocumentList.OrderByDescending(x => x.ModifiedDate))
         {
-            <RadzenCard class="docCard" @onclick="@(x => NavigateToDocument(document.Id))">
-                @if (document.PreviewImage != null)
-                {
-                    <RadzenImage Path="@string.Format("https://siasky.net/{0}", document.PreviewImage)" Style="width:100%;height:auto" Alt="@document.Title">
-                    </RadzenImage>
-                }
-
-                <h3>@document.Title</h3>
-                <RadzenButton>Edit</RadzenButton>
-
-            </RadzenCard>
+            <Card Document="@document" OnClick="@(x => NavigateToDocument(document.Id))" />
         }
-
     </div>
 
 }
@@ -31,70 +21,74 @@ else if (skyDocsService.CurrentDocument != null)
     <Title>SkyDocs - @skyDocsService.CurrentDocument.Title</Title>
 
     <div>
-        <RadzenTextBox Placeholder="Title" @bind-Value="@skyDocsService.CurrentDocument.Title" Style="width:100%" />
+        <Button OnClick="@GoToList" ClassName="link link-with-icon back"><RadzenIcon Icon="arrow_back" />Back</Button>    
 
-        <RadzenHtmlEditor @bind-Value=@skyDocsService.CurrentDocument.Content
-                          id="rte"
-                          UploadUrl="https://skydocs-shareserver.azurewebsites.net/image/upload"
-                          Visible="skyDocsService.CurrentDocument.Content != null"
-                          style="margin-bottom: 1rem;height:75vh">
-            <RadzenHtmlEditorUndo />
-            <RadzenHtmlEditorRedo />
-            <RadzenHtmlEditorSeparator />
-            <RadzenHtmlEditorBold />
-            <RadzenHtmlEditorItalic />
-            <RadzenHtmlEditorUnderline />
-            <RadzenHtmlEditorStrikeThrough />
-            <RadzenHtmlEditorSeparator />
-            <RadzenHtmlEditorAlignLeft />
-            <RadzenHtmlEditorAlignCenter />
-            <RadzenHtmlEditorAlignRight />
-            <RadzenHtmlEditorJustify />
-            <RadzenHtmlEditorSeparator />
-            <RadzenHtmlEditorIndent />
-            <RadzenHtmlEditorOutdent />
-            <RadzenHtmlEditorUnorderedList />
-            <RadzenHtmlEditorOrderedList />
-            <RadzenHtmlEditorSeparator />
-            <RadzenHtmlEditorColor />
-            <RadzenHtmlEditorBackground />
-            <RadzenHtmlEditorRemoveFormat />
-            <RadzenHtmlEditorSeparator />
-            <RadzenHtmlEditorSubscript />
-            <RadzenHtmlEditorSuperscript />
-            <RadzenHtmlEditorSeparator />
-            <RadzenHtmlEditorLink />
-            <RadzenHtmlEditorUnlink />
-            <RadzenHtmlEditorFontName />
-            <RadzenHtmlEditorFontSize />
-            <RadzenHtmlEditorFormatBlock />
-        </RadzenHtmlEditor>
+        <div class="document">
+            <RadzenTextBox Placeholder="Title" @bind-Value="@skyDocsService.CurrentDocument.Title" class="document-title" Style="width:100%" />
 
-        <div style="text-align:right">
+            <RadzenHtmlEditor @bind-Value=@skyDocsService.CurrentDocument.Content
+                            id="rte"
+                            UploadUrl="https://skydocs-shareserver.azurewebsites.net/image/upload"
+                            Visible="skyDocsService.CurrentDocument.Content != null">
+                <RadzenHtmlEditorUndo />
+                <RadzenHtmlEditorRedo />
+                <RadzenHtmlEditorSeparator />
+                <RadzenHtmlEditorBold />
+                <RadzenHtmlEditorItalic />
+                <RadzenHtmlEditorUnderline />
+                <RadzenHtmlEditorStrikeThrough />
+                <RadzenHtmlEditorSeparator />
+                <RadzenHtmlEditorAlignLeft />
+                <RadzenHtmlEditorAlignCenter />
+                <RadzenHtmlEditorAlignRight />
+                <RadzenHtmlEditorJustify />
+                <RadzenHtmlEditorSeparator />
+                <RadzenHtmlEditorIndent />
+                <RadzenHtmlEditorOutdent />
+                <RadzenHtmlEditorUnorderedList />
+                <RadzenHtmlEditorOrderedList />
+                <RadzenHtmlEditorSeparator />
+                <RadzenHtmlEditorColor />
+                <RadzenHtmlEditorBackground />
+                <RadzenHtmlEditorRemoveFormat />
+                <RadzenHtmlEditorSeparator />
+                <RadzenHtmlEditorSubscript />
+                <RadzenHtmlEditorSuperscript />
+                <RadzenHtmlEditorSeparator />
+                <RadzenHtmlEditorLink />
+                <RadzenHtmlEditorUnlink />
+                <RadzenHtmlEditorFontName />
+                <RadzenHtmlEditorFontSize />
+                <RadzenHtmlEditorFormatBlock />
+            </RadzenHtmlEditor>
+        </div>
+
+        <div class="document-actions @(skyDocsService.IsLoggedIn ? "" : "not-logged-in")">
             @if (skyDocsService.IsLoggedIn && skyDocsService.CurrentSum?.PrivateKey != null)
             {
-                <RadzenButton ButtonStyle="ButtonStyle.Info" Click="@OnShare">Share</RadzenButton>
-                <RadzenButton ButtonStyle="ButtonStyle.Danger" Click="@OnDelete">Delete</RadzenButton>
+                <Button OnClick="@OnDelete" ClassName="link delete">Delete</Button>
+                <Button OnClick="@OnShare" ClassName="white-with-icon">Share</Button>
             }
-            <RadzenButton ButtonStyle="ButtonStyle.Secondary" Click="@GoToList">Back</RadzenButton>
+
             @if (skyDocsService.IsLoggedIn)
             {
                 if (skyDocsService.CurrentSum?.PrivateKey != null)
                 {
-                    <RadzenButton ButtonStyle="ButtonStyle.Success" Click="@OnSave">Save</RadzenButton>
+                    <Button OnClick="@OnSave" ClassName="primary">Save</Button>
                 }
                 else if (skyDocsService.CurrentSum == null)
                 {
-                    <RadzenButton ButtonStyle="ButtonStyle.Success" Click="@OnSave">Save</RadzenButton>
+                    <Button OnClick="@OnSave" ClassName="primary">Save</Button>
                 }
                 else
                 {
-                    <RadzenButton ButtonStyle="ButtonStyle.Success" Click="@OnSave">Save a copy</RadzenButton>
+                    <Button OnClick="@OnSave" ClassName="primary">Save as copy</Button>
                 }
             }
-            @if (!skyDocsService.IsLoggedIn)
+            else
             {
-                <RadzenButton ButtonStyle="ButtonStyle.Success" Click="@Login">Login</RadzenButton>
+                <span>You're not logged in.</span>
+                <Button OnClick="@Login" ClassName="primary">Login</Button>
             }
         </div>
 
