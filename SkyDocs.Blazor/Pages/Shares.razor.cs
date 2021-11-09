@@ -30,15 +30,15 @@ namespace SkyDocs.Blazor.Pages
         public NavigationManager NavigationManager { get; set; } = default!;
 
         [Inject]
-        public DialogService DialogService { get; set; }
+        public DialogService DialogService { get; set; } = default!;
 
         [CascadingParameter]
-        public MainLayout Layout { get; set; }
+        public MainLayout Layout { get; set; } = default!;
 
         public async Task Open(string? graphShareId)
         {
             var share = skyDocsService.Shares.Where(x => x.Id == graphShareId).FirstOrDefault();
-            if (share == null)
+            if (share == null || string.IsNullOrEmpty(share.Skylink))
                 return;
 
             var existing = skyDocsService.DocumentList.Where(x => x.ShareOrigin == graphShareId).FirstOrDefault();

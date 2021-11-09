@@ -3,7 +3,8 @@
 
 A Sia Skynet Google Docs alternative.
 
-**Live version**: https://skydocs.hns.siasky.net
+**Live version**: https://skydocs.hns.siasky.net   
+Internet Computer: https://c3qag-6yaaa-aaaah-aaqta-cai.ic0.app
 
 Features:
 - Login with your personal username and password

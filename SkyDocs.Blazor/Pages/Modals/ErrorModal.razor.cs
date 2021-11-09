@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components;
 using Radzen;
 using System;
 using System.Collections.Generic;
@@ -10,7 +10,7 @@ namespace SkyDocs.Blazor.Pages.Modals
     public partial class ErrorModal
     {
         [Inject]
-        public DialogService DialogService { get; set; }
+        public DialogService DialogService { get; set; } = default!;
 
         public void Close()
         {

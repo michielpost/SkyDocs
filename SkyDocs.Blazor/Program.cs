@@ -1,4 +1,5 @@
 using Blazored.LocalStorage;
+using Dfinity.Blazor;
 using MetaMask.Blazor;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -39,6 +40,8 @@ namespace SkyDocs.Blazor
             services.AddHeadElementHelper();
 
             services.AddMetaMaskBlazor();
+            services.AddSingleton<DfinityService>();
+
             services.AddBlazoredLocalStorage();
 
             services.AddSingleton<SkyDocsService>();

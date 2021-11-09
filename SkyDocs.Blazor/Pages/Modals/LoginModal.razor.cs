@@ -1,4 +1,5 @@
-﻿using Blazored.LocalStorage;
+using Blazored.LocalStorage;
+using Dfinity.Blazor;
 using MetaMask.Blazor;
 using MetaMask.Blazor.Exceptions;
 using Microsoft.AspNetCore.Components;
@@ -23,13 +24,16 @@ namespace SkyDocs.Blazor.Pages.Modals
         public bool ShowMetaMaskMessage { get; set; }
 
         [Inject]
-        public DialogService DialogService { get; set; }
+        public DialogService DialogService { get; set; } = default!;
 
         [Inject]
         public SkyDocsService SkyDocsService { get; set; } = default!;
 
         [Inject]
         public MetaMaskService MetaMaskService { get; set; } = default!;
+
+        [Inject]
+        public DfinityService DfinityService { get; set; } = default!;
 
         [Inject]
         public MetaMaskStorageService MetaMaskStorageService { get; set; } = default!;
@@ -84,7 +88,7 @@ namespace SkyDocs.Blazor.Pages.Modals
                 {
                     Error = "MetaMask not allowed to connect to SkyDocs. Please try again.";
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     Error = "Failed to sign message. Please try again.";
                     Console.WriteLine(ex);
@@ -105,11 +109,34 @@ namespace SkyDocs.Blazor.Pages.Modals
             await MetaMaskStorageService.SaveStoredHash(storedLogin);
             return storedLogin;
         }
+
+        private async Task DfinityLogin()
+        {
+            var isLoggedIn = await DfinityService.IsLoggedIn();
+
+            if (!isLoggedIn)
+            {
+                await DfinityService.Login();
+
+                while (!await DfinityService.IsLoggedIn())
+                {
+                    await Task.Delay(TimeSpan.FromMilliseconds(500));
+                }
+
+                isLoggedIn = true;
+            }
+
+            if (isLoggedIn)
+            {
+                SkyDocsService.LoginDfinity();
+                DialogService.Close();
+            }
+        }
     }
 
     public class LoginModel
     {
-        public string Username { get; set; }
-        public string Password { get; set; }
+        public string Username { get; set; } = default!;
+        public string Password { get; set; } = default!;
     }
 }
