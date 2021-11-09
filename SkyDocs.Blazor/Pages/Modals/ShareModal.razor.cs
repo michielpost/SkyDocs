@@ -1,4 +1,4 @@
-﻿using MetaMask.Blazor;
+using MetaMask.Blazor;
 using MetaMask.Blazor.Exceptions;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
@@ -161,6 +161,6 @@ namespace SkyDocs.Blazor.Pages.Modals
 
     public class ShareFormModel
     {
-        public string EthAddress { get; set; }
+        public string EthAddress { get; set; } = default!;
     }
 }

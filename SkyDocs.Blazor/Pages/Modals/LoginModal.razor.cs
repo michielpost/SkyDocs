@@ -1,4 +1,4 @@
-﻿using Blazored.LocalStorage;
+using Blazored.LocalStorage;
 using Dfinity.Blazor;
 using MetaMask.Blazor;
 using MetaMask.Blazor.Exceptions;
@@ -24,7 +24,7 @@ namespace SkyDocs.Blazor.Pages.Modals
         public bool ShowMetaMaskMessage { get; set; }
 
         [Inject]
-        public DialogService DialogService { get; set; }
+        public DialogService DialogService { get; set; } = default!;
 
         [Inject]
         public SkyDocsService SkyDocsService { get; set; } = default!;
@@ -136,7 +136,7 @@ namespace SkyDocs.Blazor.Pages.Modals
 
     public class LoginModel
     {
-        public string Username { get; set; }
-        public string Password { get; set; }
+        public string Username { get; set; } = default!;
+        public string Password { get; set; } = default!;
     }
 }

@@ -1,4 +1,4 @@
-﻿using Dfinity.Blazor;
+using Dfinity.Blazor;
 using SiaSkynet;
 using SkyDocs.Blazor.Models;
 using System;
@@ -58,8 +58,10 @@ namespace SkyDocs.Blazor
         {
             //Do not use Internet Computer as domain for Sia Skynet calls
             if (domain.Contains("ic0.app", StringComparison.InvariantCultureIgnoreCase))
+            {
                 IsDfinityNetwork = true;
                 return;
+            }
 
             string[] urlParts = domain.Split('.');
 
@@ -169,7 +171,7 @@ namespace SkyDocs.Blazor
             if (CurrentDocument != null)
             {
                 var sum = CurrentSum;
-                if (sum?.PrivateKey == null)
+                if (sum != null && sum.PrivateKey == null)
                 {
                     DocumentList.Remove(sum);
                     sum = null;
@@ -312,12 +314,12 @@ namespace SkyDocs.Blazor
                     return list;
 
                 }
-                else
+                else if(publicKey != null)
                 {
                     var encryptedJson = await client.SkyDbGet(publicKey, listDataKey, TimeSpan.FromSeconds(5));
                     if (!encryptedJson.HasValue)
                         return new DocumentList();
-                    else
+                    else if(privateKey != null)
                     {
                         //Decrypt data
                         var jsonBytes = Utils.Decrypt(encryptedJson.Value.file, privateKey);
@@ -354,7 +356,7 @@ namespace SkyDocs.Blazor
                     success = true;
 
                 }
-                else
+                else if(publicKey != null && privateKey != null)
                 {
                     var data = Encoding.UTF8.GetBytes(json);
                     var encryptedData = Utils.Encrypt(data, privateKey);

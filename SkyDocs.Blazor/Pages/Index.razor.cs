@@ -25,28 +25,28 @@ namespace SkyDocs.Blazor.Pages
         public string? SelectedAddress { get; set; }
 
         [Inject]
-        public IJSRuntime JsRuntime { get; set; }
+        public IJSRuntime JsRuntime { get; set; } = default!;
 
         [Inject]
         public NavigationManager NavigationManager { get; set; } = default!;
 
         [Inject]
-        public SkyDocsService skyDocsService { get; set; }
+        public SkyDocsService skyDocsService { get; set; } = default!;
 
         [Inject]
-        public HttpClient httpClient { get; set; }
+        public HttpClient httpClient { get; set; } = default!;
 
         [Inject]
-        public DialogService DialogService { get; set; }
+        public DialogService DialogService { get; set; } = default!;
 
         [Inject]
-        public ShareService ShareService { get; set; }
+        public ShareService ShareService { get; set; } = default!;
 
         [Inject]
         public MetaMaskService MetaMaskService { get; set; } = default!;
 
         [CascadingParameter]
-        public MainLayout Layout { get; set; }
+        public MainLayout Layout { get; set; } = default!;
 
         private void NavigationManager_LocationChanged(object? sender, Microsoft.AspNetCore.Components.Routing.LocationChangedEventArgs e)
         {
