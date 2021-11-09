@@ -9,6 +9,10 @@
     <CascadingValue Value="this">
         <div class="main">
             <div class="top-row px-4">
+                <a href="/" class="logo">
+                    <img src="img/logo.png" alt="SkyDocs logo" />
+                </a>
+
                 @if (TotalShares > 0)
                 {
                     @if (NewShares > 0)
@@ -21,10 +25,10 @@
                     }
                 }
 
-                <a href="/about">SkyDocs</a>
+                <a href="/about">About</a>
             </div>
 
-            <div class="content px-4" style="height:100vh;padding-top:-3.5rem">
+            <div class="content px-4">
                 @Body
             </div>
         </div>

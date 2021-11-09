@@ -1,9 +1,11 @@
-﻿@*<div>
-    <div class="row">
-        <div class="col-md-12">
-            Loading...
-        </div>
-    </div>
-</div>*@
 <div class="loader">
+    <img src="img/loader.png" alt="Loading SkyDocs" />
+    <p>@Msg</p>
 </div>
+
+
+
+@code {
+    [Parameter] 
+    public string Msg { get; set; } = "Loading files from Skynet...";
+}
