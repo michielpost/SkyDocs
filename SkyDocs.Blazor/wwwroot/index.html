@@ -6,6 +6,23 @@
           content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>SkyDocs</title>
 
+    <script>
+        // set base href dynamically based on hosting location
+        var base = document.createElement("base");
+        var newBase = `${window.location.pathname}`;
+
+        var secondSlash = newBase.indexOf("/", 1);
+        newBase = newBase.substr(0, secondSlash);
+
+        // Ensure initial slash present
+        newBase = (newBase.startsWith("/") ? "" : "/") + newBase;
+        // Ensure trailing slash present
+        newBase += newBase.endsWith("/") ? "" : "/";
+        base.href = newBase;
+        console.log(`Base href set to ${newBase}`);
+        document.getElementsByTagName("head")[0].appendChild(base);
+    </script>
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600&display=swap"
@@ -33,22 +50,6 @@
     <meta name="msapplication-TileColor" content="#da532c" />
     <meta name="theme-color" content="#ffffff" />
 
-    <script>
-        // set base href dynamically based on hosting location
-        var base = document.createElement("base");
-        var newBase = `${window.location.pathname}`;
-
-        var secondSlash = newBase.indexOf("/", 1);
-        newBase = newBase.substr(0, secondSlash);
-
-        // Ensure initial slash present
-        newBase = (newBase.startsWith("/") ? "" : "/") + newBase;
-        // Ensure trailing slash present
-        newBase += newBase.endsWith("/") ? "" : "/";
-        base.href = newBase;
-        console.log(`Base href set to ${newBase}`);
-        document.getElementsByTagName("head")[0].appendChild(base);
-    </script>
 </head>
 
 <body>
