@@ -59,7 +59,6 @@ namespace SkyDocs.Blazor
             //Do not use Internet Computer as domain for Sia Skynet calls
             if (domain.Contains("ic0.app", StringComparison.InvariantCultureIgnoreCase))
             {
-                IsDfinityNetwork = true;
                 return;
             }
 
