@@ -18,11 +18,11 @@
   <ItemGroup>
     <PackageReference Include="Blazored.LocalStorage" Version="4.1.5" />
     <PackageReference Include="Dfinity.Blazor" Version="0.2.1" />
-    <PackageReference Include="HtmlAgilityPack" Version="1.11.37" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.11.38" />
     <PackageReference Include="MetaMask.Blazor" Version="1.2.1" />
     <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.2.0" />
     <PackageReference Include="Nethereum.ABI" Version="4.1.1" />
-    <PackageReference Include="Radzen.Blazor" Version="3.11.12" />
+    <PackageReference Include="Radzen.Blazor" Version="3.12.0" />
     <PackageReference Include="SiaSkynet" Version="3.4.0" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.0" PrivateAssets="all" />
