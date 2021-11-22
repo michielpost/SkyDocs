@@ -1,0 +1,88 @@
+.document {
+    --document-top-bottom-padding: 1rem;
+    --document-side-padding: 1rem;
+
+    box-shadow: 0 6px 14px 0 rgb(0 0 0 / 6%);
+    background: #fff;
+    min-height: 100vh;
+    padding: var(--document-top-bottom-padding) var(--document-side-padding);
+    margin: auto auto 100px auto;
+}
+
+::deep .rz-html-editor-toolbar {
+    margin-left: calc(-1 * var(--document-side-padding));
+    padding-left: var(--document-side-padding);
+    margin-right: calc(-1 * var(--document-side-padding));
+    padding-right: var(--document-side-padding);
+    position: sticky;
+    top: 3.5rem;
+}
+
+@media (min-width: 768px) {
+    .document {
+        --document-top-bottom-padding: 5rem;
+        --document-side-padding: 7rem;
+
+        max-width: 70rem;
+    }
+}
+
+.document-actions {
+    background: #fff;
+    padding: 10px 1.5rem;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    box-shadow: 0 -6px 14px 0 rgb(0 0 0 / 6%);
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+@media (min-width: 641px) {
+    .document-actions {
+        padding: 10px 2rem;
+    }
+}
+
+::deep .document-actions > * {
+    margin-left: 10px;
+}
+
+.not-logged-in {
+    justify-content: center;
+}
+
+::deep .delete {
+    color: #dd1010;
+    margin-left: 0;
+    margin-right: auto;
+}
+
+::deep .document-title {
+    margin-bottom: 2rem;
+    font-size: 20px;
+    font-weight: 700;
+    height: 3rem;
+}
+
+::deep .rz-html-editor {
+    border: none;
+}
+
+::deep .rz-html-editor-content {
+    padding: 0;
+    padding-top: 2rem;
+}
+
+::deep .back {
+    margin-bottom: 20px;
+    position: relative;
+}
+
+@media (min-width: 1400px) {
+    ::deep .back {
+        position: fixed;
+    }
+}

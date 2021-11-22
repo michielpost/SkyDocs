@@ -1,4 +1,5 @@
-﻿using SiaSkynet;
+using Dfinity.Blazor;
+using SiaSkynet;
 using SkyDocs.Blazor.Models;
 using System;
 using System.Collections.Generic;
@@ -18,13 +19,15 @@ namespace SkyDocs.Blazor
     {
         private readonly string salt = "skydocs-2";
         private readonly RegistryKey listDataKey = new RegistryKey("skydocs-list");
-        private readonly ShareService shareService;
+        private readonly DfinityService dfinityService;
         private static SiaSkynetClient client = new SiaSkynetClient();
         private byte[]? privateKey;
         private byte[]? publicKey;
 
         public bool IsLoggedIn { get; set; }
         public bool IsMetaMaskLogin { get; set; }
+        public bool IsDfinityLogin { get; set; }
+        public bool IsDfinityNetwork { get; set; }
 
         public bool IsLoading { get; set; }
         public DocumentList DocumentList { get; set; } = new DocumentList();
@@ -32,6 +35,12 @@ namespace SkyDocs.Blazor
         public DocumentSummary? CurrentSum => DocumentList.Where(x => x.Id == CurrentDocument?.Id).FirstOrDefault();
         public static string? Error { get; set; }
         public List<TheGraphShare> Shares { get; set; } = new List<TheGraphShare>();
+        public string CurrentNetwork => IsDfinityNetwork ? "Internet Computer" : "Skynet";
+
+        public SkyDocsService(DfinityService dfinityService)
+        {
+            this.dfinityService = dfinityService;
+        }
 
         public List<TheGraphShare> NewShares()
         {
@@ -47,6 +56,12 @@ namespace SkyDocs.Blazor
 
         public void SetPortalDomain(string scheme, string domain)
         {
+            //Do not use Internet Computer as domain for Sia Skynet calls
+            if (domain.Contains("ic0.app", StringComparison.InvariantCultureIgnoreCase))
+            {
+                return;
+            }
+
             string[] urlParts = domain.Split('.');
 
             //Only take last two parts
@@ -74,6 +89,16 @@ namespace SkyDocs.Blazor
 
             IsLoggedIn = true;
             IsMetaMaskLogin = isMetaMaskLogin;
+        }
+
+        public void LoginDfinity()
+        {
+            privateKey = null;
+            publicKey = null;
+
+            IsLoggedIn = true;
+            IsDfinityLogin = true;
+            IsDfinityNetwork = true;
         }
 
         /// <summary>
@@ -145,7 +170,7 @@ namespace SkyDocs.Blazor
             if (CurrentDocument != null)
             {
                 var sum = CurrentSum;
-                if (sum?.PrivateKey == null)
+                if (sum != null && sum.PrivateKey == null)
                 {
                     DocumentList.Remove(sum);
                     sum = null;
@@ -276,24 +301,39 @@ namespace SkyDocs.Blazor
             try
             {
                 Error = null;
-                var encryptedJson = await client.SkyDbGet(publicKey, listDataKey, TimeSpan.FromSeconds(5));
-                if (!encryptedJson.HasValue)
-                    return new DocumentList();
-                else
+
+                if (IsDfinityNetwork)
                 {
-                    //Decrypt data
-                    var jsonBytes = Utils.Decrypt(encryptedJson.Value.file, privateKey);
-                    var json = Encoding.UTF8.GetString(jsonBytes);
+                    string? json = await dfinityService.GetValueForUser(listDataKey.Key);
+                    if (string.IsNullOrEmpty(json))
+                        return new();
 
                     var loadedList = JsonSerializer.Deserialize<List<DocumentSummary>>(json) ?? new List<DocumentSummary>();
                     var list = new DocumentList(loadedList.Where(x => x != null).ToList());
-                    list.Revision = encryptedJson.Value.registryEntry?.Revision ?? 0;
                     return list;
+
+                }
+                else if(publicKey != null)
+                {
+                    var encryptedJson = await client.SkyDbGet(publicKey, listDataKey, TimeSpan.FromSeconds(5));
+                    if (!encryptedJson.HasValue)
+                        return new DocumentList();
+                    else if(privateKey != null)
+                    {
+                        //Decrypt data
+                        var jsonBytes = Utils.Decrypt(encryptedJson.Value.file, privateKey);
+                        var json = Encoding.UTF8.GetString(jsonBytes);
+
+                        var loadedList = JsonSerializer.Deserialize<List<DocumentSummary>>(json) ?? new List<DocumentSummary>();
+                        var list = new DocumentList(loadedList.Where(x => x != null).ToList());
+                        list.Revision = encryptedJson.Value.registryEntry?.Revision ?? 0;
+                        return list;
+                    }
                 }
             }
             catch
             {
-                Error = "Unable to get list of documents from Skynet. Please try again.";
+                Error = $"Unable to get list of documents from {CurrentNetwork}. Please try again.";
             }
             return new DocumentList();
         }
@@ -309,11 +349,20 @@ namespace SkyDocs.Blazor
             bool success = false;
             try
             {
-                var data = Encoding.UTF8.GetBytes(json);
-                var encryptedData = Utils.Encrypt(data, privateKey);
-                list.Revision++;
+                if (IsDfinityNetwork)
+                {
+                    await dfinityService.SetValueForUser(listDataKey.Key, json);
+                    success = true;
 
-                success = await client.SkyDbSet(privateKey, publicKey, listDataKey, encryptedData, list.Revision);
+                }
+                else if(publicKey != null && privateKey != null)
+                {
+                    var data = Encoding.UTF8.GetBytes(json);
+                    var encryptedData = Utils.Encrypt(data, privateKey);
+                    list.Revision++;
+
+                    success = await client.SkyDbSet(privateKey, publicKey, listDataKey, encryptedData, list.Revision);
+                }
             }
             catch
             {
@@ -327,23 +376,17 @@ namespace SkyDocs.Blazor
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        private async static Task<Document?> GetDocument(DocumentSummary sum)
+        private async Task<Document?> GetDocument(DocumentSummary sum)
         {
             try
             {
                 Error = null;
                 Console.WriteLine("Loading document");
-                var encryptedData = await client.SkyDbGet(sum.PublicKey, new RegistryKey(sum.Id.ToString()), TimeSpan.FromSeconds(10));
-                if (!encryptedData.HasValue)
+                if (IsDfinityNetwork)
                 {
-                    return new Document();
-                }
-                else
-                {
-                    //Decrypt data
-                    var key = SiaSkynetClient.GenerateKeys(sum.ContentSeed);
-                    var jsonBytes = Utils.Decrypt(encryptedData.Value.file, key.privateKey);
-                    var json = Encoding.UTF8.GetString(jsonBytes);
+                    string? json = await dfinityService.GetValue(sum.Id.ToString());
+                    if (string.IsNullOrEmpty(json))
+                        return new Document();
 
                     var document = JsonSerializer.Deserialize<Document>(json) ?? new Document();
                     sum.Title = document.Title;
@@ -351,14 +394,37 @@ namespace SkyDocs.Blazor
                     sum.CreatedDate = document.CreatedDate;
                     sum.ModifiedDate = document.ModifiedDate;
 
-                    document.Revision = encryptedData.Value.registryEntry?.Revision ?? 0;
-
                     return document;
+                }
+                else
+                {
+                    var encryptedData = await client.SkyDbGet(sum.PublicKey, new RegistryKey(sum.Id.ToString()), TimeSpan.FromSeconds(10));
+                    if (!encryptedData.HasValue)
+                    {
+                        return new Document();
+                    }
+                    else
+                    {
+                        //Decrypt data
+                        var key = SiaSkynetClient.GenerateKeys(sum.ContentSeed);
+                        var jsonBytes = Utils.Decrypt(encryptedData.Value.file, key.privateKey);
+                        var json = Encoding.UTF8.GetString(jsonBytes);
+
+                        var document = JsonSerializer.Deserialize<Document>(json) ?? new Document();
+                        sum.Title = document.Title;
+                        sum.PreviewImage = document.PreviewImage;
+                        sum.CreatedDate = document.CreatedDate;
+                        sum.ModifiedDate = document.ModifiedDate;
+
+                        document.Revision = encryptedData.Value.registryEntry?.Revision ?? 0;
+
+                        return document;
+                    }
                 }
             }
             catch
             {
-                Error = "Unable to load document from Skynet. Please try again.";
+                Error = $"Unable to load document from {CurrentNetwork}. Please try again.";
             }
 
             return null;
@@ -369,7 +435,7 @@ namespace SkyDocs.Blazor
         /// </summary>
         /// <param name="doc"></param>
         /// <returns></returns>
-        private async static Task<bool> SaveDocument(Document doc, DocumentSummary sum)
+        private async Task<bool> SaveDocument(Document doc, DocumentSummary sum)
         {
             //Only allowed to save if you have a private key for this document
             if (sum.PrivateKey == null)
@@ -379,14 +445,22 @@ namespace SkyDocs.Blazor
             bool success = false;
             try
             {
-                //Encrypt with ContentSeed
-                var key = SiaSkynetClient.GenerateKeys(sum.ContentSeed);
-                var data = Encoding.UTF8.GetBytes(json);
-                var encryptedData = Utils.Encrypt(data, key.privateKey);
+                if (IsDfinityNetwork)
+                {
+                    await dfinityService.SetValue(doc.Id.ToString(), json);
+                    success = true;
+                }
+                else
+                {
+                    //Encrypt with ContentSeed
+                    var key = SiaSkynetClient.GenerateKeys(sum.ContentSeed);
+                    var data = Encoding.UTF8.GetBytes(json);
+                    var encryptedData = Utils.Encrypt(data, key.privateKey);
 
-                success = await client.SkyDbSet(sum.PrivateKey, sum.PublicKey, new RegistryKey(doc.Id.ToString()), encryptedData, doc.Revision +1);
+                    success = await client.SkyDbSet(sum.PrivateKey, sum.PublicKey, new RegistryKey(doc.Id.ToString()), encryptedData, doc.Revision + 1);
+                }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex);
                 success = false;

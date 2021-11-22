@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "dfx": "0.8.4",
+  "canisters": {
+    "storage": {
+      "main": "Dfinity.storage/main.mo",
+      "type": "motoko"
+    },
+    "skydocs_assets": {
+      "dependencies": ["storage"],
+      "type": "assets",
+      "source": [
+        "publish/SkyDocs.Blazor/wwwroot"
+      ]
+    }
+  },
+  "defaults": {
+    "build": {
+      "packtool": "",
+      "args": ""
+    }
+  },
+  "networks": {
+    "local": {
+      "bind": "127.0.0.1:8000",
+      "type": "ephemeral"
+    }
+  }
+}
