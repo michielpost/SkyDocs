@@ -1,6 +1,6 @@
 {
-    "name": "",
-    "short_name": "",
+    "name": "SkyDocs",
+    "short_name": "SkyDocs",
     "icons": [
         {
             "src": "/android-chrome-192x192.png",
@@ -15,5 +15,6 @@
     ],
     "theme_color": "#ffffff",
     "background_color": "#ffffff",
-    "display": "standalone"
+    "display": "standalone",
+    "skylink": "DAAQy7vEs6qSiyc9aPQeoO-LTEv6Jvg53-UnVaIIdsOTAw"
 }

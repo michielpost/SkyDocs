@@ -31,7 +31,7 @@ jobs:
       - name: Publish Website
         run: dotnet publish SkyDocs.Blazor -o publish/SkyDocs.Blazor -c Release --version-suffix ${{ env.APP_VERSION }}
       - name: Deploy to Skynet
-        uses: kwypchlo/deploy-to-skynet-action@main
+        uses: SkynetLabs/deploy-to-skynet-action@v2
         with:
           upload-dir: publish/SkyDocs.Blazor/wwwroot
           github-token: ${{ secrets.GITHUB_TOKEN }}
