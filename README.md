@@ -35,9 +35,9 @@ This setup is explained [here](ShareArchitecture).
 ## Open Source Project Credits
 - [SiaSkynet C# SDK](https://github.com/michielpost/SiaSkynet)
 - [MetaMask.Blazor](https://github.com/michielpost/MetaMask.Blazor)
+- [Dfinity.Blazor C# SDK](https://github.com/michielpost/Dfinity.Blazor)
 - [Radzen.Blazor UI Components](https://github.com/radzenhq/radzen-blazor)
 - [Blazored.LocalStorage](https://github.com/blazored/LocalStorage)
-- [Toolbelt.Blazor.HeadElement](https://github.com/jsakamoto/Toolbelt.Blazor.HeadElement)
 
 ## Acknowledgements
 Development of SkyDocs v2 has been made possible with a grant from [The Graph](https://thegraph.com/blog/wave-one-funding).
@@ -63,5 +63,5 @@ Share a document
 SkyDocs was created for *[The SkyDB Debut](https://gitcoin.co/hackathon/skydb/)* hackathon. 
 Finished as Runner Up in the SkyDB Debut Hackathon: https://blog.sia.tech/skydb-debut-hackathon-winners-d7929970cdea  
 
-[More info and screenshots can be found here.](SkyDocsV1.md)
+[More info and screenshots can be found here.](SkyDocsV1.md)   
 [Screenshots of V2 can be found here.](SkyDocsV2.md)
