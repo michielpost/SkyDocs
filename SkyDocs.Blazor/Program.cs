@@ -1,6 +1,7 @@
 using Blazored.LocalStorage;
 using Dfinity.Blazor;
 using MetaMask.Blazor;
+using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,7 +13,6 @@ using System.Net.Http;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using Toolbelt.Blazor.Extensions.DependencyInjection;
 
 namespace SkyDocs.Blazor
 {
@@ -24,6 +24,7 @@ namespace SkyDocs.Blazor
         {
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("#app");
+            builder.RootComponents.Add<HeadOutlet>("head::after");
 
             ConfigureServices(builder.Services, builder.HostEnvironment.BaseAddress);
 
@@ -36,8 +37,6 @@ namespace SkyDocs.Blazor
             services.AddScoped<NotificationService>();
             services.AddScoped<TooltipService>();
             services.AddScoped<ContextMenuService>();
-
-            services.AddHeadElementHelper();
 
             services.AddMetaMaskBlazor();
             services.AddSingleton<DfinityService>();

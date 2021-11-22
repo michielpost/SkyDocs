@@ -1,4 +1,4 @@
-﻿@page "/"
+@page "/"
 @using SkyDocs.Blazor.Shared
 
 @if ((skyDocsService.IsLoggedIn || skyDocsService.DocumentList.Any()) && skyDocsService.CurrentDocument == null && !skyDocsService.IsLoading)
@@ -18,7 +18,7 @@
 }
 else if (skyDocsService.CurrentDocument != null)
 {
-    <Title>SkyDocs - @skyDocsService.CurrentDocument.Title</Title>
+    <PageTitle>SkyDocs - @skyDocsService.CurrentDocument.Title</PageTitle>
 
     <div>
         <Button OnClick="@GoToList" ClassName="link link-with-icon back"><RadzenIcon Icon="arrow_back" />Back</Button>    
