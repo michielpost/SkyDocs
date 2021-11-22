@@ -1,6 +1,7 @@
 {
     "name": "SkyDocs",
     "short_name": "SkyDocs",
+    "description": "Decentralized document editor.",
     "icons": [
         {
             "src": "/android-chrome-192x192.png",
@@ -16,5 +17,5 @@
     "theme_color": "#ffffff",
     "background_color": "#ffffff",
     "display": "standalone",
-    "skylink": "DAChH5Py_KZ-pDZ6HAN66cKzGRpuW_i1XA-EUzealfEcWw"
+    "skylink": "AQD0HWOp8klMl6SnFfDMKeggvBN9Kaf_8enri-XEhtZYGw"
 }

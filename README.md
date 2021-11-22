@@ -3,7 +3,7 @@
 
 A decentralized Google Docs alternative running on Sia Skynet and Dfinity Internet Computer.
 
-[![Add to Homescreen](https://img.shields.io/badge/Skynet-Add%20To%20Homescreen-00c65e?logo=skynet&labelColor=0d0d0d)](https://homescreen.hns.siasky.net/#/skylink/DAAQy7vEs6qSiyc9aPQeoO-LTEv6Jvg53-UnVaIIdsOTAw)
+[![Add to Homescreen](https://img.shields.io/badge/Skynet-Add%20To%20Homescreen-00c65e?logo=skynet&labelColor=0d0d0d)](https://homescreen.hns.siasky.net/#/skylink/AQD0HWOp8klMl6SnFfDMKeggvBN9Kaf_8enri-XEhtZYGw)
 
 **Live version**: https://skydocs.hns.siasky.net   
 Internet Computer: https://c3qag-6yaaa-aaaah-aaqta-cai.raw.ic0.app
