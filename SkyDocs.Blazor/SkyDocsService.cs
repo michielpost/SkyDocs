@@ -119,7 +119,7 @@ namespace SkyDocs.Blazor
             IsLoading = false;
         }
 
-        public void AddDocumentSummary(Guid docId, byte[] pubKey, byte[]? privKey, string contentSeed)
+        public void AddDocumentSummary(Guid docId, byte[] pubKey, byte[]? privKey, string contentSeed, StorageSource storageSource)
         {
             var existing = DocumentList.Where(x => x.Id == docId).FirstOrDefault();
             if (existing != null)
@@ -134,6 +134,7 @@ namespace SkyDocs.Blazor
                 CreatedDate = DateTimeOffset.UtcNow,
                 ModifiedDate = DateTimeOffset.UtcNow,
                 Title = "Shared document",
+                StorageSource = storageSource
             };
             DocumentList.Add(sum);
         }
@@ -192,7 +193,8 @@ namespace SkyDocs.Blazor
                         ModifiedDate = DateTimeOffset.UtcNow,
                         ContentSeed = contentSeed,
                         PrivateKey = key.privateKey,
-                        PublicKey = key.publicKey
+                        PublicKey = key.publicKey,
+                        StorageSource = this.IsDfinityLogin ? StorageSource.Dfinity : StorageSource.Skynet
                     };
 
                     DocumentList.Add(sum);
@@ -382,7 +384,7 @@ namespace SkyDocs.Blazor
             {
                 Error = null;
                 Console.WriteLine("Loading document");
-                if (IsDfinityNetwork)
+                if (IsDfinityNetwork || sum.StorageSource == StorageSource.Dfinity)
                 {
                     string? json = await dfinityService.GetValue(sum.Id.ToString());
                     if (string.IsNullOrEmpty(json))
@@ -445,7 +447,7 @@ namespace SkyDocs.Blazor
             bool success = false;
             try
             {
-                if (IsDfinityNetwork)
+                if (IsDfinityNetwork || sum.StorageSource == StorageSource.Dfinity)
                 {
                     await dfinityService.SetValue(doc.Id.ToString(), json);
                     success = true;

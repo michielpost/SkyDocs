@@ -117,6 +117,11 @@ namespace SkyDocs.Blazor.Pages
             string? pub = GetQueryParam(uri, "pub");
             string? priv = GetQueryParam(uri, "priv");
             string? contentSeed = GetQueryParam(uri, "c");
+            string? storage = GetQueryParam(uri, "s");
+
+            StorageSource storageSource = StorageSource.Skynet;
+            Enum.TryParse<StorageSource>(storage, out storageSource);
+
             byte[]? pubKey = null;
             byte[]? privKey = null;
 
@@ -127,7 +132,7 @@ namespace SkyDocs.Blazor.Pages
 
             if (Guid.TryParse(documentId, out Guid docId) && pubKey != null && !string.IsNullOrEmpty(contentSeed))
             {
-                skyDocsService.AddDocumentSummary(docId, pubKey, privKey, contentSeed);
+                skyDocsService.AddDocumentSummary(docId, pubKey, privKey, contentSeed, storageSource);
 
                 await OpenDocument(docId);
             }

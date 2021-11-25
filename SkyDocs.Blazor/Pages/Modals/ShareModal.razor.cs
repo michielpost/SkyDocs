@@ -95,6 +95,7 @@ namespace SkyDocs.Blazor.Pages.Modals
                     ModifiedDate = existing.ModifiedDate,
                     PreviewImage = existing.PreviewImage,
                     PrivateKey = ShareReadOnly ? null : existing.PrivateKey,
+                    StorageSource = SkyDocsService.IsDfinityLogin ? StorageSource.Dfinity : StorageSource.Skynet
                 };
 
                 string? url = await ShareService.StoreShareMessage(ShareFormModel.EthAddress, shareSum);

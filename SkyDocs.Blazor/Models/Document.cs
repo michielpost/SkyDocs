@@ -14,6 +14,8 @@ namespace SkyDocs.Blazor.Models
         public DateTimeOffset ModifiedDate { get; set; }
         public string? PreviewImage { get; set; }
 
+        public StorageSource StorageSource { get; set; }
+
 
         /// <summary>
         /// Public key to read file from storage location
@@ -42,6 +44,7 @@ namespace SkyDocs.Blazor.Models
         public DateTimeOffset CreatedDate { get; set; }
         public DateTimeOffset ModifiedDate { get; set; }
 
+
         [JsonIgnore]
         public int Revision { get; set; }
 
@@ -52,5 +55,11 @@ namespace SkyDocs.Blazor.Models
             ModifiedDate = DateTimeOffset.UtcNow;
         }
 
+    }
+
+    public enum StorageSource
+    {
+        Skynet,
+        Dfinity
     }
 }
