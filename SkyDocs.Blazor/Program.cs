@@ -48,6 +48,10 @@ namespace SkyDocs.Blazor
             services.AddScoped<ShareService>();
             services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(baseAddress) });
 
+            services.AddTransient<CookieHandler>();
+            services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("API"));
+            services.AddHttpClient("API", client => client.BaseAddress = new Uri(baseAddress)).AddHttpMessageHandler<CookieHandler>();
+
             Version = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
 
         }

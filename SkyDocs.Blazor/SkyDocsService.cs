@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -20,7 +21,8 @@ namespace SkyDocs.Blazor
         private readonly string salt = "skydocs-2";
         private readonly RegistryKey listDataKey = new RegistryKey("skydocs-list");
         private readonly DfinityService dfinityService;
-        private static SiaSkynetClient client = new SiaSkynetClient();
+        private readonly IHttpClientFactory httpClientFactory;
+        private SiaSkynetClient client = new SiaSkynetClient();
         private byte[]? privateKey;
         private byte[]? publicKey;
 
@@ -37,9 +39,13 @@ namespace SkyDocs.Blazor
         public List<TheGraphShare> Shares { get; set; } = new List<TheGraphShare>();
         public string CurrentNetwork => IsDfinityNetwork ? "Internet Computer" : "Skynet";
 
-        public SkyDocsService(DfinityService dfinityService)
+        public SkyDocsService(DfinityService dfinityService, IHttpClientFactory httpClientFactory)
         {
             this.dfinityService = dfinityService;
+            this.httpClientFactory = httpClientFactory;
+
+            var httpClient = httpClientFactory.CreateClient("API");
+            client = new SiaSkynetClient(httpClient);
         }
 
         public List<TheGraphShare> NewShares()
@@ -71,7 +77,9 @@ namespace SkyDocs.Blazor
             {
                 var url = $"{scheme}://{string.Join('.', lastParts)}";
                 Console.WriteLine($"Using API domain: {url}");
-                client = new SiaSkynetClient(url);
+
+                var httpClient = httpClientFactory.CreateClient("API");
+                client = new SiaSkynetClient(httpClient, url);
             }
         }
 
@@ -248,7 +256,7 @@ namespace SkyDocs.Blazor
 
         }
 
-        private static async Task<string?> SaveDocumentImage(byte[] img)
+        private async Task<string?> SaveDocumentImage(byte[] img)
         {
             string? imgLink = null;
 
