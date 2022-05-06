@@ -22,11 +22,11 @@
     <PackageReference Include="MetaMask.Blazor" Version="1.6.1" />
     <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0" />
-    <PackageReference Include="Nethereum.ABI" Version="4.2.0" />
-    <PackageReference Include="Radzen.Blazor" Version="3.16.7" />
+    <PackageReference Include="Nethereum.ABI" Version="4.4.1" />
+    <PackageReference Include="Radzen.Blazor" Version="3.18.7" />
     <PackageReference Include="SiaSkynet" Version="3.4.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.3" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.3" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.4" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.4" PrivateAssets="all" />
     <PackageReference Include="System.Net.Http.Json" Version="6.0.0" />
     <PackageReference Include="TheGraph" Version="0.8.0" />
   </ItemGroup>
