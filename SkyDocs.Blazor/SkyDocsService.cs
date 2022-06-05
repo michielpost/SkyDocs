@@ -45,7 +45,7 @@ namespace SkyDocs.Blazor
             this.httpClientFactory = httpClientFactory;
 
             var httpClient = httpClientFactory.CreateClient("API");
-            client = new SiaSkynetClient(httpClient);
+            client = new SiaSkynetClient(client: httpClient);
         }
 
         public List<TheGraphShare> NewShares()
@@ -79,7 +79,7 @@ namespace SkyDocs.Blazor
                 Console.WriteLine($"Using API domain: {url}");
 
                 var httpClient = httpClientFactory.CreateClient("API");
-                client = new SiaSkynetClient(httpClient, url);
+                client = new SiaSkynetClient(url, client: httpClient);
             }
         }
 
