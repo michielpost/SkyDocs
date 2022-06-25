@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.WebUtilities;
 using ShareServer.Models;
 using SkyDocs.Blazor.Models;
@@ -35,6 +35,7 @@ namespace SkyDocs.Blazor
                         { "id", sum.Id.ToString() },
                         { "pub", pubString },
                         { "c", sum.ContentSeed },
+                        { "s", sum.StorageSource.ToString() },
                     };
 
             if (!string.IsNullOrEmpty(privString) && !readOnly)

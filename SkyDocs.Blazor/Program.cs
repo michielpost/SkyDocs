@@ -1,5 +1,7 @@
 using Blazored.LocalStorage;
+using Dfinity.Blazor;
 using MetaMask.Blazor;
+using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,7 +13,6 @@ using System.Net.Http;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using Toolbelt.Blazor.Extensions.DependencyInjection;
 
 namespace SkyDocs.Blazor
 {
@@ -23,6 +24,7 @@ namespace SkyDocs.Blazor
         {
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("#app");
+            builder.RootComponents.Add<HeadOutlet>("head::after");
 
             ConfigureServices(builder.Services, builder.HostEnvironment.BaseAddress);
 
@@ -36,15 +38,19 @@ namespace SkyDocs.Blazor
             services.AddScoped<TooltipService>();
             services.AddScoped<ContextMenuService>();
 
-            services.AddHeadElementHelper();
-
             services.AddMetaMaskBlazor();
+            services.AddSingleton<DfinityService>();
+
             services.AddBlazoredLocalStorage();
 
             services.AddSingleton<SkyDocsService>();
             services.AddScoped<MetaMaskStorageService>();
             services.AddScoped<ShareService>();
             services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(baseAddress) });
+
+            services.AddTransient<CookieHandler>();
+            services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("API"));
+            services.AddHttpClient("API", client => client.BaseAddress = new Uri(baseAddress)).AddHttpMessageHandler<CookieHandler>();
 
             Version = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
 

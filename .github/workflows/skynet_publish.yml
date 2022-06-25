@@ -25,13 +25,13 @@ jobs:
       - name: Setup dotnet
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: 5.0.x
+          dotnet-version: 6.0.x
       - name: Build with dotnet
         run: dotnet build --configuration Release
       - name: Publish Website
         run: dotnet publish SkyDocs.Blazor -o publish/SkyDocs.Blazor -c Release --version-suffix ${{ env.APP_VERSION }}
       - name: Deploy to Skynet
-        uses: kwypchlo/deploy-to-skynet-action@main
+        uses: SkynetLabs/deploy-to-skynet-action@v2
         with:
           upload-dir: publish/SkyDocs.Blazor/wwwroot
           github-token: ${{ secrets.GITHUB_TOKEN }}

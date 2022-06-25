@@ -1,0 +1,27 @@
+.help-info {
+    font-size: 14px;
+    font-weight: 300;
+}
+
+::deep button {
+    width: 100%;
+}
+
+::deep input {
+    height: 3rem;
+    width: 100%;
+}
+
+::deep label {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.version {
+    font-weight: 300;
+    text-align: center;
+}
+
+::deep .white-with-icon {
+    margin-bottom: 10px;
+}

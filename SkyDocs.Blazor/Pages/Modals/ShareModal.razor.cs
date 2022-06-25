@@ -1,4 +1,4 @@
-﻿using MetaMask.Blazor;
+using MetaMask.Blazor;
 using MetaMask.Blazor.Exceptions;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
@@ -95,6 +95,7 @@ namespace SkyDocs.Blazor.Pages.Modals
                     ModifiedDate = existing.ModifiedDate,
                     PreviewImage = existing.PreviewImage,
                     PrivateKey = ShareReadOnly ? null : existing.PrivateKey,
+                    StorageSource = SkyDocsService.IsDfinityLogin ? StorageSource.Dfinity : StorageSource.Skynet
                 };
 
                 string? url = await ShareService.StoreShareMessage(ShareFormModel.EthAddress, shareSum);
@@ -161,6 +162,6 @@ namespace SkyDocs.Blazor.Pages.Modals
 
     public class ShareFormModel
     {
-        public string EthAddress { get; set; }
+        public string EthAddress { get; set; } = default!;
     }
 }

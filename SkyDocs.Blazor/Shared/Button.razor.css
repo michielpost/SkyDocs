@@ -1,0 +1,59 @@
+button {
+    border: 0;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.primary,
+.white-with-icon {
+    border-radius: 10px;
+    box-shadow: 0 4px 0 -2px rgb(10 10 10 / 25%);
+    height: 3rem;
+    padding: 0 calc(1rem - 1px);
+}
+
+.primary:hover,
+.white-with-icon:hover {
+    transform: translateY(2px);
+    box-shadow: none;
+}
+
+.primary {
+    background: var(--color-primary);
+}
+
+.primary:hover {
+    background: #01b856;
+}
+
+.white-with-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+::deep img {
+    height: 70%;
+    margin-right: 10px;
+}
+
+.link {
+    background: transparent;
+    border-bottom: 1px solid;
+    font-size: 14px;
+    padding: 0;
+}
+
+.link-with-icon {
+    margin-left: 28px;
+}
+
+.link:hover {
+    border: none;
+}
+
+::deep i {
+    position: absolute;
+    left: -28px;
+}

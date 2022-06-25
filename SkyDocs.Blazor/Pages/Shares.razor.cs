@@ -1,4 +1,4 @@
-﻿using MetaMask.Blazor;
+using MetaMask.Blazor;
 using Microsoft.AspNetCore.Components;
 using Radzen;
 using SkyDocs.Blazor.Models;
@@ -30,15 +30,15 @@ namespace SkyDocs.Blazor.Pages
         public NavigationManager NavigationManager { get; set; } = default!;
 
         [Inject]
-        public DialogService DialogService { get; set; }
+        public DialogService DialogService { get; set; } = default!;
 
         [CascadingParameter]
-        public MainLayout Layout { get; set; }
+        public MainLayout Layout { get; set; } = default!;
 
         public async Task Open(string? graphShareId)
         {
             var share = skyDocsService.Shares.Where(x => x.Id == graphShareId).FirstOrDefault();
-            if (share == null)
+            if (share == null || string.IsNullOrEmpty(share.Skylink))
                 return;
 
             var existing = skyDocsService.DocumentList.Where(x => x.ShareOrigin == graphShareId).FirstOrDefault();
@@ -51,7 +51,7 @@ namespace SkyDocs.Blazor.Pages
             var address = await metaMaskService.GetSelectedAddress();
             var hash = await metaMaskStorageService.GetEncryptedMetamaskHash();
 
-            DialogService.Open<LoadingModal>("Loading...", options: new DialogOptions() { ShowClose = false });
+            DialogService.Open<LoadingModal>("Loading...", new Dictionary<string, object>() { { "Msg", "Loading..." } }, options: new DialogOptions() { ShowClose = false, ShowTitle = false, Width = "200px" });
 
             ShareModel? shareModel = await shareService.GetMessage(address, hash, share.Skylink);
 

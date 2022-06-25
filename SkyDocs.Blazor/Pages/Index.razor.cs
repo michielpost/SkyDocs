@@ -1,4 +1,4 @@
-﻿using HtmlAgilityPack;
+using HtmlAgilityPack;
 using MetaMask.Blazor;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.WebUtilities;
@@ -25,28 +25,28 @@ namespace SkyDocs.Blazor.Pages
         public string? SelectedAddress { get; set; }
 
         [Inject]
-        public IJSRuntime JsRuntime { get; set; }
+        public IJSRuntime JsRuntime { get; set; } = default!;
 
         [Inject]
         public NavigationManager NavigationManager { get; set; } = default!;
 
         [Inject]
-        public SkyDocsService skyDocsService { get; set; }
+        public SkyDocsService skyDocsService { get; set; } = default!;
 
         [Inject]
-        public HttpClient httpClient { get; set; }
+        public HttpClient httpClient { get; set; } = default!;
 
         [Inject]
-        public DialogService DialogService { get; set; }
+        public DialogService DialogService { get; set; } = default!;
 
         [Inject]
-        public ShareService ShareService { get; set; }
+        public ShareService ShareService { get; set; } = default!;
 
         [Inject]
         public MetaMaskService MetaMaskService { get; set; } = default!;
 
         [CascadingParameter]
-        public MainLayout Layout { get; set; }
+        public MainLayout Layout { get; set; } = default!;
 
         private void NavigationManager_LocationChanged(object? sender, Microsoft.AspNetCore.Components.Routing.LocationChangedEventArgs e)
         {
@@ -98,9 +98,9 @@ namespace SkyDocs.Blazor.Pages
 
         private async Task Login()
         {
-            await DialogService.OpenAsync<LoginModal>("Login", options: new DialogOptions() { ShowClose = false });
+            await DialogService.OpenAsync<LoginModal>("Log in to SkyDocs", options: new DialogOptions() { ShowClose = false, Width = "450px" });
 
-            DialogService.Open<LoadingModal>("Loading...", options: new DialogOptions() { ShowClose = false });
+            DialogService.Open<LoadingModal>("Loading...", new Dictionary<string, object>() { { "Msg", $"Loading files from {skyDocsService.CurrentNetwork}..." } }, options: new DialogOptions() { ShowClose = false, ShowTitle = false, Width = "200px" });
             await skyDocsService.LoadDocumentList();
             DialogService.Close();
             StateHasChanged();
@@ -125,6 +125,11 @@ namespace SkyDocs.Blazor.Pages
             string? pub = GetQueryParam(uri, "pub");
             string? priv = GetQueryParam(uri, "priv");
             string? contentSeed = GetQueryParam(uri, "c");
+            string? storage = GetQueryParam(uri, "s");
+
+            StorageSource storageSource = StorageSource.Skynet;
+            Enum.TryParse<StorageSource>(storage, out storageSource);
+
             byte[]? pubKey = null;
             byte[]? privKey = null;
 
@@ -135,7 +140,7 @@ namespace SkyDocs.Blazor.Pages
 
             if (Guid.TryParse(documentId, out Guid docId) && pubKey != null && !string.IsNullOrEmpty(contentSeed))
             {
-                skyDocsService.AddDocumentSummary(docId, pubKey, privKey, contentSeed);
+                skyDocsService.AddDocumentSummary(docId, pubKey, privKey, contentSeed, storageSource);
 
                 await OpenDocument(docId);
             }
@@ -161,14 +166,14 @@ namespace SkyDocs.Blazor.Pages
 
         private async Task OpenDocument(Guid id)
         {
-            DialogService.Open<LoadingModal>("Loading...", options: new DialogOptions() { ShowClose = false });
+            DialogService.Open<LoadingModal>("Loading...", new Dictionary<string, object>() { { "Msg", "Loading..." } }, options: new DialogOptions() { ShowClose = false, ShowTitle = false, Width = "200px" });
             await skyDocsService.LoadDocument(id);
             DialogService.Close();
 
             if (skyDocsService.CurrentDocument == null || string.IsNullOrEmpty(skyDocsService.CurrentDocument.Content))
             {
                 GoToList();
-                DialogService.Open<ErrorModal>("Error loading document from Skynet. Please try again.");
+                DialogService.Open<ErrorModal>($"Error loading document from {skyDocsService.CurrentNetwork}. Please try again.");
             }
         }
 
@@ -212,7 +217,7 @@ namespace SkyDocs.Blazor.Pages
 
             if (skyDocsService.CurrentDocument != null)
             {
-                DialogService.Open<LoadingModal>("Saving to Skynet...", options: new DialogOptions() { ShowClose = false });
+                DialogService.Open<LoadingModal>($"Saving to {skyDocsService.CurrentNetwork}...", new Dictionary<string, object>() { { "Msg", $"Saving to {skyDocsService.CurrentNetwork}..." } }, options: new DialogOptions() { ShowClose = false, ShowTitle = false, Width = "200px" });
 
                 var htmlContent = skyDocsService.CurrentDocument.Content;
                 var textContent = StripHtml(htmlContent) ?? string.Empty;
@@ -253,7 +258,7 @@ namespace SkyDocs.Blazor.Pages
 
             if (skyDocsService.CurrentDocument != null)
             {
-                DialogService.Open<LoadingModal>("Deleting from Skynet...", options: new DialogOptions() { ShowClose = false });
+                DialogService.Open<LoadingModal>($"Deleting from {skyDocsService.CurrentNetwork}...", new Dictionary<string, object>() { { "Msg", $"Deleting from {skyDocsService.CurrentNetwork}..." } }, options: new DialogOptions() { ShowClose = false, ShowTitle = false, Width = "200px" });
                 await skyDocsService.DeleteCurrentDocument();
                 DialogService.Close();
 
@@ -276,7 +281,7 @@ namespace SkyDocs.Blazor.Pages
             if (skyDocsService.CurrentDocument != null && skyDocsService.CurrentSum != null)
             {
                 ShareService.CurrentShareUrl = ShareService.GetShareUrl(skyDocsService.CurrentSum, true);
-                DialogService.Open<ShareModal>("Share document: " + skyDocsService.CurrentDocument.Title, options: new DialogOptions() { ShowClose = true });
+                DialogService.Open<ShareModal>("Share document", options: new DialogOptions() { ShowClose = true });
             }
         }
     }
