@@ -30,7 +30,7 @@ namespace SkyDocs.Blazor.Pages.Modals
         public SkyDocsService SkyDocsService { get; set; } = default!;
 
         [Inject]
-        public MetaMaskService MetaMaskService { get; set; } = default!;
+        public IMetaMaskService MetaMaskService { get; set; } = default!;
 
         [Inject]
         public DfinityService DfinityService { get; set; } = default!;

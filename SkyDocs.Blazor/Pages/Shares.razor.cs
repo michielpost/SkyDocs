@@ -21,7 +21,7 @@ namespace SkyDocs.Blazor.Pages
         public ShareService shareService { get; set; } = default!;
 
         [Inject]
-        public MetaMaskService metaMaskService { get; set; } = default!;
+        public IMetaMaskService metaMaskService { get; set; } = default!;
 
         [Inject]
         public MetaMaskStorageService metaMaskStorageService { get; set; } = default!;

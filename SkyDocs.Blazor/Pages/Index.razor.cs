@@ -43,7 +43,7 @@ namespace SkyDocs.Blazor.Pages
         public ShareService ShareService { get; set; } = default!;
 
         [Inject]
-        public MetaMaskService MetaMaskService { get; set; } = default!;
+        public IMetaMaskService MetaMaskService { get; set; } = default!;
 
         [CascadingParameter]
         public MainLayout Layout { get; set; } = default!;
