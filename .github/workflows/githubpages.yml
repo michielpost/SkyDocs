@@ -1,0 +1,44 @@
+name: Deploy to GitHub Pages
+
+# Run workflow on every push to the master branch
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  publish:
+    name: build and publish to Dfinity IC
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Inject slug/short variables
+        uses: rlespinasse/github-slug-action@v3.x
+      - name: "Set master version"
+        if: ${{ github.ref == 'refs/heads/master'}}
+        run: echo "APP_VERSION=$APP_VERSION" >> $GITHUB_ENV
+        env:
+          APP_VERSION: $(git rev-parse --short "$GITHUB_SHA")
+      - name: "Set branch version"
+        if: ${{ github.ref != 'refs/heads/master'}}
+        run: echo "APP_VERSION=$APP_VERSION" >> $GITHUB_ENV
+        env:
+          APP_VERSION: ${{ env.GITHUB_REF_SLUG }}-$(git rev-parse --short "$GITHUB_SHA")
+      - name: Setup dotnet
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 7.0.x
+      - name: Build with dotnet
+        run: dotnet build --configuration Release
+      - name: Publish Website
+        run: dotnet publish SkyDocs.Blazor -o publish/SkyDocs.Blazor -c Release --version-suffix ${{ env.APP_VERSION }}
+
+      # add .nojekyll file to tell GitHub pages to not treat this as a Jekyll project. (Allow files and folders starting with an underscore)
+      - name: Add .nojekyll file
+        run: touch release/wwwroot/.nojekyll
+
+      - name: Commit wwwroot to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@3.7.1
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: gh-pages
+          FOLDER: release/wwwroot
