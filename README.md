@@ -1,12 +1,13 @@
 # SkyDocs
 [![Build .NET](https://github.com/michielpost/SkyDocs/actions/workflows/build.yml/badge.svg)](https://github.com/michielpost/SkyDocs/actions/workflows/build.yml)
 
-A decentralized Google Docs alternative running on Sia Skynet and Dfinity Internet Computer.
+A decentralized Google Docs alternative running on Sia Skynet (deprecated) and Dfinity Internet Computer.
 
 **Live version**: 
 - Internet Computer: https://c3qag-6yaaa-aaaah-aaqta-cai.raw.ic0.app
 
 Alternatives:
+- GitHub pages: https://michielpost.github.io/SkyDocs/
 - https://skydocs.hns.skynetfree.net (signup required)
 
 
