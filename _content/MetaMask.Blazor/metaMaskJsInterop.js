@@ -24,7 +24,6 @@ export async function checkMetaMask() {
 }
 
 export async function requestAccounts() {
-    console.log('reqAccount');
     var result = await ethereum.request({
         method: 'eth_requestAccounts',
     });
@@ -47,13 +46,13 @@ export async function getSelectedAddress() {
 
 export async function listenToChangeEvents() {
     if (hasMetaMask()) {
-        //ethereum.on("connect", function () {
-        //    DotNet.invokeMethodAsync('MetaMask.Blazor', 'OnConnect');
-        //});
+        ethereum.on("connect", function (connectInfo) {
+            DotNet.invokeMethodAsync('MetaMask.Blazor', 'OnConnect');
+        });
 
-        //ethereum.on("disconnect", function () {
-        //    DotNet.invokeMethodAsync('MetaMask.Blazor', 'OnDisconnect');
-        //});
+        ethereum.on("disconnect", function (error) {
+            DotNet.invokeMethodAsync('MetaMask.Blazor', 'OnDisconnect');
+        });
 
         ethereum.on("accountsChanged", function (accounts) {
             DotNet.invokeMethodAsync('MetaMask.Blazor', 'OnAccountsChanged', accounts[0]);
@@ -87,6 +86,32 @@ export async function getTransactionCount() {
 
     });
     return result;
+}
+
+export async function personalSign(message) {
+    await checkMetaMask();
+
+    // Convert message to hex
+    const hex = message.split("")
+        .map(c => c.charCodeAt(0).toString(16).padStart(2, "0"))
+        .join("");
+    const msg = `0x${hex}`;
+
+    try {
+        var result = await ethereum.request({
+            method: 'personal_sign',
+            params:
+                [
+                    msg,
+                    ethereum.selectedAddress
+                ]
+        });
+
+        return result;
+    } catch (error) {
+        // User denied account access...
+        throw "UserDenied"
+    }
 }
 
 export async function signTypedData(label, value) {
