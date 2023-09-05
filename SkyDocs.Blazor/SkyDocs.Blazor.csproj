@@ -16,19 +16,19 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Blazored.LocalStorage" Version="4.2.0" />
+    <PackageReference Include="Blazored.LocalStorage" Version="4.4.0" />
     <PackageReference Include="Dfinity.Blazor" Version="0.2.1" />
-    <PackageReference Include="HtmlAgilityPack" Version="1.11.46" />
-    <PackageReference Include="MetaMask.Blazor" Version="1.8.0" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.11.52" />
+    <PackageReference Include="MetaMask.Blazor" Version="1.9.1" />
     <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="7.0.0" />
-    <PackageReference Include="Nethereum.ABI" Version="4.11.0" />
-    <PackageReference Include="Radzen.Blazor" Version="4.3.1" />
+    <PackageReference Include="Nethereum.ABI" Version="4.16.0" />
+    <PackageReference Include="Radzen.Blazor" Version="4.15.10" />
     <PackageReference Include="SiaSkynet" Version="3.6.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="7.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="7.0.0" PrivateAssets="all" />
-    <PackageReference Include="System.Net.Http.Json" Version="7.0.0" />
-    <PackageReference Include="TheGraph" Version="0.8.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="7.0.10" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="7.0.10" PrivateAssets="all" />
+    <PackageReference Include="System.Net.Http.Json" Version="7.0.1" />
+    <PackageReference Include="TheGraph" Version="0.9.0" />
   </ItemGroup>
 
 </Project>
