@@ -8,7 +8,7 @@ A decentralized Google Docs alternative running on Sia Skynet (deprecated) and D
 
 Alternatives:
 - GitHub pages: https://michielpost.github.io/SkyDocs/
-- https://skydocs.hns.skynetfree.net (signup required)
+- CloudFlare: https://skydocs.pages.dev/
 
 
 Features:
