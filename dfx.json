@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "dfx": "0.14.3",
+  "dfx": "0.15.1",
   "canisters": {
     "storage": {
       "main": "Dfinity.storage/main.mo",
