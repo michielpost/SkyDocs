@@ -13878,6 +13878,7 @@ p-button[type] {
   --rz-button-active-gradient: linear-gradient(to bottom, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.08) 50%, rgba(255, 255, 255, 0) 100%), linear-gradient(to bottom, rgba(0, 0, 0, 0.08) 0%, rgba(0, 0, 0, 0.08) 50%, rgba(0, 0, 0, 0) 100%);
   --rz-button-active-background-size: 100% 0%, 100% 200%;
   --rz-button-disabled-opacity: 0.5;
+  --rz-button-empty-opacity: 0.4;
 }
 
 .rz-paginator-element, .rz-button {
@@ -13922,6 +13923,10 @@ p-button[type] {
 }
 .rz-state-disabled.rz-paginator-element, .rz-button.rz-state-disabled {
   opacity: var(--rz-button-disabled-opacity);
+  cursor: initial;
+}
+.rz-state-empty.rz-paginator-element, .rz-button.rz-state-empty {
+  opacity: var(--rz-button-empty-opacity);
   cursor: initial;
 }
 .rz-paginator-element .rz-button-box, .rz-button .rz-button-box {
@@ -15800,6 +15805,7 @@ input::placeholder {
   --rz-menu-item-icon-hover-color: var(--rz-primary);
   --rz-menu-item-offset: 1rem;
   --rz-menu-item-transition: var(--rz-transition-all);
+  --rz-menu-item-disabled-opacity: 0.2;
   --rz-menu-top-item-padding: 0.5rem;
   --rz-menu-top-item-border-radius: 0;
   --rz-menu-top-item-color: var(--rz-text-color);
@@ -15967,6 +15973,12 @@ input::placeholder {
 .rz-navigation-item-link,
 .rz-navigation-item-text {
   transition: var(--rz-menu-item-transition);
+}
+
+li.rz-navigation-item.rz-state-disabled {
+  opacity: var(--rz-menu-item-disabled-opacity);
+  cursor: initial;
+  pointer-events: none;
 }
 
 .rz-menu-toggle-item {
