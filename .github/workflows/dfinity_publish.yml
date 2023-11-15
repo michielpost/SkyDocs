@@ -23,9 +23,9 @@ jobs:
         env:
           APP_VERSION: ${{ env.GITHUB_REF_SLUG }}-$(git rev-parse --short "$GITHUB_SHA")
       - name: Setup dotnet
-        uses: actions/setup-dotnet@v1
+        uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: 7.0.x
+          dotnet-version: 8.0.x
           include-prerelease: true
       - name: Build with dotnet
         run: dotnet build --configuration Release

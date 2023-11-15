@@ -31,7 +31,7 @@ namespace SkyDocs.Blazor
             var pubString = BitConverter.ToString(sum.PublicKey).Replace("-", "");
             var privString = sum.PrivateKey != null ? BitConverter.ToString(sum.PrivateKey).Replace("-", "") : null;
 
-            var query = new Dictionary<string, string> {
+            var query = new Dictionary<string, string?> {
                         { "id", sum.Id.ToString() },
                         { "pub", pubString },
                         { "c", sum.ContentSeed },
