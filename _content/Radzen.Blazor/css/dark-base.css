@@ -7,7 +7,7 @@
   font-family: "Material Icons";
   font-style: normal;
   font-weight: 400;
-  src: local("Material Icons"), local("MaterialIcons-Regular"), url("../fonts/MaterialIcons-Regular.woff") format("woff");
+  src: url("../fonts/MaterialIcons-Regular.woff") format("woff");
 }
 @font-face {
   font-family: "Source Sans Pro";
@@ -201,6 +201,9 @@
   --rz-text-font-family: Source Sans Pro, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
   --rz-icon-size: 1.25rem;
   --rz-icon-font-family: Material Icons;
+  --rz-outline-offset: 2px;
+  --rz-outline-width: 2px;
+  --rz-outline-color: var(--rz-secondary);
 }
 
 :root {
@@ -241,6 +244,8 @@
   --rz-link-text-decoration: none;
   --rz-link-hover-color: var(--rz-secondary-dark);
   --rz-link-hover-text-decoration: underline;
+  --rz-link-focus-outline: var(--rz-outline-focus);
+  --rz-link-focus-outline-offset: var(--rz-outline-offset);
 }
 
 :root {
@@ -414,6 +419,110 @@
 
 .rz-border-radius-10 {
   border-radius: var(--rz-border-radius-10) !important;
+}
+
+:root {
+  --rz-outline-white: var(--rz-outline-width) solid var(--rz-white);
+  --rz-outline-black: var(--rz-outline-width) solid var(--rz-black);
+  --rz-outline-base-50: var(--rz-outline-width) solid var(--rz-base-50);
+  --rz-outline-base-100: var(--rz-outline-width) solid var(--rz-base-100);
+  --rz-outline-base-200: var(--rz-outline-width) solid var(--rz-base-200);
+  --rz-outline-base-300: var(--rz-outline-width) solid var(--rz-base-300);
+  --rz-outline-base-400: var(--rz-outline-width) solid var(--rz-base-400);
+  --rz-outline-base-500: var(--rz-outline-width) solid var(--rz-base-500);
+  --rz-outline-base-600: var(--rz-outline-width) solid var(--rz-base-600);
+  --rz-outline-base-700: var(--rz-outline-width) solid var(--rz-base-700);
+  --rz-outline-base-800: var(--rz-outline-width) solid var(--rz-base-800);
+  --rz-outline-base-900: var(--rz-outline-width) solid var(--rz-base-900);
+  --rz-outline-primary: var(--rz-outline-width) solid var(--rz-primary);
+  --rz-outline-primary-light: var(--rz-outline-width) solid var(--rz-primary-light);
+  --rz-outline-primary-lighter: var(--rz-outline-width) solid var(--rz-primary-lighter);
+  --rz-outline-primary-dark: var(--rz-outline-width) solid var(--rz-primary-dark);
+  --rz-outline-primary-darker: var(--rz-outline-width) solid var(--rz-primary-darker);
+  --rz-outline-secondary: var(--rz-outline-width) solid var(--rz-secondary);
+  --rz-outline-secondary-light: var(--rz-outline-width) solid var(--rz-secondary-light);
+  --rz-outline-secondary-lighter: var(--rz-outline-width) solid var(--rz-secondary-lighter);
+  --rz-outline-secondary-dark: var(--rz-outline-width) solid var(--rz-secondary-dark);
+  --rz-outline-secondary-darker: var(--rz-outline-width) solid var(--rz-secondary-darker);
+  --rz-outline-info: var(--rz-outline-width) solid var(--rz-info);
+  --rz-outline-info-light: var(--rz-outline-width) solid var(--rz-info-light);
+  --rz-outline-info-lighter: var(--rz-outline-width) solid var(--rz-info-lighter);
+  --rz-outline-info-dark: var(--rz-outline-width) solid var(--rz-info-dark);
+  --rz-outline-info-darker: var(--rz-outline-width) solid var(--rz-info-darker);
+  --rz-outline-success: var(--rz-outline-width) solid var(--rz-success);
+  --rz-outline-success-light: var(--rz-outline-width) solid var(--rz-success-light);
+  --rz-outline-success-lighter: var(--rz-outline-width) solid var(--rz-success-lighter);
+  --rz-outline-success-dark: var(--rz-outline-width) solid var(--rz-success-dark);
+  --rz-outline-success-darker: var(--rz-outline-width) solid var(--rz-success-darker);
+  --rz-outline-warning: var(--rz-outline-width) solid var(--rz-warning);
+  --rz-outline-warning-light: var(--rz-outline-width) solid var(--rz-warning-light);
+  --rz-outline-warning-lighter: var(--rz-outline-width) solid var(--rz-warning-lighter);
+  --rz-outline-warning-dark: var(--rz-outline-width) solid var(--rz-warning-dark);
+  --rz-outline-warning-darker: var(--rz-outline-width) solid var(--rz-warning-darker);
+  --rz-outline-danger: var(--rz-outline-width) solid var(--rz-danger);
+  --rz-outline-danger-light: var(--rz-outline-width) solid var(--rz-danger-light);
+  --rz-outline-danger-lighter: var(--rz-outline-width) solid var(--rz-danger-lighter);
+  --rz-outline-danger-dark: var(--rz-outline-width) solid var(--rz-danger-dark);
+  --rz-outline-danger-darker: var(--rz-outline-width) solid var(--rz-danger-darker);
+  --rz-outline-on-primary: var(--rz-outline-width) solid var(--rz-on-primary);
+  --rz-outline-on-primary-light: var(--rz-outline-width) solid var(--rz-on-primary-light);
+  --rz-outline-on-primary-lighter: var(--rz-outline-width) solid var(--rz-on-primary-lighter);
+  --rz-outline-on-primary-dark: var(--rz-outline-width) solid var(--rz-on-primary-dark);
+  --rz-outline-on-primary-darker: var(--rz-outline-width) solid var(--rz-on-primary-darker);
+  --rz-outline-on-secondary: var(--rz-outline-width) solid var(--rz-on-secondary);
+  --rz-outline-on-secondary-light: var(--rz-outline-width) solid var(--rz-on-secondary-light);
+  --rz-outline-on-secondary-lighter: var(--rz-outline-width) solid var(--rz-on-secondary-lighter);
+  --rz-outline-on-secondary-dark: var(--rz-outline-width) solid var(--rz-on-secondary-dark);
+  --rz-outline-on-secondary-darker: var(--rz-outline-width) solid var(--rz-on-secondary-darker);
+  --rz-outline-on-info: var(--rz-outline-width) solid var(--rz-on-info);
+  --rz-outline-on-info-light: var(--rz-outline-width) solid var(--rz-on-info-light);
+  --rz-outline-on-info-lighter: var(--rz-outline-width) solid var(--rz-on-info-lighter);
+  --rz-outline-on-info-dark: var(--rz-outline-width) solid var(--rz-on-info-dark);
+  --rz-outline-on-info-darker: var(--rz-outline-width) solid var(--rz-on-info-darker);
+  --rz-outline-on-success: var(--rz-outline-width) solid var(--rz-on-success);
+  --rz-outline-on-success-light: var(--rz-outline-width) solid var(--rz-on-success-light);
+  --rz-outline-on-success-lighter: var(--rz-outline-width) solid var(--rz-on-success-lighter);
+  --rz-outline-on-success-dark: var(--rz-outline-width) solid var(--rz-on-success-dark);
+  --rz-outline-on-success-darker: var(--rz-outline-width) solid var(--rz-on-success-darker);
+  --rz-outline-on-warning: var(--rz-outline-width) solid var(--rz-on-warning);
+  --rz-outline-on-warning-light: var(--rz-outline-width) solid var(--rz-on-warning-light);
+  --rz-outline-on-warning-lighter: var(--rz-outline-width) solid var(--rz-on-warning-lighter);
+  --rz-outline-on-warning-dark: var(--rz-outline-width) solid var(--rz-on-warning-dark);
+  --rz-outline-on-warning-darker: var(--rz-outline-width) solid var(--rz-on-warning-darker);
+  --rz-outline-on-danger: var(--rz-outline-width) solid var(--rz-on-danger);
+  --rz-outline-on-danger-light: var(--rz-outline-width) solid var(--rz-on-danger-light);
+  --rz-outline-on-danger-lighter: var(--rz-outline-width) solid var(--rz-on-danger-lighter);
+  --rz-outline-on-danger-dark: var(--rz-outline-width) solid var(--rz-on-danger-dark);
+  --rz-outline-on-danger-darker: var(--rz-outline-width) solid var(--rz-on-danger-darker);
+  --rz-outline-series-1: var(--rz-outline-width) solid var(--rz-series-1);
+  --rz-outline-series-2: var(--rz-outline-width) solid var(--rz-series-2);
+  --rz-outline-series-3: var(--rz-outline-width) solid var(--rz-series-3);
+  --rz-outline-series-4: var(--rz-outline-width) solid var(--rz-series-4);
+  --rz-outline-series-5: var(--rz-outline-width) solid var(--rz-series-5);
+  --rz-outline-series-6: var(--rz-outline-width) solid var(--rz-series-6);
+  --rz-outline-series-7: var(--rz-outline-width) solid var(--rz-series-7);
+  --rz-outline-series-8: var(--rz-outline-width) solid var(--rz-series-8);
+  --rz-outline-series-9: var(--rz-outline-width) solid var(--rz-series-9);
+  --rz-outline-series-10: var(--rz-outline-width) solid var(--rz-series-10);
+  --rz-outline-series-11: var(--rz-outline-width) solid var(--rz-series-11);
+  --rz-outline-series-12: var(--rz-outline-width) solid var(--rz-series-12);
+  --rz-outline-series-13: var(--rz-outline-width) solid var(--rz-series-13);
+  --rz-outline-series-14: var(--rz-outline-width) solid var(--rz-series-14);
+  --rz-outline-series-15: var(--rz-outline-width) solid var(--rz-series-15);
+  --rz-outline-series-16: var(--rz-outline-width) solid var(--rz-series-16);
+  --rz-outline-series-17: var(--rz-outline-width) solid var(--rz-series-17);
+  --rz-outline-series-18: var(--rz-outline-width) solid var(--rz-series-18);
+  --rz-outline-series-19: var(--rz-outline-width) solid var(--rz-series-19);
+  --rz-outline-series-20: var(--rz-outline-width) solid var(--rz-series-20);
+  --rz-outline-series-21: var(--rz-outline-width) solid var(--rz-series-21);
+  --rz-outline-series-22: var(--rz-outline-width) solid var(--rz-series-22);
+  --rz-outline-series-23: var(--rz-outline-width) solid var(--rz-series-23);
+  --rz-outline-series-24: var(--rz-outline-width) solid var(--rz-series-24);
+}
+
+:root {
+  --rz-outline-normal: none;
+  --rz-outline-focus: var(--rz-outline-width) solid var(--rz-outline-color);
 }
 
 /* $rz-shadow-0: none !default;
@@ -2490,13 +2599,13 @@ $rz-shadow-10: none !default; */
   content: "";
   position: absolute;
   inset: 0;
-  background-position: center;
-  transition: background 0.8s, opacity 0.8s;
   opacity: 0;
+  background-position: center;
   background: radial-gradient(circle, currentColor 1%, transparent 1%) center/15000%;
+  transition: background-size 0.8s, opacity 0.8s;
 }
 .rz-ripple:not(.rz-state-disabled):active:before {
-  transition: background 0s, opacity 0s;
+  transition: background-size 0s, opacity 0s;
   opacity: 0.32;
   background-size: 100%;
 }
@@ -8491,11 +8600,11 @@ p-button[type] {
 
 :root {
   --rz-button-base-background-color: var(--rz-primary);
-  --rz-button-base-color: var(--rz-text-contrast-color);
+  --rz-button-base-color: var(--rz-on-primary);
   --rz-button-background-size: auto;
   --rz-button-border-radius: var(--rz-border-radius);
   --rz-button-shadow: none;
-  --rz-button-transition: var(--rz-transition-all);
+  --rz-button-transition: var(--rz-transition-all), width 0, height 0;
   --rz-button-line-height: 1.25rem;
   --rz-button-vertical-align: top;
   --rz-button-hover-shadow: inset 0 -3px 0 0 rgba(255, 255, 255, 0.2);
@@ -8504,7 +8613,8 @@ p-button[type] {
   --rz-button-focus-shadow: inset 0 -3px 0 0 rgba(255, 255, 255, 0.2);
   --rz-button-focus-gradient: linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1));
   --rz-button-focus-background-size: auto;
-  --rz-button-focus-outline: none;
+  --rz-button-focus-outline: var(--rz-outline-focus);
+  --rz-button-focus-outline-offset: var(--rz-outline-offset);
   --rz-button-active-shadow: inset 0 3px 0 0 rgba(0, 0, 0, 0.1);
   --rz-button-active-gradient: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1));
   --rz-button-active-background-size: auto;
@@ -8529,7 +8639,11 @@ p-button[type] {
   background-repeat: no-repeat;
 }
 .rz-paginator-element:focus, .rz-button:focus {
+  outline: var(--rz-outline-normal);
+}
+.rz-paginator-element:focus-visible, .rz-button:focus-visible {
   outline: var(--rz-button-focus-outline);
+  outline-offset: var(--rz-button-focus-outline-offset);
 }
 .rz-paginator-element:not(.rz-state-disabled), .rz-button:not(.rz-state-disabled) {
   cursor: pointer;
@@ -8540,7 +8654,7 @@ p-button[type] {
   background-size: var(--rz-button-hover-background-size);
   box-shadow: var(--rz-button-hover-shadow);
 }
-.rz-paginator-element:not(.rz-state-disabled):focus:not(:active), .rz-button:not(.rz-state-disabled):focus:not(:active) {
+.rz-paginator-element:not(.rz-state-disabled):focus-visible:not(:active), .rz-button:not(.rz-state-disabled):focus-visible:not(:active) {
   text-decoration: none;
   background-image: var(--rz-button-focus-gradient);
   background-size: var(--rz-button-focus-background-size);
@@ -8574,6 +8688,46 @@ p-button[type] {
   vertical-align: var(--rz-button-vertical-align);
 }
 
+.rz-button.rz-primary:focus-visible {
+  outline-color: var(--rz-primary);
+}
+
+.rz-button.rz-light:focus-visible {
+  outline-color: var(--rz-outline-color);
+}
+
+.rz-button.rz-base:focus-visible {
+  outline-color: var(--rz-base);
+}
+
+.rz-button.rz-dark:focus-visible {
+  outline-color: var(--rz-outline-color);
+}
+
+.rz-button.rz-secondary:focus-visible {
+  outline-color: var(--rz-secondary);
+}
+
+.rz-button.rz-info:focus-visible {
+  outline-color: var(--rz-info);
+}
+
+.rz-button.rz-warning:focus-visible {
+  outline-color: var(--rz-warning);
+}
+
+.rz-button.rz-error:focus-visible {
+  outline-color: var(--rz-error);
+}
+
+.rz-button.rz-danger:focus-visible {
+  outline-color: var(--rz-danger);
+}
+
+.rz-button.rz-success:focus-visible {
+  outline-color: var(--rz-success);
+}
+
 .rz-button.rz-primary {
   background-color: var(--rz-primary);
   color: var(--rz-text-contrast-color);
@@ -8601,6 +8755,9 @@ p-button[type] {
 .rz-button.rz-primary.rz-variant-flat {
   box-shadow: none !important;
 }
+.rz-button.rz-primary.rz-variant-flat:focus-visible {
+  outline-color: var(--rz-primary);
+}
 
 .rz-button.rz-light {
   background-color: var(--rz-base-700);
@@ -8608,6 +8765,9 @@ p-button[type] {
 }
 .rz-button.rz-light.rz-variant-flat {
   box-shadow: none !important;
+}
+.rz-button.rz-light.rz-variant-flat:focus-visible {
+  outline-color: var(--rz-outline-color);
 }
 
 .rz-button.rz-base {
@@ -8637,6 +8797,9 @@ p-button[type] {
 .rz-button.rz-base.rz-variant-flat {
   box-shadow: none !important;
 }
+.rz-button.rz-base.rz-variant-flat:focus-visible {
+  outline-color: var(--rz-base);
+}
 
 .rz-button.rz-dark {
   background-color: var(--rz-base-900);
@@ -8644,6 +8807,9 @@ p-button[type] {
 }
 .rz-button.rz-dark.rz-variant-flat {
   box-shadow: none !important;
+}
+.rz-button.rz-dark.rz-variant-flat:focus-visible {
+  outline-color: var(--rz-outline-color);
 }
 
 .rz-button.rz-secondary {
@@ -8673,6 +8839,9 @@ p-button[type] {
 .rz-button.rz-secondary.rz-variant-flat {
   box-shadow: none !important;
 }
+.rz-button.rz-secondary.rz-variant-flat:focus-visible {
+  outline-color: var(--rz-secondary);
+}
 
 .rz-button.rz-info {
   background-color: var(--rz-info);
@@ -8700,6 +8869,9 @@ p-button[type] {
 }
 .rz-button.rz-info.rz-variant-flat {
   box-shadow: none !important;
+}
+.rz-button.rz-info.rz-variant-flat:focus-visible {
+  outline-color: var(--rz-info);
 }
 
 .rz-button.rz-warning {
@@ -8729,6 +8901,9 @@ p-button[type] {
 .rz-button.rz-warning.rz-variant-flat {
   box-shadow: none !important;
 }
+.rz-button.rz-warning.rz-variant-flat:focus-visible {
+  outline-color: var(--rz-warning);
+}
 
 .rz-button.rz-error {
   background-color: var(--rz-danger);
@@ -8756,6 +8931,9 @@ p-button[type] {
 }
 .rz-button.rz-error.rz-variant-flat {
   box-shadow: none !important;
+}
+.rz-button.rz-error.rz-variant-flat:focus-visible {
+  outline-color: var(--rz-error);
 }
 
 .rz-button.rz-danger {
@@ -8785,6 +8963,9 @@ p-button[type] {
 .rz-button.rz-danger.rz-variant-flat {
   box-shadow: none !important;
 }
+.rz-button.rz-danger.rz-variant-flat:focus-visible {
+  outline-color: var(--rz-danger);
+}
 
 .rz-button.rz-success {
   background-color: var(--rz-success);
@@ -8813,6 +8994,9 @@ p-button[type] {
 .rz-button.rz-success.rz-variant-flat {
   box-shadow: none !important;
 }
+.rz-button.rz-success.rz-variant-flat:focus-visible {
+  outline-color: var(--rz-success);
+}
 
 .rz-button.rz-variant-outlined.rz-primary {
   background-color: transparent;
@@ -8837,7 +9021,7 @@ p-button[type] {
   box-shadow: inset 0 0 0 var(--rz-border-width) var(--rz-primary-darker);
   color: var(--rz-primary-darker);
 }
-.rz-button.rz-variant-outlined.rz-primary:not(.rz-state-disabled):hover:not(:active), .rz-button.rz-variant-outlined.rz-primary:not(.rz-state-disabled):focus:not(:active), .rz-button.rz-variant-outlined.rz-primary:not(.rz-state-disabled):active {
+.rz-button.rz-variant-outlined.rz-primary:not(.rz-state-disabled):hover:not(:active), .rz-button.rz-variant-outlined.rz-primary:not(.rz-state-disabled):focus-visible:not(:active), .rz-button.rz-variant-outlined.rz-primary:not(.rz-state-disabled):active {
   background-color: var(--rz-primary-lighter);
   color: var(--rz-on-primary-lighter);
   background-image: none;
@@ -8850,7 +9034,7 @@ p-button[type] {
   box-shadow: inset 0 0 0 var(--rz-border-width) var(--rz-text-contrast-color);
   color: var(--rz-text-contrast-color);
 }
-.rz-button.rz-variant-outlined.rz-light:not(.rz-state-disabled):hover:not(:active), .rz-button.rz-variant-outlined.rz-light:not(.rz-state-disabled):focus:not(:active), .rz-button.rz-variant-outlined.rz-light:not(.rz-state-disabled):active {
+.rz-button.rz-variant-outlined.rz-light:not(.rz-state-disabled):hover:not(:active), .rz-button.rz-variant-outlined.rz-light:not(.rz-state-disabled):focus-visible:not(:active), .rz-button.rz-variant-outlined.rz-light:not(.rz-state-disabled):active {
   background-color: rgba(255, 255, 255, 0.12);
   background-image: none;
 }
@@ -8878,7 +9062,7 @@ p-button[type] {
   box-shadow: inset 0 0 0 var(--rz-border-width) var(--rz-base-darker);
   color: var(--rz-base-darker);
 }
-.rz-button.rz-variant-outlined.rz-base:not(.rz-state-disabled):hover:not(:active), .rz-button.rz-variant-outlined.rz-base:not(.rz-state-disabled):focus:not(:active), .rz-button.rz-variant-outlined.rz-base:not(.rz-state-disabled):active {
+.rz-button.rz-variant-outlined.rz-base:not(.rz-state-disabled):hover:not(:active), .rz-button.rz-variant-outlined.rz-base:not(.rz-state-disabled):focus-visible:not(:active), .rz-button.rz-variant-outlined.rz-base:not(.rz-state-disabled):active {
   background-color: var(--rz-base-lighter);
   color: var(--rz-on-base-lighter);
   background-image: none;
@@ -8891,7 +9075,7 @@ p-button[type] {
   box-shadow: inset 0 0 0 var(--rz-border-width) var(--rz-base-900);
   color: var(--rz-base-900);
 }
-.rz-button.rz-variant-outlined.rz-dark:not(.rz-state-disabled):hover:not(:active), .rz-button.rz-variant-outlined.rz-dark:not(.rz-state-disabled):focus:not(:active), .rz-button.rz-variant-outlined.rz-dark:not(.rz-state-disabled):active {
+.rz-button.rz-variant-outlined.rz-dark:not(.rz-state-disabled):hover:not(:active), .rz-button.rz-variant-outlined.rz-dark:not(.rz-state-disabled):focus-visible:not(:active), .rz-button.rz-variant-outlined.rz-dark:not(.rz-state-disabled):active {
   background-color: rgba(0, 0, 0, 0.12);
   background-image: none;
 }
@@ -8919,7 +9103,7 @@ p-button[type] {
   box-shadow: inset 0 0 0 var(--rz-border-width) var(--rz-secondary-darker);
   color: var(--rz-secondary-darker);
 }
-.rz-button.rz-variant-outlined.rz-secondary:not(.rz-state-disabled):hover:not(:active), .rz-button.rz-variant-outlined.rz-secondary:not(.rz-state-disabled):focus:not(:active), .rz-button.rz-variant-outlined.rz-secondary:not(.rz-state-disabled):active {
+.rz-button.rz-variant-outlined.rz-secondary:not(.rz-state-disabled):hover:not(:active), .rz-button.rz-variant-outlined.rz-secondary:not(.rz-state-disabled):focus-visible:not(:active), .rz-button.rz-variant-outlined.rz-secondary:not(.rz-state-disabled):active {
   background-color: var(--rz-secondary-lighter);
   color: var(--rz-on-secondary-lighter);
   background-image: none;
@@ -8948,7 +9132,7 @@ p-button[type] {
   box-shadow: inset 0 0 0 var(--rz-border-width) var(--rz-info-darker);
   color: var(--rz-info-darker);
 }
-.rz-button.rz-variant-outlined.rz-info:not(.rz-state-disabled):hover:not(:active), .rz-button.rz-variant-outlined.rz-info:not(.rz-state-disabled):focus:not(:active), .rz-button.rz-variant-outlined.rz-info:not(.rz-state-disabled):active {
+.rz-button.rz-variant-outlined.rz-info:not(.rz-state-disabled):hover:not(:active), .rz-button.rz-variant-outlined.rz-info:not(.rz-state-disabled):focus-visible:not(:active), .rz-button.rz-variant-outlined.rz-info:not(.rz-state-disabled):active {
   background-color: var(--rz-info-lighter);
   color: var(--rz-on-info-lighter);
   background-image: none;
@@ -8977,7 +9161,7 @@ p-button[type] {
   box-shadow: inset 0 0 0 var(--rz-border-width) var(--rz-warning-darker);
   color: var(--rz-warning-darker);
 }
-.rz-button.rz-variant-outlined.rz-warning:not(.rz-state-disabled):hover:not(:active), .rz-button.rz-variant-outlined.rz-warning:not(.rz-state-disabled):focus:not(:active), .rz-button.rz-variant-outlined.rz-warning:not(.rz-state-disabled):active {
+.rz-button.rz-variant-outlined.rz-warning:not(.rz-state-disabled):hover:not(:active), .rz-button.rz-variant-outlined.rz-warning:not(.rz-state-disabled):focus-visible:not(:active), .rz-button.rz-variant-outlined.rz-warning:not(.rz-state-disabled):active {
   background-color: var(--rz-warning-lighter);
   color: var(--rz-on-warning-lighter);
   background-image: none;
@@ -9006,7 +9190,7 @@ p-button[type] {
   box-shadow: inset 0 0 0 var(--rz-border-width) var(--rz-error-darker);
   color: var(--rz-error-darker);
 }
-.rz-button.rz-variant-outlined.rz-error:not(.rz-state-disabled):hover:not(:active), .rz-button.rz-variant-outlined.rz-error:not(.rz-state-disabled):focus:not(:active), .rz-button.rz-variant-outlined.rz-error:not(.rz-state-disabled):active {
+.rz-button.rz-variant-outlined.rz-error:not(.rz-state-disabled):hover:not(:active), .rz-button.rz-variant-outlined.rz-error:not(.rz-state-disabled):focus-visible:not(:active), .rz-button.rz-variant-outlined.rz-error:not(.rz-state-disabled):active {
   background-color: var(--rz-error-lighter);
   color: var(--rz-on-error-lighter);
   background-image: none;
@@ -9035,7 +9219,7 @@ p-button[type] {
   box-shadow: inset 0 0 0 var(--rz-border-width) var(--rz-danger-darker);
   color: var(--rz-danger-darker);
 }
-.rz-button.rz-variant-outlined.rz-danger:not(.rz-state-disabled):hover:not(:active), .rz-button.rz-variant-outlined.rz-danger:not(.rz-state-disabled):focus:not(:active), .rz-button.rz-variant-outlined.rz-danger:not(.rz-state-disabled):active {
+.rz-button.rz-variant-outlined.rz-danger:not(.rz-state-disabled):hover:not(:active), .rz-button.rz-variant-outlined.rz-danger:not(.rz-state-disabled):focus-visible:not(:active), .rz-button.rz-variant-outlined.rz-danger:not(.rz-state-disabled):active {
   background-color: var(--rz-danger-lighter);
   color: var(--rz-on-danger-lighter);
   background-image: none;
@@ -9064,7 +9248,7 @@ p-button[type] {
   box-shadow: inset 0 0 0 var(--rz-border-width) var(--rz-success-darker);
   color: var(--rz-success-darker);
 }
-.rz-button.rz-variant-outlined.rz-success:not(.rz-state-disabled):hover:not(:active), .rz-button.rz-variant-outlined.rz-success:not(.rz-state-disabled):focus:not(:active), .rz-button.rz-variant-outlined.rz-success:not(.rz-state-disabled):active {
+.rz-button.rz-variant-outlined.rz-success:not(.rz-state-disabled):hover:not(:active), .rz-button.rz-variant-outlined.rz-success:not(.rz-state-disabled):focus-visible:not(:active), .rz-button.rz-variant-outlined.rz-success:not(.rz-state-disabled):active {
   background-color: var(--rz-success-lighter);
   color: var(--rz-on-success-lighter);
   background-image: none;
@@ -9089,7 +9273,7 @@ p-button[type] {
 .rz-button.rz-variant-text.rz-primary.rz-shade-darker {
   color: var(--rz-primary-darker);
 }
-.rz-button.rz-variant-text.rz-primary:not(.rz-state-disabled):hover:not(:active), .rz-button.rz-variant-text.rz-primary:not(.rz-state-disabled):focus:not(:active), .rz-button.rz-variant-text.rz-primary:not(.rz-state-disabled):active {
+.rz-button.rz-variant-text.rz-primary:not(.rz-state-disabled):hover:not(:active), .rz-button.rz-variant-text.rz-primary:not(.rz-state-disabled):focus-visible:not(:active), .rz-button.rz-variant-text.rz-primary:not(.rz-state-disabled):active {
   background-color: var(--rz-primary-lighter);
   color: var(--rz-on-primary-lighter);
   background-image: none;
@@ -9101,7 +9285,7 @@ p-button[type] {
   background-color: transparent;
   box-shadow: none;
 }
-.rz-button.rz-variant-text.rz-light:not(.rz-state-disabled):hover:not(:active), .rz-button.rz-variant-text.rz-light:not(.rz-state-disabled):focus:not(:active), .rz-button.rz-variant-text.rz-light:not(.rz-state-disabled):active {
+.rz-button.rz-variant-text.rz-light:not(.rz-state-disabled):hover:not(:active), .rz-button.rz-variant-text.rz-light:not(.rz-state-disabled):focus-visible:not(:active), .rz-button.rz-variant-text.rz-light:not(.rz-state-disabled):active {
   background-color: rgba(255, 255, 255, 0.12);
   background-image: none;
   box-shadow: none;
@@ -9126,7 +9310,7 @@ p-button[type] {
 .rz-button.rz-variant-text.rz-base.rz-shade-darker {
   color: var(--rz-base-darker);
 }
-.rz-button.rz-variant-text.rz-base:not(.rz-state-disabled):hover:not(:active), .rz-button.rz-variant-text.rz-base:not(.rz-state-disabled):focus:not(:active), .rz-button.rz-variant-text.rz-base:not(.rz-state-disabled):active {
+.rz-button.rz-variant-text.rz-base:not(.rz-state-disabled):hover:not(:active), .rz-button.rz-variant-text.rz-base:not(.rz-state-disabled):focus-visible:not(:active), .rz-button.rz-variant-text.rz-base:not(.rz-state-disabled):active {
   background-color: var(--rz-base-lighter);
   color: var(--rz-on-base-lighter);
   background-image: none;
@@ -9138,7 +9322,7 @@ p-button[type] {
   background-color: transparent;
   box-shadow: none;
 }
-.rz-button.rz-variant-text.rz-dark:not(.rz-state-disabled):hover:not(:active), .rz-button.rz-variant-text.rz-dark:not(.rz-state-disabled):focus:not(:active), .rz-button.rz-variant-text.rz-dark:not(.rz-state-disabled):active {
+.rz-button.rz-variant-text.rz-dark:not(.rz-state-disabled):hover:not(:active), .rz-button.rz-variant-text.rz-dark:not(.rz-state-disabled):focus-visible:not(:active), .rz-button.rz-variant-text.rz-dark:not(.rz-state-disabled):active {
   background-color: rgba(0, 0, 0, 0.12);
   background-image: none;
   box-shadow: none;
@@ -9163,7 +9347,7 @@ p-button[type] {
 .rz-button.rz-variant-text.rz-secondary.rz-shade-darker {
   color: var(--rz-secondary-darker);
 }
-.rz-button.rz-variant-text.rz-secondary:not(.rz-state-disabled):hover:not(:active), .rz-button.rz-variant-text.rz-secondary:not(.rz-state-disabled):focus:not(:active), .rz-button.rz-variant-text.rz-secondary:not(.rz-state-disabled):active {
+.rz-button.rz-variant-text.rz-secondary:not(.rz-state-disabled):hover:not(:active), .rz-button.rz-variant-text.rz-secondary:not(.rz-state-disabled):focus-visible:not(:active), .rz-button.rz-variant-text.rz-secondary:not(.rz-state-disabled):active {
   background-color: var(--rz-secondary-lighter);
   color: var(--rz-on-secondary-lighter);
   background-image: none;
@@ -9189,7 +9373,7 @@ p-button[type] {
 .rz-button.rz-variant-text.rz-info.rz-shade-darker {
   color: var(--rz-info-darker);
 }
-.rz-button.rz-variant-text.rz-info:not(.rz-state-disabled):hover:not(:active), .rz-button.rz-variant-text.rz-info:not(.rz-state-disabled):focus:not(:active), .rz-button.rz-variant-text.rz-info:not(.rz-state-disabled):active {
+.rz-button.rz-variant-text.rz-info:not(.rz-state-disabled):hover:not(:active), .rz-button.rz-variant-text.rz-info:not(.rz-state-disabled):focus-visible:not(:active), .rz-button.rz-variant-text.rz-info:not(.rz-state-disabled):active {
   background-color: var(--rz-info-lighter);
   color: var(--rz-on-info-lighter);
   background-image: none;
@@ -9215,7 +9399,7 @@ p-button[type] {
 .rz-button.rz-variant-text.rz-warning.rz-shade-darker {
   color: var(--rz-warning-darker);
 }
-.rz-button.rz-variant-text.rz-warning:not(.rz-state-disabled):hover:not(:active), .rz-button.rz-variant-text.rz-warning:not(.rz-state-disabled):focus:not(:active), .rz-button.rz-variant-text.rz-warning:not(.rz-state-disabled):active {
+.rz-button.rz-variant-text.rz-warning:not(.rz-state-disabled):hover:not(:active), .rz-button.rz-variant-text.rz-warning:not(.rz-state-disabled):focus-visible:not(:active), .rz-button.rz-variant-text.rz-warning:not(.rz-state-disabled):active {
   background-color: var(--rz-warning-lighter);
   color: var(--rz-on-warning-lighter);
   background-image: none;
@@ -9241,7 +9425,7 @@ p-button[type] {
 .rz-button.rz-variant-text.rz-error.rz-shade-darker {
   color: var(--rz-error-darker);
 }
-.rz-button.rz-variant-text.rz-error:not(.rz-state-disabled):hover:not(:active), .rz-button.rz-variant-text.rz-error:not(.rz-state-disabled):focus:not(:active), .rz-button.rz-variant-text.rz-error:not(.rz-state-disabled):active {
+.rz-button.rz-variant-text.rz-error:not(.rz-state-disabled):hover:not(:active), .rz-button.rz-variant-text.rz-error:not(.rz-state-disabled):focus-visible:not(:active), .rz-button.rz-variant-text.rz-error:not(.rz-state-disabled):active {
   background-color: var(--rz-error-lighter);
   color: var(--rz-on-error-lighter);
   background-image: none;
@@ -9267,7 +9451,7 @@ p-button[type] {
 .rz-button.rz-variant-text.rz-danger.rz-shade-darker {
   color: var(--rz-danger-darker);
 }
-.rz-button.rz-variant-text.rz-danger:not(.rz-state-disabled):hover:not(:active), .rz-button.rz-variant-text.rz-danger:not(.rz-state-disabled):focus:not(:active), .rz-button.rz-variant-text.rz-danger:not(.rz-state-disabled):active {
+.rz-button.rz-variant-text.rz-danger:not(.rz-state-disabled):hover:not(:active), .rz-button.rz-variant-text.rz-danger:not(.rz-state-disabled):focus-visible:not(:active), .rz-button.rz-variant-text.rz-danger:not(.rz-state-disabled):active {
   background-color: var(--rz-danger-lighter);
   color: var(--rz-on-danger-lighter);
   background-image: none;
@@ -9293,7 +9477,7 @@ p-button[type] {
 .rz-button.rz-variant-text.rz-success.rz-shade-darker {
   color: var(--rz-success-darker);
 }
-.rz-button.rz-variant-text.rz-success:not(.rz-state-disabled):hover:not(:active), .rz-button.rz-variant-text.rz-success:not(.rz-state-disabled):focus:not(:active), .rz-button.rz-variant-text.rz-success:not(.rz-state-disabled):active {
+.rz-button.rz-variant-text.rz-success:not(.rz-state-disabled):hover:not(:active), .rz-button.rz-variant-text.rz-success:not(.rz-state-disabled):focus-visible:not(:active), .rz-button.rz-variant-text.rz-success:not(.rz-state-disabled):active {
   background-color: var(--rz-success-lighter);
   color: var(--rz-on-success-lighter);
   background-image: none;
@@ -9981,13 +10165,15 @@ p-button[type] {
   --rz-input-hover-border: var(--rz-border-hover);
   --rz-input-focus-shadow: inset 0 4px 3px 0 rgba(0, 0, 0, 0.03);
   --rz-input-focus-border: var(--rz-border-focus);
+  --rz-input-focus-outline: var(--rz-outline-normal);
+  --rz-input-focus-outline-offset: 0;
   --rz-input-disabled-border: var(--rz-border-disabled);
   --rz-input-disabled-shadow: inset 0 4px 3px 0 rgba(0, 0, 0, 0.03);
   --rz-input-disabled-background-color: var(--rz-base-800);
   --rz-input-disabled-color: var(--rz-text-tertiary-color);
   --rz-input-disabled-placeholder-color: var(--rz-text-disabled-color);
   --rz-input-disabled-opacity: 1;
-  --rz-input-transition: var(--rz-transition-all);
+  --rz-input-transition: var(--rz-transition-all), width 0, height 0;
 }
 
 .rz-form-field:hover .rz-form-field-content, .rz-autocomplete:hover:not(.rz-state-disabled), .rz-radiobutton-box:hover:not(.rz-state-disabled), .rz-chkbox-box:hover:not(.rz-state-disabled), .rz-colorpicker:not(:disabled):not(.rz-state-disabled):hover, .rz-lookup-search input:not(:disabled):not(.rz-state-disabled):hover, .rz-spinner:not(:disabled):not(.rz-state-disabled):hover, .rz-calendar .rz-inputtext:not(:disabled):not(.rz-state-disabled):hover, .rz-multiselect:not(:disabled):not(.rz-state-disabled):hover, .rz-dropdown:not(:disabled):not(.rz-state-disabled):hover, .mask:not(:disabled):not(.rz-state-disabled):hover, .rz-textarea:not(:disabled):not(.rz-state-disabled):hover, .rz-textbox:not(:disabled):not(.rz-state-disabled):hover {
@@ -9998,6 +10184,8 @@ p-button[type] {
 .rz-form-field.rz-state-focused .rz-form-field-content, .rz-spinner:focus-within:not(.rz-state-disabled), .rz-autocomplete:focus-within:not(.rz-state-disabled), .rz-colorpicker:not(:disabled):not(.rz-state-disabled):focus, .rz-lookup-search input:not(:disabled):not(.rz-state-disabled):focus, .rz-spinner:not(:disabled):not(.rz-state-disabled):focus, .rz-calendar .rz-inputtext:not(:disabled):not(.rz-state-disabled):focus, .rz-multiselect:not(:disabled):not(.rz-state-disabled):focus, .rz-dropdown:not(:disabled):not(.rz-state-disabled):focus, .mask:not(:disabled):not(.rz-state-disabled):focus, .rz-textarea:not(:disabled):not(.rz-state-disabled):focus, .rz-textbox:not(:disabled):not(.rz-state-disabled):focus {
   box-shadow: var(--rz-input-focus-shadow);
   border: var(--rz-input-focus-border);
+  outline: var(--rz-input-focus-outline);
+  outline-offset: var(--rz-input-focus-outline-offset);
 }
 
 div:not(.rz-form-field-content) > .rz-colorpicker.rz-state-disabled, div:not(.rz-form-field-content) > .rz-spinner.rz-state-disabled, .rz-calendar.rz-state-disabled div:not(.rz-form-field-content) > .rz-inputtext, div:not(.rz-form-field-content) > .rz-listbox.rz-state-disabled, div:not(.rz-form-field-content) > .rz-autocomplete-input:disabled, div:not(.rz-form-field-content) > .rz-state-disabled.rz-autocomplete, div:not(.rz-form-field-content) > .rz-state-disabled.rz-multiselect, div:not(.rz-form-field-content) > .rz-state-disabled.rz-dropdown, div:not(.rz-form-field-content) > .rz-colorpicker:disabled, .rz-lookup-search div:not(.rz-form-field-content) > input:disabled, div:not(.rz-form-field-content) > .rz-spinner:disabled, .rz-calendar div:not(.rz-form-field-content) > .rz-inputtext:disabled, div:not(.rz-form-field-content) > .rz-multiselect:disabled, div:not(.rz-form-field-content) > .rz-dropdown:disabled, div:not(.rz-form-field-content) > .mask:disabled, div:not(.rz-form-field-content) > .rz-textarea:disabled, div:not(.rz-form-field-content) > .rz-textbox:disabled {
@@ -10216,6 +10404,8 @@ input::placeholder {
   --rz-accordion-item-border: none;
   --rz-accordion-item-background-color: var(--rz-base-background-color);
   --rz-accordion-item-color: var(--rz-text-color);
+  --rz-accordion-item-focus-outline: var(--rz-outline-focus);
+  --rz-accordion-item-focus-outline-offset: calc(-1 * var(--rz-outline-width));
   --rz-accordion-item-line-height: 1.25rem;
   --rz-accordion-item-font-size: var(--rz-body-font-size);
   --rz-accordion-item-font-weight: normal;
@@ -10246,6 +10436,12 @@ input::placeholder {
 .rz-accordion > div:only-child {
   border-radius: var(--rz-accordion-border-radius);
 }
+.rz-accordion:focus {
+  outline: var(--rz-outline-normal);
+}
+.rz-accordion:focus-visible {
+  outline: var(--rz-accordion-item-focus-outline);
+}
 
 .rz-accordion-header {
   background-color: var(--rz-accordion-item-background-color);
@@ -10269,6 +10465,10 @@ input::placeholder {
 }
 .rz-accordion-header a[role=tab] span:not(.rz-accordion-toggle-icon) {
   flex-grow: 1;
+}
+:focus-visible .rz-accordion-header.rz-state-focused {
+  outline: var(--rz-accordion-item-focus-outline);
+  outline-offset: var(--rz-accordion-item-focus-outline-offset);
 }
 .rz-accordion-header .rzi {
   font-size: var(--rz-accordion-icon-font-size);
@@ -10316,6 +10516,8 @@ input::placeholder {
   --rz-panel-toggle-icon-font-size: var(--rz-icon-size);
   --rz-panel-toggle-icon-border-radius: 2px;
   --rz-panel-toggle-icon-background-color: var(--rz-base-700);
+  --rz-panel-toggle-icon-focus-outline: var(--rz-outline-focus);
+  --rz-panel-toggle-icon-focus-outline-offset: var(--rz-outline-offset);
   --rz-panel-hover-color: var(--rz-secondary);
   --rz-panel-border-radius: var(--rz-border-radius);
   --rz-panel-shadow: none;
@@ -10364,6 +10566,13 @@ input::placeholder {
   text-decoration: none;
   color: var(--rz-panel-hover-color);
 }
+.rz-panel-titlebar-toggler:focus {
+  outline: var(--rz-outline-normal);
+}
+.rz-panel-titlebar-toggler:focus-visible {
+  outline: var(--rz-panel-toggle-icon-focus-outline);
+  outline-offset: var(--rz-panel-toggle-icon-focus-outline-offset);
+}
 .rz-panel-titlebar-toggler .rzi-minus:before {
   content: "remove";
 }
@@ -10382,6 +10591,8 @@ input::placeholder {
   --rz-sidebar-toggle-hover-color: var(--rz-secondary);
   --rz-sidebar-toggle-hover-background-color: var(--rz-header-background-color);
   --rz-sidebar-toggle-hover-border-radius: 0;
+  --rz-sidebar-toggle-focus-outline: var(--rz-outline-focus);
+  --rz-sidebar-toggle-focus-outline-offset: calc(-1 * var(--rz-outline-offset));
 }
 
 .rz-sidebar-toggle {
@@ -10393,10 +10604,18 @@ input::placeholder {
   background-color: var(--rz-sidebar-toggle-background-color);
   color: var(--rz-sidebar-toggle-color);
 }
+.rz-justify-content-flex-end .rz-sidebar-toggle {
+  border-left: var(--rz-sidebar-toggle-border);
+  border-right: none;
+}
 .rz-sidebar-toggle:focus {
   outline: none;
 }
-.rz-sidebar-toggle:hover {
+.rz-sidebar-toggle:focus-visible {
+  outline: var(--rz-sidebar-toggle-focus-outline);
+  outline-offset: var(--rz-sidebar-toggle-focus-outline-offset);
+}
+.rz-sidebar-toggle:focus-visible, .rz-sidebar-toggle:hover {
   color: var(--rz-sidebar-toggle-hover-color);
   background: var(--rz-sidebar-toggle-hover-background-color);
   border-radius: var(--rz-sidebar-toggle-hover-border-radius);
@@ -10428,12 +10647,14 @@ input::placeholder {
   --rz-menu-item-padding: 0.5rem 1rem 0.5rem 0.5rem;
   --rz-menu-item-border-radius: 0;
   --rz-menu-item-color: var(--rz-text-color);
-  --rz-menu-item-hover-color: var(--rz-text-contrast-color);
+  --rz-menu-item-hover-color: var(--rz-on-secondary-light);
   --rz-menu-item-hover-background-color: var(--rz-secondary-light);
+  --rz-menu-item-focus-outline: var(--rz-outline-focus);
+  --rz-menu-item-focus-outline-offset: calc(-1 * var(--rz-outline-width));
   --rz-menu-item-selected-color: var(--rz-text-color);
   --rz-menu-item-icon-margin: 0 0.5rem 0 0;
   --rz-menu-item-icon-color: var(--rz-text-color);
-  --rz-menu-item-icon-hover-color: var(--rz-text-contrast-color);
+  --rz-menu-item-icon-hover-color: var(--rz-on-secondary-light);
   --rz-menu-item-offset: 1rem;
   --rz-menu-item-transition: none;
   --rz-menu-item-disabled-opacity: 0.2;
@@ -10533,6 +10754,16 @@ input::placeholder {
 }
 .rz-menu:not(.rz-profile-menu) .rz-navigation-item-wrapper-active .rz-navigation-item-link .rzi:not(.rz-navigation-item-icon-children) {
   color: var(--rz-menu-top-item-selected-color);
+}
+.rz-menu:not(.rz-profile-menu):focus {
+  outline: var(--rz-outline-normal);
+}
+.rz-menu:not(.rz-profile-menu):focus-visible {
+  outline: var(--rz-menu-item-focus-outline);
+}
+.rz-menu:not(.rz-profile-menu):focus-visible .rz-navigation-item.rz-state-focused > .rz-navigation-item-wrapper {
+  outline: var(--rz-menu-item-focus-outline);
+  outline-offset: var(--rz-menu-item-focus-outline-offset);
 }
 .rz-menu:not(.rz-profile-menu) > .rz-navigation-item > .rz-navigation-item-wrapper-active:before {
   position: absolute;
@@ -10682,6 +10913,8 @@ li.rz-navigation-item.rz-state-disabled {
   --rz-panel-menu-background-color: var(--rz-base-800);
   --rz-panel-menu-hover-background-color: rgba(0, 0, 0, 0.3);
   --rz-panel-menu-hover-color: var(--rz-text-contrast-color);
+  --rz-panel-menu-focus-outline: var(--rz-outline-focus);
+  --rz-panel-menu-focus-outline-offset: calc(-1 * var(--rz-outline-width));
   --rz-panel-menu-item-line-height: 1.25rem;
   --rz-panel-menu-item-padding: 0.75rem 1rem;
   --rz-panel-menu-item-margin: 0;
@@ -10692,7 +10925,7 @@ li.rz-navigation-item.rz-state-disabled {
   --rz-panel-menu-item-active-color: var(--rz-text-contrast-color);
   --rz-panel-menu-item-active-indicator: var(--rz-secondary);
   --rz-panel-menu-item-offset: 0.75rem;
-  --rz-panel-menu-item-transition: var(--rz-transition-all);
+  --rz-panel-menu-item-transition: color var(--rz-transition), background-color var(--rz-transition);
   --rz-panel-menu-2nd-level-vertical-offset: 0;
   --rz-panel-menu-item-2nd-level-padding: 0.5rem 1rem;
   --rz-panel-menu-item-2nd-level-margin: 0;
@@ -10731,6 +10964,13 @@ li.rz-navigation-item.rz-state-disabled {
   font-weight: var(--rz-panel-menu-font-weight);
   color: var(--rz-panel-menu-color);
   background-color: var(--rz-panel-menu-background-color);
+}
+.rz-panel-menu:focus {
+  outline: var(--rz-outline-normal);
+}
+.rz-panel-menu:focus-visible .rz-navigation-item.rz-state-focused > .rz-navigation-item-wrapper {
+  outline: var(--rz-panel-menu-focus-outline);
+  outline-offset: var(--rz-panel-menu-focus-outline-offset);
 }
 .rz-panel-menu > .rz-navigation-item {
   margin: var(--rz-panel-menu-item-margin);
@@ -10878,6 +11118,8 @@ li.rz-navigation-item.rz-state-disabled {
   --rz-profile-menu-border-radius: var(--rz-border-radius);
   --rz-profile-menu-toggle-button-color: var(--rz-text-color);
   --rz-profile-menu-item-hover-background-color: var(--rz-secondary);
+  --rz-profile-menu-item-focus-outline: var(--rz-outline-focus);
+  --rz-profile-menu-item-focus-outline-offset: calc(-1 * var(--rz-outline-width));
   --rz-profile-menu-item-icon-width: var(--rz-icon-size);
   --rz-profile-menu-item-icon-height: var(--rz-icon-size);
   --rz-profile-menu-item-icon-font-size: var(--rz-icon-size);
@@ -10894,17 +11136,28 @@ ul.rz-profile-menu {
   position: relative;
   z-index: 3;
 }
+ul.rz-profile-menu:focus {
+  outline: var(--rz-outline-normal);
+}
+ul.rz-profile-menu:focus-visible {
+  outline: var(--rz-menu-item-focus-outline);
+}
+ul.rz-profile-menu:focus-visible .rz-navigation-item.rz-state-focused > .rz-navigation-item-wrapper {
+  outline: var(--rz-profile-menu-item-focus-outline);
+  outline-offset: var(--rz-profile-menu-item-focus-outline-offset);
+}
 ul.rz-profile-menu .rz-navigation-item-icon-children {
   color: var(--rz-profile-menu-toggle-button-color);
 }
 ul.rz-profile-menu .rz-navigation-menu {
+  list-style: none;
+  overflow: hidden;
+  position: absolute;
+  margin-bottom: 0;
+  padding: var(--rz-context-menu-padding);
   border-radius: var(--rz-profile-menu-border-radius);
   background-color: var(--rz-profile-menu-background-color);
   box-shadow: var(--rz-context-menu-box-shadow);
-  overflow: hidden;
-  margin-bottom: 0;
-  padding: var(--rz-context-menu-padding);
-  position: absolute;
   text-align: left;
   top: calc(100% - 2px);
   min-width: 100%;
@@ -10959,8 +11212,10 @@ ul.rz-profile-menu .rz-navigation-menu .rzi {
   --rz-steps-number-line-height: var(--rz-body-line-height);
   --rz-steps-number-color: var(--rz-text-color);
   --rz-steps-number-background-color: var(--rz-base-700);
-  --rz-steps-number-selected-color: var(--rz-text-contrast-color);
+  --rz-steps-number-selected-color: var(--rz-on-secondary);
   --rz-steps-number-selected-background: var(--rz-secondary);
+  --rz-steps-number-focus-outline: var(--rz-outline-focus);
+  --rz-steps-number-focus-outline-offset: var(--rz-outline-offset);
   --rz-steps-title-selected-color: var(--rz-secondary);
   --rz-steps-title-margin: 0 1rem 0 0.5rem;
   --rz-steps-buttons-padding: 1rem 0;
@@ -11008,6 +11263,16 @@ ul.rz-profile-menu .rz-navigation-menu .rzi {
 
 .rz-steps-item {
   display: inline-block;
+}
+.rz-steps-item:focus {
+  outline: var(--rz-outline-normal);
+}
+.rz-steps-item:focus-visible {
+  outline: var(--rz-outline-normal);
+}
+.rz-steps-item:focus-visible .rz-steps-number {
+  outline: var(--rz-steps-number-focus-outline);
+  outline-offset: var(--rz-steps-number-focus-outline-offset);
 }
 
 .rz-steps-title {
@@ -11072,10 +11337,12 @@ ul.rz-profile-menu .rz-navigation-menu .rzi {
   --rz-checkbox-border-width: inherit;
   --rz-checkbox-label-margin: 0 1rem 0 0.5rem;
   --rz-checkbox-margin: 1rem 0;
+  --rz-checkbox-focus-outline: var(--rz-outline-focus);
+  --rz-checkbox-focus-outline-offset: var(--rz-outline-offset);
   --rz-checkbox-checked-background-color: var(--rz-secondary);
   --rz-checkbox-checked-hover-background-color: var(--rz-secondary-light);
   --rz-checkbox-checked-disabled-background-color: var(--rz-secondary);
-  --rz-checkbox-checked-color: var(--rz-text-contrast-color);
+  --rz-checkbox-checked-color: var(--rz-on-secondary);
   --rz-checkbox-checked-shadow: inset 0 -3px 0 0 rgba(255, 255, 255, 0.2);
   --rz-checkbox-checked-border: var(--rz-input-border);
   --rz-checkbox-checked-hover-border: var(--rz-input-border);
@@ -11106,7 +11373,8 @@ ul.rz-profile-menu .rz-navigation-menu .rzi {
   cursor: initial;
 }
 
-.rz-chkbox-label {
+.rz-chkbox-label,
+.rz-chkbox-template {
   margin: var(--rz-checkbox-label-margin);
 }
 
@@ -11117,6 +11385,13 @@ ul.rz-profile-menu .rz-navigation-menu .rzi {
   width: var(--rz-checkbox-width);
   min-width: var(--rz-checkbox-width);
   height: var(--rz-checkbox-height);
+}
+.rz-chkbox:focus {
+  outline: var(--rz-outline-normal);
+}
+.rz-chkbox:focus-visible .rz-chkbox-box {
+  outline: var(--rz-checkbox-focus-outline);
+  outline-offset: var(--rz-checkbox-focus-outline-offset);
 }
 
 .rz-chkbox-box {
@@ -11187,7 +11462,9 @@ ul.rz-profile-menu .rz-navigation-menu .rzi {
   --rz-switch-checked-background-color: var(--rz-secondary);
   --rz-switch-box-shadow: none;
   --rz-switch-circle-background-color: var(--rz-text-contrast-color);
-  --rz-switch-checked-circle-background-color: var(--rz-text-contrast-color);
+  --rz-switch-checked-circle-background-color: var(--rz-on-secondary);
+  --rz-switch-focus-outline: var(--rz-outline-focus);
+  --rz-switch-focus-outline-offset: var(--rz-outline-offset);
 }
 
 .rz-switch {
@@ -11197,6 +11474,14 @@ ul.rz-profile-menu .rz-navigation-menu .rzi {
   width: 3rem;
   min-width: 3rem;
   height: 1.8rem;
+  border-radius: calc(5 * var(--rz-border-radius));
+}
+.rz-switch:focus {
+  outline: var(--rz-outline-normal);
+}
+.rz-switch:focus-visible {
+  outline: var(--rz-switch-focus-outline);
+  outline-offset: var(--rz-switch-focus-outline-offset);
 }
 
 .rz-switch-circle {
@@ -11256,6 +11541,8 @@ ul.rz-profile-menu .rz-navigation-menu .rzi {
   --rz-radio-border-width: inherit;
   --rz-radio-label-margin: 0 1rem 0 0.5rem;
   --rz-radio-margin: 1rem 0;
+  --rz-radio-focus-outline: var(--rz-outline-focus);
+  --rz-radio-focus-outline-offset: var(--rz-outline-offset);
   --rz-radio-active-background-color: var(--rz-secondary);
   --rz-radio-active-shadow: inset 0 3px 0 0 rgba(0, 0, 0, 0.1);
   --rz-radio-checked-background-color: var(--rz-secondary);
@@ -11281,13 +11568,6 @@ ul.rz-profile-menu .rz-navigation-menu .rzi {
   align-items: center;
 }
 
-.rz-radiobutton {
-  white-space: nowrap;
-  display: inline-flex;
-  align-items: center;
-  cursor: pointer;
-}
-
 .rz-state-disabled .rz-radiobutton {
   cursor: initial;
 }
@@ -11301,8 +11581,18 @@ ul.rz-profile-menu .rz-navigation-menu .rzi {
   display: inline-block;
   position: relative;
   vertical-align: middle;
+  white-space: nowrap;
+  cursor: pointer;
   width: var(--rz-radio-width);
   height: var(--rz-radio-height);
+  border-radius: var(--rz-radio-border-radius);
+}
+.rz-radiobutton:focus {
+  outline: var(--rz-outline-normal);
+}
+.rz-radiobutton:focus-visible {
+  outline: var(--rz-radio-focus-outline);
+  outline-offset: var(--rz-radio-focus-outline-offset);
 }
 
 .rz-radiobutton-box {
@@ -11385,6 +11675,8 @@ ul.rz-profile-menu .rz-navigation-menu .rzi {
   --rz-fieldset-toggle-color: var(--rz-text-tertiary-color);
   --rz-fieldset-toggle-font-size: 1rem;
   --rz-fieldset-toggle-border: none;
+  --rz-fieldset-toggle-focus-outline: var(--rz-outline-focus);
+  --rz-fieldset-toggle-focus-outline-offset: var(--rz-outline-offset);
 }
 
 .rz-fieldset {
@@ -11424,6 +11716,13 @@ ul.rz-profile-menu .rz-navigation-menu .rzi {
 .rz-fieldset-toggler.rzi-plus:before {
   content: "add";
 }
+a:focus .rz-fieldset-toggler {
+  outline: var(--rz-outline-normal);
+}
+a:focus-visible .rz-fieldset-toggler {
+  outline: var(--rz-fieldset-toggle-focus-outline);
+  outline-offset: var(--rz-fieldset-toggle-focus-outline-offset);
+}
 
 .rz-fieldset-legend {
   float: none;
@@ -11439,6 +11738,9 @@ ul.rz-profile-menu .rz-navigation-menu .rzi {
   color: inherit;
   text-decoration: none;
 }
+.rz-fieldset-legend a:focus {
+  outline: var(--rz-outline-normal);
+}
 
 :root {
   --rz-dropdown-trigger-icon-width: var(--rz-icon-size);
@@ -11453,10 +11755,10 @@ ul.rz-profile-menu .rz-navigation-menu .rzi {
   --rz-dropdown-item-hover-background-color: var(--rz-secondary-light);
   --rz-dropdown-item-selected-background-color: var(--rz-secondary-dark);
   --rz-dropdown-item-selected-shadow: 0 8px 10px 0 rgba(0, 0, 0, 0.01);
-  --rz-dropdown-item-hover-color: var(--rz-text-contrast-color);
-  --rz-dropdown-item-selected-color: var(--rz-text-contrast-color);
+  --rz-dropdown-item-hover-color: var(--rz-on-secondary-light);
+  --rz-dropdown-item-selected-color: var(--rz-on-secondary-dark);
   --rz-dropdown-item-selected-hover-background-color: var(--rz-secondary);
-  --rz-dropdown-item-selected-hover-color: var(--rz-text-contrast-color);
+  --rz-dropdown-item-selected-hover-color: var(--rz-on-secondary);
   --rz-dropdown-item-transition: none;
   --rz-dropdown-item-disabled-opacity: 0.2;
   --rz-dropdown-label-padding: 0 var(--rz-icon-size) 0 0;
@@ -11710,6 +12012,8 @@ ul.rz-profile-menu .rz-navigation-menu .rzi {
   --rz-listbox-background-color: var(--rz-input-background-color);
   --rz-listbox-border-radius: var(--rz-input-border-radius);
   --rz-listbox-border: var(--rz-input-border);
+  --rz-listbox-focus-border: var(--rz-input-focus-border);
+  --rz-listbox-focus-shadow: var(--rz-input-focus-shadow);
   --rz-listbox-filter-border: var(--rz-border-base-100);
   --rz-listbox-padding: 0;
   --rz-listbox-item-padding: var(--rz-dropdown-item-padding);
@@ -11737,6 +12041,11 @@ ul.rz-profile-menu .rz-navigation-menu .rzi {
   background-color: var(--rz-dropdown-item-hover-background-color);
   color: var(--rz-dropdown-item-hover-color);
   border-radius: 0;
+}
+.rz-listbox:focus, .rz-listbox:focus-within {
+  outline: var(--rz-outline-normal);
+  border: var(--rz-listbox-focus-border);
+  box-shadow: var(--rz-listbox-focus-shadow);
 }
 
 .rz-listbox-list {
@@ -11888,7 +12197,7 @@ ul.rz-profile-menu .rz-navigation-menu .rzi {
   --rz-slider-range-border: var(--rz-border-secondary-light);
   --rz-slider-handle-width: 0.75rem;
   --rz-slider-handle-height: 1.5rem;
-  --rz-slider-handle-color: var(--rz-text-contrast-color);
+  --rz-slider-handle-color: var(--rz-on-secondary);
   --rz-slider-handle-background-color: var(--rz-secondary);
   --rz-slider-handle-border: none;
   --rz-slider-handle-border-radius: calc(var(--rz-border-radius) / 2);
@@ -11897,6 +12206,8 @@ ul.rz-profile-menu .rz-navigation-menu .rzi {
   --rz-slider-handle-hover-background-color: var(--rz-secondary-light);
   --rz-slider-handle-hover-border: none;
   --rz-slider-handle-hover-shadow: inset 0 -3px 0 0 rgba(255, 255, 255, 0.2);
+  --rz-slider-handle-focus-outline: var(--rz-outline-focus);
+  --rz-slider-handle-focus-outline-offset: var(--rz-outline-offset);
   --rz-slider-disabled-background-color: var(--rz-base-background-color);
   --rz-slider-disabled-border: var(--rz-border-disabled);
   --rz-slider-disabled-range-background-color: var(--rz-base-700);
@@ -11960,13 +12271,22 @@ ul.rz-profile-menu .rz-navigation-menu .rzi {
   box-shadow: var(--rz-slider-handle-hover-shadow);
   border: var(--rz-slider-handle-hover-border);
   cursor: pointer;
+  outline: none;
+}
+.rz-slider:not(.rz-state-disabled) .rz-slider-handle:focus {
+  outline: var(--rz-outline-normal);
+}
+.rz-slider:not(.rz-state-disabled) .rz-slider-handle:focus-visible {
+  outline: var(--rz-slider-handle-focus-outline);
+  outline-offset: var(--rz-slider-handle-focus-outline-offset);
 }
 
 :root {
   --rz-rating-color: var(--rz-secondary);
-  --rz-rating-opacity: 0.5;
+  --rz-rating-opacity: 1;
   --rz-rating-font-size: var(--rz-icon-size);
   --rz-rating-selected-color: var(--rz-primary);
+  --rz-rating-focus-color: var(--rz-primary-darker);
   --rz-rating-disabled-color: var(--rz-text-disabled-color);
   --rz-rating-disabled-opacity: 0.3;
   --rz-rating-ban-icon: highlight_off;
@@ -12011,21 +12331,24 @@ ul.rz-profile-menu .rz-navigation-menu .rzi {
 .rz-rating .rzi-star:before {
   content: "star";
 }
-
-.rz-rating:not(.rz-state-disabled):not(.rz-state-readonly) .rzi-star-o {
+.rz-rating:not(.rz-state-disabled):not(.rz-state-readonly) a:hover {
   cursor: pointer;
 }
-.rz-rating:not(.rz-state-disabled):not(.rz-state-readonly) .rzi-star-o:hover {
+.rz-rating:not(.rz-state-disabled):not(.rz-state-readonly) a:hover .rzi-star,
+.rz-rating:not(.rz-state-disabled):not(.rz-state-readonly) a:hover .rzi-star-o,
+.rz-rating:not(.rz-state-disabled):not(.rz-state-readonly) a:hover .rzi-ban {
   color: var(--rz-rating-selected-color);
 }
-.rz-rating:not(.rz-state-disabled):not(.rz-state-readonly) .rzi-star-o:hover:before {
+.rz-rating:not(.rz-state-disabled):not(.rz-state-readonly) a:hover .rzi-star-o:before {
   content: "star";
 }
-.rz-rating:not(.rz-state-disabled):not(.rz-state-readonly) .rzi-ban {
-  cursor: pointer;
+.rz-rating:not(.rz-state-disabled):not(.rz-state-readonly) a:focus-visible .rzi-star,
+.rz-rating:not(.rz-state-disabled):not(.rz-state-readonly) a:focus-visible .rzi-star-o,
+.rz-rating:not(.rz-state-disabled):not(.rz-state-readonly) a:focus-visible .rzi-ban {
+  color: var(--rz-rating-focus-color);
 }
-.rz-rating:not(.rz-state-disabled):not(.rz-state-readonly) .rzi-ban:hover {
-  color: var(--rz-rating-selected-color);
+.rz-rating:not(.rz-state-disabled):not(.rz-state-readonly) a:focus-visible .rzi-star-o:before {
+  content: "star";
 }
 
 :root {
@@ -12033,13 +12356,16 @@ ul.rz-profile-menu .rz-navigation-menu .rzi {
   --rz-selectbar-color: var(--rz-text-color);
   --rz-selectbar-border: var(--rz-border-normal);
   --rz-selectbar-selected-background-color: var(--rz-secondary);
-  --rz-selectbar-selected-color: var(--rz-text-contrast-color);
+  --rz-selectbar-selected-color: var(--rz-on-secondary);
   --rz-selectbar-selected-border: var(--rz-border-secondary);
   --rz-selectbar-border-radius: var(--rz-border-radius);
 }
 
 .rz-selectbutton {
   display: inline-flex;
+}
+.rz-selectbutton .rz-button:focus-visible {
+  z-index: 1;
 }
 
 .rz-selectbutton .rz-button.rz-button-xs {
@@ -12157,11 +12483,11 @@ ul.rz-profile-menu .rz-navigation-menu .rzi {
   --rz-datepicker-calendar-header-color: var(--rz-text-tertiary-color);
   --rz-datepicker-calendar-font-size: var(--rz-body-font-size);
   --rz-datepicker-calendar-color: var(--rz-text-color);
-  --rz-datepicker-calendar-hover-color: var(--rz-text-contrast-color);
+  --rz-datepicker-calendar-hover-color: var(--rz-on-secondary-light);
   --rz-datepicker-calendar-hover-background-color: var(--rz-secondary-light);
-  --rz-datepicker-calendar-selected-color: var(--rz-text-contrast-color);
+  --rz-datepicker-calendar-selected-color: var(--rz-on-secondary-dark);
   --rz-datepicker-calendar-selected-background-color: var(--rz-secondary-dark);
-  --rz-datepicker-calendar-selected-hover-color: var(--rz-text-contrast-color);
+  --rz-datepicker-calendar-selected-hover-color: var(--rz-on-secondary);
   --rz-datepicker-calendar-selected-hover-background-color: var(--rz-secondary);
   --rz-datepicker-calendar-border: var(--rz-border-base-700);
   --rz-datepicker-calendar-border-radius: 0;
@@ -12171,13 +12497,15 @@ ul.rz-profile-menu .rz-navigation-menu .rzi {
   --rz-datepicker-calendar-today-box-shadow: none;
   --rz-datepicker-calendar-today-border-radius: var(--rz-datepicker-calendar-border-radius);
   --rz-datepicker-title-height: 47px;
+  --rz-datepicker-focus-outline: var(--rz-outline-focus);
+  --rz-datepicker-focus-outline-offset: calc(-1 * var(--rz-outline-width));
   --rz-timepicker-background-color: var(--rz-base-900);
   --rz-timepicker-color: var(--rz-text-color);
   --rz-timepicker-separator-color: var(--rz-text-color);
   --rz-timepicker-padding: 0.5rem;
   --rz-timepicker-hour-padding: 0.5rem;
   --rz-timepicker-button-background-color: var(--rz-secondary);
-  --rz-timepicker-button-color: var(--rz-text-contrast-color);
+  --rz-timepicker-button-color: var(--rz-on-secondary);
   --rz-timepicker-button-width: 0.875rem;
   --rz-timepicker-button-height: 0.875rem;
   --rz-timepicker-button-border-radius: 2px;
@@ -12310,6 +12638,14 @@ ul.rz-profile-menu .rz-navigation-menu .rzi {
   text-align: center;
 }
 
+.rz-datepicker-calendar-container:focus {
+  outline: var(--rz-outline-normal);
+}
+.rz-datepicker-calendar-container:focus-visible {
+  outline: var(--rz-datepicker-focus-outline);
+  outline-offset: var(--rz-datepicker-focus-outline-offset);
+}
+
 .rz-datepicker-calendar {
   table-layout: fixed;
   border-collapse: collapse;
@@ -12341,7 +12677,7 @@ ul.rz-profile-menu .rz-navigation-menu .rzi {
   box-shadow: var(--rz-datepicker-calendar-today-box-shadow);
   border-radius: var(--rz-datepicker-calendar-today-border-radius);
 }
-.rz-datepicker-calendar td .rz-state-default:hover {
+.rz-datepicker-calendar td .rz-state-default.rz-state-focused, .rz-datepicker-calendar td .rz-state-default:hover {
   text-decoration: none;
   color: var(--rz-datepicker-calendar-hover-color);
   background-color: var(--rz-datepicker-calendar-hover-background-color);
@@ -12354,7 +12690,8 @@ ul.rz-profile-menu .rz-navigation-menu .rzi {
   padding: var(--rz-datepicker-calendar-padding);
   box-shadow: none;
 }
-.rz-datepicker-calendar td .rz-state-active:hover,
+.rz-datepicker-calendar td .rz-state-active.rz-state-focused, .rz-datepicker-calendar td .rz-state-active:hover,
+.rz-datepicker-calendar td .rz-state-active.rz-datepicker-today.rz-state-focused,
 .rz-datepicker-calendar td .rz-state-active.rz-datepicker-today:hover {
   color: var(--rz-datepicker-calendar-selected-hover-color);
   background-color: var(--rz-datepicker-calendar-selected-hover-background-color);
@@ -12363,6 +12700,9 @@ ul.rz-profile-menu .rz-navigation-menu .rzi {
   opacity: 0.5;
 }
 .rz-datepicker-calendar .rz-datepicker-other-month {
+  opacity: 0.5;
+}
+.rz-datepicker-calendar .rz-datepicker-week-number {
   opacity: 0.5;
 }
 
@@ -12419,7 +12759,7 @@ ul.rz-profile-menu .rz-navigation-menu .rzi {
   --rz-numeric-button-background-color: var(--rz-secondary);
   --rz-numeric-button-disabled-background-color: var(--rz-base-700);
   --rz-numeric-button-disabled-color: var(--rz-text-disabled-color);
-  --rz-numeric-button-color: var(--rz-text-contrast-color);
+  --rz-numeric-button-color: var(--rz-on-secondary);
 }
 
 .rz-spinner {
@@ -12499,11 +12839,11 @@ ul.rz-profile-menu .rz-navigation-menu .rzi {
   --rz-upload-files-remove-color: var(--rz-text-color);
   --rz-upload-files-margin: 0 0.5rem;
   --rz-upload-choose-background-color: var(--rz-secondary);
-  --rz-upload-choose-color: var(--rz-text-contrast-color);
+  --rz-upload-choose-color: var(--rz-on-secondary);
   --rz-upload-choose-hover-background-color: var(--rz-secondary);
-  --rz-upload-choose-hover-color: var(--rz-text-contrast-color);
+  --rz-upload-choose-hover-color: var(--rz-on-secondary);
   --rz-upload-choose-active-background-color: var(--rz-secondary-dark);
-  --rz-upload-choose-active-color: var(--rz-text-contrast-color);
+  --rz-upload-choose-active-color: var(--rz-on-secondary-dark);
   --rz-upload-cancel-background-color: var(--rz-base-200);
   --rz-upload-cancel-color: var(--rz-text-color);
   --rz-upload-button-background-color: var(--rz-primary);
@@ -12605,11 +12945,16 @@ ul.rz-profile-menu .rz-navigation-menu .rzi {
   --rz-grid-cell-color: var(--rz-text-color);
   --rz-grid-cell-font-size: var(--rz-body-font-size);
   --rz-grid-cell-line-height: var(--rz-body-line-height);
+  --rz-grid-cell-focus-background-color: var(--rz-secondary-lighter);
+  --rz-grid-cell-focus-color: var(--rz-on-secondary-lighter);
+  --rz-grid-cell-focus-outline: var(--rz-outline-focus);
+  --rz-grid-cell-focus-outline-offset: calc(-1 * var(--rz-outline-width));
   --rz-grid-hover-background-color: var(--rz-secondary-lighter);
-  --rz-grid-hover-color: var(--rz-secondary-dark);
+  --rz-grid-hover-color: var(--rz-on-secondary-lighter);
+  --rz-grid-focus-outline: var(--rz-outline-focus);
+  --rz-grid-focus-outline-offset: var(--rz-outline-offset);
   --rz-grid-selected-background-color: var(--rz-secondary-dark);
-  --rz-grid-selected-color: var(--rz-text-contrast-color);
-  --rz-grid-stripe-background-color: var(--rz-base-700);
+  --rz-grid-selected-color: var(--rz-on-secondary-dark);
   --rz-grid-toolbar-background-color: var(--rz-base-background-color);
   --rz-grid-header-cell-border: var(--rz-border-normal);
   --rz-grid-header-cell-border-bottom: none;
@@ -12641,10 +12986,10 @@ ul.rz-profile-menu .rz-navigation-menu .rzi {
   --rz-grid-filter-buttons-border: var(--rz-border-normal);
   --rz-grid-filter-buttons-background-color: var(--rz-base-900);
   --rz-grid-clear-filter-button-background-color: var(--rz-secondary);
-  --rz-grid-clear-filter-button-color: var(--rz-text-contrast-color);
+  --rz-grid-clear-filter-button-color: var(--rz-on-secondary);
   --rz-grid-clear-filter-button-shadow: inherit;
   --rz-grid-apply-filter-button-background-color: var(--rz-primary);
-  --rz-grid-apply-filter-button-color: var(--rz-text-contrast-color);
+  --rz-grid-apply-filter-button-color: var(--rz-on-primary);
   --rz-grid-apply-filter-button-shadow: inherit;
   --rz-grid-header-filter-icon-margin: 0 0.5rem 0 auto;
   --rz-grid-header-filter-icon-hover-color: var(--rz-text-color);
@@ -12657,6 +13002,8 @@ ul.rz-profile-menu .rz-navigation-menu .rzi {
   --rz-grid-sort-icon-color: var(--rz-text-disabled-color);
   --rz-grid-shadow: 0 8px 10px 0 rgba(0, 0, 0, 0.01);
   --rz-grid-background-color: var(--rz-base-background-color);
+  --rz-grid-stripe-background-color: var(--rz-base-700);
+  --rz-grid-stripe-odd-background-color: var(--rz-base-background-color);
   --rz-grid-column-resizer-width: 0.5rem;
   --rz-grid-column-resizer-helper-width: 0.25rem;
   --rz-grid-column-resizer-helper-background-color: var(--rz-secondary);
@@ -12691,6 +13038,13 @@ ul.rz-profile-menu .rz-navigation-menu .rzi {
   border-radius: var(--rz-grid-border-radius);
   background-color: var(--rz-grid-background-color);
   overflow: hidden;
+}
+.rz-datatable:focus {
+  outline: var(--rz-outline-normal);
+}
+.rz-datatable:focus-visible {
+  outline: var(--rz-grid-focus-outline);
+  outline-offset: var(--rz-grid-focus-outline-offset);
 }
 .rz-datatable .rz-col-icon {
   text-align: center;
@@ -12797,6 +13151,11 @@ ul.rz-profile-menu .rz-navigation-menu .rzi {
   width: 100%;
   outline: none;
   padding: var(--rz-grid-header-cell-padding);
+}
+.rz-datatable-thead th.rz-state-focused,
+.rz-grid-table thead th.rz-state-focused {
+  outline: var(--rz-grid-cell-focus-outline);
+  outline-offset: var(--rz-grid-cell-focus-outline-offset);
 }
 .rz-datatable-thead th .rz-column-title,
 .rz-grid-table thead th .rz-column-title {
@@ -12922,7 +13281,7 @@ ul.rz-profile-menu .rz-navigation-menu .rzi {
   background-color: var(--rz-grid-stripe-background-color);
 }
 .rz-grid-table-striped tbody > tr:not(.rz-expanded-row-content):nth-child(odd) > td {
-  background-color: var(--rz-grid-background-color);
+  background-color: var(--rz-grid-stripe-odd-background-color);
 }
 
 .rz-grid-table-composite .rz-datatable-thead th, .rz-grid-table-composite.rz-grid-table thead th {
@@ -13101,12 +13460,14 @@ ul.rz-profile-menu .rz-navigation-menu .rzi {
   inset: 0;
   transition: background-color var(--rz-transition), color var(--rz-transition);
 }
-.rz-selectable tbody tr.rz-data-row td.rz-frozen-cell-left:before,
-.rz-selectable tbody tr.rz-data-row .rz-cell-data.rz-frozen-cell-left:before {
+.rz-selectable tbody tr.rz-data-row td.rz-frozen-cell-left:before, .rz-selectable tbody tr.rz-data-row td.rz-frozen-cell-left-inner:before,
+.rz-selectable tbody tr.rz-data-row .rz-cell-data.rz-frozen-cell-left:before,
+.rz-selectable tbody tr.rz-data-row .rz-cell-data.rz-frozen-cell-left-inner:before {
   z-index: -1;
 }
-.rz-selectable tbody tr.rz-data-row td.rz-frozen-cell-left:after,
-.rz-selectable tbody tr.rz-data-row .rz-cell-data.rz-frozen-cell-left:after {
+.rz-selectable tbody tr.rz-data-row td.rz-frozen-cell-left:after, .rz-selectable tbody tr.rz-data-row td.rz-frozen-cell-left-inner:after,
+.rz-selectable tbody tr.rz-data-row .rz-cell-data.rz-frozen-cell-left:after,
+.rz-selectable tbody tr.rz-data-row .rz-cell-data.rz-frozen-cell-left-inner:after {
   z-index: -2;
   background-color: var(--rz-grid-frozen-cell-background-color);
 }
@@ -13122,7 +13483,7 @@ ul.rz-profile-menu .rz-navigation-menu .rzi {
 .rz-selectable tbody tr.rz-data-row.rz-state-highlight > td {
   background-color: var(--rz-grid-selected-background-color);
 }
-.rz-selectable tbody tr.rz-data-row.rz-state-highlight > td.rz-frozen-cell-left:before {
+.rz-selectable tbody tr.rz-data-row.rz-state-highlight > td.rz-frozen-cell-left:before, .rz-selectable tbody tr.rz-data-row.rz-state-highlight > td.rz-frozen-cell-left-inner:before {
   background-color: var(--rz-grid-selected-background-color);
 }
 .rz-selectable tbody tr.rz-data-row.rz-state-highlight > td.rz-frozen-cell-right:after {
@@ -13134,6 +13495,27 @@ ul.rz-profile-menu .rz-navigation-menu .rzi {
 .rz-selectable tbody tr.rz-data-row.rz-state-highlight > .rzi {
   color: var(--rz-grid-selected-color);
 }
+.rz-selectable tbody tr.rz-data-row.rz-state-focused > td {
+  background-color: var(--rz-grid-cell-focus-background-color);
+  color: var(--rz-grid-cell-focus-color);
+}
+.rz-selectable tbody tr.rz-data-row.rz-state-focused > td.rz-frozen-cell-left:before, .rz-selectable tbody tr.rz-data-row.rz-state-focused > td.rz-frozen-cell-left-inner:before {
+  background-color: var(--rz-grid-cell-focus-background-color);
+  color: var(--rz-grid-cell-focus-color);
+}
+.rz-selectable tbody tr.rz-data-row.rz-state-focused > td.rz-frozen-cell-right:after {
+  background-color: var(--rz-grid-cell-focus-background-color);
+  color: var(--rz-grid-cell-focus-color);
+}
+.rz-selectable tbody tr.rz-data-row.rz-state-focused > th.rz-state-focused {
+  color: var(--rz-grid-cell-focus-color) !important;
+}
+.rz-selectable tbody tr.rz-data-row.rz-state-focused .rz-cell-data {
+  color: var(--rz-grid-cell-focus-color);
+}
+.rz-selectable tbody tr.rz-data-row.rz-state-focused > .rzi {
+  color: var(--rz-grid-cell-focus-color);
+}
 .rz-selectable tbody tr.rz-data-row.rz-state-disabled {
   opacity: 0.5;
   pointer-events: none;
@@ -13141,7 +13523,7 @@ ul.rz-profile-menu .rz-navigation-menu .rzi {
 .rz-selectable tbody tr.rz-data-row:hover:not(.rz-state-highlight) > td {
   background-color: var(--rz-grid-hover-background-color);
 }
-.rz-selectable tbody tr.rz-data-row:hover:not(.rz-state-highlight) > td.rz-frozen-cell-left:before {
+.rz-selectable tbody tr.rz-data-row:hover:not(.rz-state-highlight) > td.rz-frozen-cell-left:before, .rz-selectable tbody tr.rz-data-row:hover:not(.rz-state-highlight) > td.rz-frozen-cell-left-inner:before {
   background-color: var(--rz-grid-hover-background-color);
 }
 .rz-selectable tbody tr.rz-data-row:hover:not(.rz-state-highlight) > td.rz-frozen-cell-right:after {
@@ -13363,7 +13745,10 @@ ul.rz-profile-menu .rz-navigation-menu .rzi {
   position: -webkit-sticky;
   position: sticky;
 }
-.rz-grid-table-fixed .rz-frozen-cell-left, .rz-grid-table-fixed .rz-frozen-cell-right {
+.rz-grid-table-fixed .rz-frozen-cell-left,
+.rz-grid-table-fixed .rz-frozen-cell-right,
+.rz-grid-table-fixed .rz-frozen-cell-left-inner,
+.rz-grid-table-fixed .rz-frozen-cell-right-inner {
   background: var(--rz-grid-frozen-cell-background-color);
   z-index: 1;
 }
@@ -13373,6 +13758,11 @@ ul.rz-profile-menu .rz-navigation-menu .rzi {
 }
 .rz-grid-table-fixed .rz-frozen-cell-right.rz-frozen-cell-right-end {
   box-shadow: -5px 0 5px -5px rgba(0, 0, 0, 0.12);
+  border-left: var(--rz-grid-frozen-cell-border) !important;
+}
+.rz-grid-table-fixed .rz-frozen-cell-left-inner,
+.rz-grid-table-fixed .rz-frozen-cell-right-inner {
+  border-right: var(--rz-grid-frozen-cell-border) !important;
   border-left: var(--rz-grid-frozen-cell-border) !important;
 }
 
@@ -13571,6 +13961,14 @@ ul.rz-profile-menu .rz-navigation-menu .rzi {
   background-color: var(--rz-paginator-background-color);
   padding: var(--rz-paginator-padding);
 }
+.rz-paginator:focus {
+  outline: var(--rz-outline-normal);
+}
+.rz-paginator:focus-visible .rz-paginator-element.rz-state-focused,
+.rz-paginator:focus-visible .rz-paginator-page.rz-state-focused {
+  outline: var(--rz-outline-focus);
+  outline-offset: var(--rz-outline-offset);
+}
 .rz-paginator.rz-align-right {
   justify-content: flex-end;
 }
@@ -13610,6 +14008,11 @@ ul.rz-profile-menu .rz-navigation-menu .rzi {
 
 .rz-paginator-element:hover,
 .rz-paginator-page:hover {
+  background-color: var(--rz-paginator-numeric-button-hover-background-color);
+  color: var(--rz-paginator-numeric-button-hover-color);
+}
+.rz-paginator-element.rz-state-focused,
+.rz-paginator-page.rz-state-focused {
   background-color: var(--rz-paginator-numeric-button-hover-background-color);
   color: var(--rz-paginator-numeric-button-hover-color);
 }
@@ -13828,20 +14231,29 @@ ul.rz-profile-menu .rz-navigation-menu .rzi {
   --rz-tree-background-color: var(--rz-base-background-color);
   --rz-tree-node-padding: 0.25rem;
   --rz-tree-node-selected-background-color: var(--rz-secondary);
-  --rz-tree-node-selected-color: var(--rz-text-contrast-color);
+  --rz-tree-node-selected-color: var(--rz-on-secondary);
   --rz-tree-node-selected-border-radius: calc(var(--rz-border-radius) / 2);
   --rz-tree-node-margin: 1px 0;
   --rz-tree-node-hover-background-color: var(--rz-secondary-light);
-  --rz-tree-node-hover-color: var(--rz-text-contrast-color);
+  --rz-tree-node-hover-color: var(--rz-on-secondary-light);
+  --rz-tree-node-focus-outline: var(--rz-outline-focus);
+  --rz-tree-node-focus-outline-offset: calc(-1 * var(--rz-outline-width));
   --rz-tree-node-toggle-width: 1rem;
   --rz-tree-node-toggle-color: var(--rz-text-tertiary-color);
   --rz-tree-node-toggle-hover-color: var(--rz-text-color);
-  --rz-tree-transition: var(--rz-transition-all);
+  --rz-tree-transition: var(--rz-transition-all), width 0, height 0;
 }
 
 .rz-tree {
   display: inline-block;
   overflow: auto;
+}
+.rz-tree:focus {
+  outline: var(--rz-outline-normal);
+}
+.rz-tree:focus-visible {
+  outline: var(--rz-outline-focus);
+  outline-offset: var(--rz-tree-node-focus-outline-offset);
 }
 
 .rz-tree .rz-treenode.rz-treenode-leaf > .rz-treenode-content > .rz-tree-toggler {
@@ -13888,6 +14300,10 @@ ul.rz-profile-menu .rz-navigation-menu .rzi {
 }
 .rz-treenode-content .rz-treenode-label .rzi:first-child {
   margin-right: 0.25rem;
+}
+.rz-tree:focus-visible .rz-treenode-content.rz-state-focused .rz-treenode-label {
+  outline: var(--rz-tree-node-focus-outline);
+  outline-offset: var(--rz-tree-node-focus-outline-offset);
 }
 .rz-treenode-content:not(.rz-treenode-content-selected):hover .rz-treenode-label {
   background-color: var(--rz-tree-node-hover-background-color);
@@ -14079,7 +14495,7 @@ ul.rz-profile-menu .rz-navigation-menu .rzi {
   --rz-scheduler-toolbar-title-font-weight: 700;
   --rz-scheduler-toolbar-title-color: var(--rz-text-title-color);
   --rz-scheduler-prev-next-button-background-color: var(--rz-secondary);
-  --rz-scheduler-prev-next-button-color: var(--rz-text-contrast-color);
+  --rz-scheduler-prev-next-button-color: var(--rz-on-secondary);
   --rz-scheduler-prev-next-button-padding: 0.5rem;
   --rz-scheduler-prev-next-button-font-size: var(--rz-icon-size);
   --rz-scheduler-prev-button-border-radius: var(--rz-border-radius) 0 0 var(--rz-border-radius);
@@ -14091,7 +14507,7 @@ ul.rz-profile-menu .rz-navigation-menu .rzi {
   --rz-scheduler-view-button-border: var(--rz-border-normal);
   --rz-scheduler-view-button-color: var(--rz-text-secondary-color);
   --rz-scheduler-view-button-background-color: var(--rz-base-background-color);
-  --rz-scheduler-view-selected-color: var(--rz-text-contrast-color);
+  --rz-scheduler-view-selected-color: var(--rz-on-secondary);
   --rz-scheduler-view-selected-background-color: var(--rz-secondary);
   --rz-scheduler-view-selected-border-color: var(--rz-secondary);
   --rz-scheduler-header-background-color: var(--rz-base-700);
@@ -14101,7 +14517,7 @@ ul.rz-profile-menu .rz-navigation-menu .rzi {
   --rz-scheduler-header-color: inherit;
   --rz-scheduler-header-border: none;
   --rz-scheduler-header-padding: 0.5rem 0;
-  --rz-scheduler-event-color: var(--rz-text-contrast-color);
+  --rz-scheduler-event-color: var(--rz-on-info);
   --rz-scheduler-event-background-color: var(--rz-info);
   --rz-scheduler-event-font-size: 0.75rem;
   --rz-scheduler-event-line-height: 1.25rem;
@@ -14124,6 +14540,8 @@ ul.rz-profile-menu .rz-navigation-menu .rzi {
   --rz-scheduler-year-slot-title-border-radius: 0.25rem;
   --rz-scheduler-planner-slot-width: 3rem;
   --rz-scheduler-planner-slot-height: 4.5rem;
+  --rz-scheduler-focus-outline: var(--rz-outline-focus);
+  --rz-scheduler-focus-outline-offset: calc(-1 * var(--rz-outline-width));
 }
 
 .rz-scheduler {
@@ -14249,6 +14667,13 @@ ul.rz-profile-menu .rz-navigation-menu .rzi {
   overflow: auto;
   height: 0;
 }
+.rz-view-content:focus {
+  outline: var(--rz-outline-normal);
+}
+.rz-view-content:focus-visible {
+  outline: var(--rz-scheduler-focus-outline);
+  outline-offset: var(--rz-scheduler-focus-outline-offset);
+}
 
 .rz-slots {
   flex: 1;
@@ -14263,21 +14688,24 @@ ul.rz-profile-menu .rz-navigation-menu .rzi {
   color: var(--rz-scheduler-view-button-color);
   border: var(--rz-scheduler-view-button-border);
   border-radius: 0;
+  border-right: none;
 }
 .rz-scheduler-nav-views .rz-button.rz-primary:first-child {
   border-top-left-radius: var(--rz-scheduler-border-radius);
   border-bottom-left-radius: var(--rz-scheduler-border-radius);
-  border-right: none;
 }
 .rz-scheduler-nav-views .rz-button.rz-primary:last-child {
   border-top-right-radius: var(--rz-scheduler-border-radius);
   border-bottom-right-radius: var(--rz-scheduler-border-radius);
-  border-left: none;
+  border-right: var(--rz-scheduler-view-button-border);
 }
 .rz-scheduler-nav-views .rz-button.rz-primary.rz-state-active {
   background-color: var(--rz-scheduler-view-selected-background-color);
   border-color: var(--rz-scheduler-view-selected-border-color);
   color: var(--rz-scheduler-view-selected-color);
+}
+.rz-scheduler-nav-views .rz-button.rz-primary:focus-visible {
+  z-index: 1;
 }
 
 .rz-scheduler-nav-prev-next {
@@ -14300,6 +14728,9 @@ ul.rz-profile-menu .rz-navigation-menu .rzi {
 }
 .rz-scheduler-nav-prev-next .rz-button.rz-next {
   border-radius: var(--rz-scheduler-next-button-border-radius);
+}
+.rz-scheduler-nav-prev-next .rz-button:focus-visible {
+  z-index: 1;
 }
 
 .rz-event-list .rz-event {
@@ -14368,6 +14799,21 @@ ul.rz-profile-menu .rz-navigation-menu .rzi {
   flex: 1;
   display: flex;
 }
+.rz-week-view-content:focus {
+  outline: var(--rz-outline-normal);
+}
+.rz-week-view-content:focus-visible {
+  outline: var(--rz-scheduler-focus-outline);
+  outline-offset: var(--rz-scheduler-focus-outline-offset);
+}
+.rz-week-view-content:focus-visible .rz-slots.rz-state-focused {
+  outline: var(--rz-scheduler-focus-outline);
+  outline-offset: var(--rz-scheduler-focus-outline-offset);
+}
+.rz-week-view-content:focus-visible .rz-event.rz-state-focused .rz-event-content {
+  outline: var(--rz-scheduler-focus-outline);
+  outline-offset: var(--rz-outline-offset);
+}
 
 .rz-week-view .rz-slot:nth-of-type(2) {
   border-top: none;
@@ -14379,6 +14825,14 @@ ul.rz-profile-menu .rz-navigation-menu .rzi {
 .rz-month-view .rz-view-content {
   flex: 1;
   flex-direction: column;
+}
+.rz-month-view .rz-view-content:focus-visible .rz-slot:has(.rz-state-focused) {
+  outline: var(--rz-scheduler-focus-outline);
+  outline-offset: var(--rz-scheduler-focus-outline-offset);
+}
+.rz-month-view .rz-view-content:focus-visible .rz-event.rz-state-focused .rz-event-content {
+  outline: var(--rz-scheduler-focus-outline);
+  outline-offset: var(--rz-outline-offset);
 }
 .rz-month-view .rz-slot {
   flex: 1;
@@ -14396,6 +14850,18 @@ ul.rz-profile-menu .rz-navigation-menu .rzi {
   top: 0px;
   min-height: 2.25rem;
   z-index: 9999;
+}
+.rz-planner-view:focus-visible {
+  outline: var(--rz-scheduler-focus-outline);
+  outline-offset: var(--rz-scheduler-focus-outline-offset);
+}
+.rz-planner-view:focus-visible .rz-slot.rz-state-focused {
+  outline: var(--rz-scheduler-focus-outline);
+  outline-offset: var(--rz-scheduler-focus-outline-offset);
+}
+.rz-planner-view:focus-visible .rz-event.rz-state-focused .rz-event-content {
+  outline: var(--rz-scheduler-focus-outline);
+  outline-offset: var(--rz-outline-offset);
 }
 .rz-planner-view .rz-month .rz-slot:first-child .rz-slot-header {
   writing-mode: vertical-lr;
@@ -14437,6 +14903,18 @@ ul.rz-profile-menu .rz-navigation-menu .rzi {
 .rz-timeline-view .rz-view-header .rz-slot-header {
   min-width: var(--rz-scheduler-timeline-slot-width);
   flex: 0 0 auto;
+}
+.rz-timeline-view:focus-visible {
+  outline: var(--rz-scheduler-focus-outline);
+  outline-offset: var(--rz-scheduler-focus-outline-offset);
+}
+.rz-timeline-view:focus-visible .rz-slot.rz-state-focused {
+  outline: var(--rz-scheduler-focus-outline);
+  outline-offset: var(--rz-scheduler-focus-outline-offset);
+}
+.rz-timeline-view:focus-visible .rz-event.rz-state-focused .rz-event-content {
+  outline: var(--rz-scheduler-focus-outline);
+  outline-offset: var(--rz-outline-offset);
 }
 .rz-timeline-view .rz-month {
   flex: 0 0 auto;
@@ -14492,9 +14970,22 @@ ul.rz-profile-menu .rz-navigation-menu .rzi {
   color: var(--rz-scheduler-event-color);
   background-color: var(--rz-scheduler-event-background-color);
 }
+.rz-year-view .rz-slot .rz-slot-title.rz-state-focused {
+  color: var(--rz-datepicker-calendar-hover-color);
+  background: var(--rz-datepicker-calendar-hover-background-color);
+}
 .rz-year-view .rz-slot:hover .rz-slot-title:not(.rz-has-appointments) {
   color: var(--rz-datepicker-calendar-hover-color);
   background: var(--rz-datepicker-calendar-hover-background-color);
+}
+
+.rz-year-month:focus {
+  outline: var(--rz-outline-normal);
+}
+.rz-year-month:focus-visible {
+  outline: var(--rz-scheduler-focus-outline);
+  outline-offset: var(--rz-outline-offset);
+  border-radius: var(--rz-border-radius);
 }
 
 @media (max-width: 576px) {
@@ -14565,6 +15056,10 @@ ul.rz-profile-menu .rz-navigation-menu .rzi {
   --rz-tabs-tab-selected-top-border-color: var(--rz-secondary);
   --rz-tabs-tab-hover-background-color: var(--rz-base-800);
   --rz-tabs-tab-hover-color: var(--rz-text-color);
+  --rz-tabs-tab-focus-background-color: var(--rz-base-background-color);
+  --rz-tabs-tab-focus-color: var(--rz-text-color);
+  --rz-tabs-tab-focus-outline: var(--rz-outline-focus);
+  --rz-tabs-tab-focus-outline-offset: calc(-1 * var(--rz-outline-width));
   --rz-tabs-icon-font-size: var(--rz-icon-size);
   --rz-tabs-icon-margin: 0 0.25rem 0 -0.25rem;
   --rz-tabs-transition: var(--rz-transition-all);
@@ -14572,6 +15067,17 @@ ul.rz-profile-menu .rz-navigation-menu .rzi {
 
 .rz-tabview {
   display: flex;
+}
+.rz-tabview:focus {
+  outline: var(--rz-outline-normal);
+}
+.rz-tabview:focus-visible {
+  outline: var(--rz-outline-focus);
+  outline-offset: var(--rz-outline-offset);
+}
+.rz-tabview:focus-visible .rz-tabview-nav .rz-state-focused:not(.rz-tabview-selected):not(.rz-state-disabled) {
+  outline: var(--rz-tabs-tab-focus-outline);
+  outline-offset: var(--rz-tabs-tab-focus-outline-offset);
 }
 .rz-tabview.rz-tabview-top {
   flex-direction: column;
@@ -14606,10 +15112,12 @@ ul.rz-profile-menu .rz-navigation-menu .rzi {
 .rz-tabview-nav li:hover:not(.rz-tabview-selected):not(.rz-state-disabled) {
   background-color: var(--rz-tabs-tab-hover-background-color);
 }
-.rz-tabview-nav li:hover:not(.rz-tabview-selected):not(.rz-state-disabled) a {
+.rz-tabview-nav li:hover:not(.rz-tabview-selected):not(.rz-state-disabled) a,
+.rz-tabview-nav li:hover:not(.rz-tabview-selected):not(.rz-state-disabled) a:not([href]):not([class]) {
   color: var(--rz-tabs-tab-hover-color);
 }
-.rz-tabview-nav li a {
+.rz-tabview-nav li a,
+.rz-tabview-nav li a:not([href]):not([class]) {
   display: flex;
   align-items: center;
   color: var(--rz-tabs-tab-color);
@@ -14620,18 +15128,29 @@ ul.rz-profile-menu .rz-navigation-menu .rzi {
   text-transform: var(--rz-tabs-tab-text-transform);
   letter-spacing: var(--rz-tabs-tab-letter-spacing);
   text-decoration: none;
+  cursor: pointer;
 }
-.rz-tabview-nav li a:hover {
+.rz-tabview-nav li a:hover,
+.rz-tabview-nav li a:not([href]):not([class]):hover {
   text-decoration: none;
 }
 .rz-tabview-nav li.rz-state-disabled {
   opacity: 0.5;
 }
+.rz-tabview-nav .rz-state-focused:not(.rz-tabview-selected):not(.rz-state-disabled) {
+  background-color: var(--rz-tabs-tab-focus-background-color);
+  border-color: var(--rz-tabs-tab-focus-background-color);
+}
+.rz-tabview-nav .rz-state-focused:not(.rz-tabview-selected):not(.rz-state-disabled) a,
+.rz-tabview-nav .rz-state-focused:not(.rz-tabview-selected):not(.rz-state-disabled) a:not([href]):not([class]) {
+  color: var(--rz-tabs-tab-focus-color);
+}
 .rz-tabview-nav .rz-tabview-selected {
   background-color: var(--rz-tabs-background-color);
   position: relative;
 }
-.rz-tabview-nav .rz-tabview-selected a {
+.rz-tabview-nav .rz-tabview-selected a,
+.rz-tabview-nav .rz-tabview-selected a:not([href]):not([class]) {
   color: var(--rz-tabs-tab-selected-color);
 }
 .rz-tabview-top > .rz-tabview-nav {
@@ -14743,7 +15262,7 @@ ul.rz-profile-menu .rz-navigation-menu .rzi {
 
 :root {
   --rz-tooltip-background-color: var(--rz-info);
-  --rz-tooltip-color: var(--rz-text-contrast-color);
+  --rz-tooltip-color: var(--rz-on-info);
   --rz-tooltip-shadow: 0 6px 14px 0 rgba(0, 0, 0, 0.15);
   --rz-tooltip-padding: 0.25rem 0.5rem;
   --rz-tooltip-border-radius: var(--rz-border-radius);
@@ -15173,7 +15692,7 @@ ul.rz-profile-menu .rz-navigation-menu .rzi {
   --rz-form-error-font-size: 0.75rem;
   --rz-form-group-margin-bottom: 1.5rem;
   --rz-validator-background-color: var(--rz-danger);
-  --rz-validator-color: var(--rz-text-contrast-color);
+  --rz-validator-color: var(--rz-on-danger);
   --rz-validator-shadow: 0 6px 14px 0 rgba(249, 119, 127, 0.3);
   --rz-validator-text-padding: 0;
   --rz-validator-padding: 0.25rem 0.5rem;
@@ -15581,7 +16100,7 @@ ul.rz-profile-menu .rz-navigation-menu .rzi {
 }
 
 .rz-progressbar.rz-progressbar-primary {
-  color: var(--rz-text-contrast-color);
+  color: var(--rz-on-primary);
 }
 
 .rz-progressbar-determinate.rz-progressbar-primary .rz-progressbar-value {
@@ -15644,7 +16163,7 @@ ul.rz-profile-menu .rz-navigation-menu .rzi {
 }
 
 .rz-progressbar.rz-progressbar-secondary {
-  color: var(--rz-text-contrast-color);
+  color: var(--rz-on-secondary);
 }
 
 .rz-progressbar-determinate.rz-progressbar-secondary .rz-progressbar-value {
@@ -15665,7 +16184,7 @@ ul.rz-profile-menu .rz-navigation-menu .rzi {
 }
 
 .rz-progressbar.rz-progressbar-info {
-  color: var(--rz-text-contrast-color);
+  color: var(--rz-on-info);
 }
 
 .rz-progressbar-determinate.rz-progressbar-info .rz-progressbar-value {
@@ -15686,7 +16205,7 @@ ul.rz-profile-menu .rz-navigation-menu .rzi {
 }
 
 .rz-progressbar.rz-progressbar-warning {
-  color: var(--rz-text-contrast-color);
+  color: var(--rz-on-warning);
 }
 
 .rz-progressbar-determinate.rz-progressbar-warning .rz-progressbar-value {
@@ -15707,7 +16226,7 @@ ul.rz-profile-menu .rz-navigation-menu .rzi {
 }
 
 .rz-progressbar.rz-progressbar-danger {
-  color: var(--rz-text-contrast-color);
+  color: var(--rz-on-danger);
 }
 
 .rz-progressbar-determinate.rz-progressbar-danger .rz-progressbar-value {
@@ -15728,7 +16247,7 @@ ul.rz-profile-menu .rz-navigation-menu .rzi {
 }
 
 .rz-progressbar.rz-progressbar-success {
-  color: var(--rz-text-contrast-color);
+  color: var(--rz-on-success);
 }
 
 .rz-progressbar-determinate.rz-progressbar-success .rz-progressbar-value {
@@ -15777,6 +16296,8 @@ ul.rz-profile-menu .rz-navigation-menu .rzi {
   --rz-chart-axis-label-color: var(--rz-text-secondary-color);
   --rz-chart-axis-font-size: 0.875rem;
   --rz-chart-legend-font-size: 0.875rem;
+  --rz-chart-legend-focus-outline: var(--rz-outline-focus);
+  --rz-chart-legend-focus-outline-offset: var(--rz-outline-offset);
   --rz-chart-tooltip-background: var(--rz-base-background-color);
   --rz-chart-tooltip-color: var(--rz-text-color);
   --rz-chart-marker-stroke: var(--rz-base-background-color);
@@ -16622,17 +17143,24 @@ ul.rz-profile-menu .rz-navigation-menu .rzi {
 }
 
 .rz-legend-item {
-  align-items: center;
   display: flex;
+  align-items: center;
+  gap: 4px;
+  margin: 4px;
+  cursor: pointer;
+}
+.rz-legend-item:focus {
+  outline: var(--rz-outline-normal);
+}
+.rz-legend-item:focus-visible {
+  outline: var(--rz-chart-legend-focus-outline);
+  outline-offset: var(--rz-chart-legend-focus-outline-offset);
+  border-radius: var(--rz-border-radius);
 }
 
 .rz-legend-top .rz-legend-item,
 .rz-legend-bottom .rz-legend-item {
   display: inline-flex;
-}
-
-.rz-legend-item-text {
-  padding: 4px;
 }
 
 .rz-chart-tooltip {
@@ -16688,6 +17216,9 @@ ul.rz-profile-menu .rz-navigation-menu .rzi {
 .rz-link:hover .rz-link-text, .rz-link:focus .rz-link-text {
   text-decoration: var(--rz-link-hover-text-decoration);
 }
+.rz-link:focus-visible {
+  outline: var(--rz-link-focus-outline);
+}
 
 .rz-state-highlight .link {
   color: var(--rz-text-contrast-color);
@@ -16703,9 +17234,11 @@ ul.rz-profile-menu .rz-navigation-menu .rzi {
   --rz-editor-button-color: var(--rz-text-color);
   --rz-editor-button-disabled-color: var(--rz-text-disabled-color);
   --rz-editor-button-selected-background-color: var(--rz-secondary);
-  --rz-editor-button-selected-color: var(--rz-text-contrast-color);
+  --rz-editor-button-selected-color: var(--rz-on-secondary);
   --rz-editor-separator-background-color: var(--rz-base-700);
   --rz-editor-content-background-color: var(--rz-base-background-color);
+  --rz-editor-focus-outline: var(--rz-outline-focus);
+  --rz-editor-focus-outline-offset: calc(-1 * var(--rz-outline-width));
 }
 
 .rz-html-editor {
@@ -16713,6 +17246,11 @@ ul.rz-profile-menu .rz-navigation-menu .rzi {
   flex-direction: column;
   border-radius: var(--rz-editor-border-radius);
   border: var(--rz-editor-border);
+  overflow: hidden;
+}
+.rz-html-editor:focus-within {
+  outline: var(--rz-editor-focus-outline);
+  outline-offset: var(--rz-editor-focus-outline-offset);
 }
 
 .rz-html-editor-content {
@@ -16895,6 +17433,8 @@ ul.rz-profile-menu .rz-navigation-menu .rzi {
   --rz-colorpicker-panel-padding: 0.5rem;
   --rz-colorpicker-panel-max-width: 20rem;
   --rz-colorpicker-saturation-height: 200px;
+  --rz-colorpicker-focus-outline: var(--rz-outline-focus);
+  --rz-colorpicker-focus-outline-offset: var(--rz-outline-offset);
   --rz-colorpicker-value-border-radius: var(--rz-border-radius);
   --rz-colorpicker-item-size: 1.25rem;
   --rz-colorpicker-item-border-radius: var(--rz-border-radius);
@@ -16965,6 +17505,13 @@ button.rz-colorpicker-trigger .rzi:before {
   touch-action: none;
   border-radius: var(--rz-border-radius);
 }
+.rz-saturation-picker:focus {
+  outline: var(--rz-outline-normal);
+}
+.rz-saturation-picker:focus-visible {
+  outline: var(--rz-colorpicker-focus-outline);
+  outline-offset: var(--rz-colorpicker-focus-outline-offset);
+}
 
 .rz-saturation-white {
   background: linear-gradient(to right, #fff, rgba(255, 255, 255, 0));
@@ -17008,6 +17555,13 @@ button.rz-colorpicker-trigger .rzi:before {
 .rz-hue-picker:active {
   cursor: none;
 }
+.rz-hue-picker:focus {
+  outline: var(--rz-outline-normal);
+}
+.rz-hue-picker:focus-visible {
+  outline: var(--rz-colorpicker-focus-outline);
+  outline-offset: var(--rz-colorpicker-focus-outline-offset);
+}
 
 .rz-alpha-picker {
   touch-action: none;
@@ -17018,6 +17572,13 @@ button.rz-colorpicker-trigger .rzi:before {
 }
 .rz-alpha-picker:active {
   cursor: none;
+}
+.rz-alpha-picker:focus {
+  outline: var(--rz-outline-normal);
+}
+.rz-alpha-picker:focus-visible {
+  outline: var(--rz-colorpicker-focus-outline);
+  outline-offset: var(--rz-colorpicker-focus-outline-offset);
 }
 
 .rz-hue-handle,
@@ -17124,10 +17685,17 @@ button.rz-colorpicker-trigger .rzi:before {
   box-shadow: var(--rz-colorpicker-item-shadow);
   cursor: pointer;
 }
+.rz-colorpicker-item:focus {
+  outline: var(--rz-outline-normal);
+}
+.rz-colorpicker-item:focus-visible {
+  outline: var(--rz-colorpicker-focus-outline);
+  outline-offset: var(--rz-colorpicker-focus-outline-offset);
+}
 
 :root {
   --rz-splitter-bar-color: var(--rz-text-secondary-color);
-  --rz-splitter-bar-color-active: var(--rz-text-contrast-color);
+  --rz-splitter-bar-color-active: var(--rz-on-secondary);
   --rz-splitter-bar-background-color: var(--rz-base-700);
   --rz-splitter-bar-background-color-active: var(--rz-secondary);
   --rz-splitter-bar-hover-opacity: 0.8;
@@ -17246,6 +17814,15 @@ button.rz-colorpicker-trigger .rzi:before {
 }
 .rz-splitter-pane-lastresizable {
   flex: 1 1 auto;
+}
+
+.rz-splitter-mask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
 }
 
 :root {
@@ -19276,6 +19853,7 @@ button.rz-colorpicker-trigger .rzi:before {
 .rz-form-field.rz-state-disabled .rz-state-disabled,
 .rz-form-field.rz-state-disabled :disabled {
   color: var(--rz-input-disabled-color);
+  opacity: 1;
 }
 .rz-form-field.rz-variant-outlined .rz-form-field-start, .rz-form-field.rz-variant-filled .rz-form-field-start, .rz-form-field.rz-variant-flat .rz-form-field-start {
   padding-right: 0;
@@ -19418,7 +19996,7 @@ button.rz-colorpicker-trigger .rzi:before {
 .rz-variant-filled .rz-textarea ~ .rz-form-field-label, .rz-variant-flat .rz-textarea ~ .rz-form-field-label {
   transform: translate(0, 0.625rem);
 }
-.rz-textbox:focus ~ .rz-form-field-label, .rz-textarea:focus ~ .rz-form-field-label, .rz-spinner:focus-within ~ .rz-form-field-label, .rz-autocomplete:focus-within ~ .rz-form-field-label, .rz-textbox:not(:placeholder-shown) ~ .rz-form-field-label, :not(.rz-state-empty) ~ .rz-form-field-label, .rz-variant-filled .rz-textarea:focus ~ .rz-form-field-label, .rz-variant-flat .rz-textarea:focus ~ .rz-form-field-label, .rz-variant-filled :not(.rz-state-empty) ~ .rz-form-field-label, .rz-variant-flat :not(.rz-state-empty) ~ .rz-form-field-label, .rz-radio-button-list-vertical ~ .rz-form-field-label, .rz-radio-button-list-horizontal ~ .rz-form-field-label, .rz-checkbox-list-vertical ~ .rz-form-field-label, .rz-checkbox-list-horizontal ~ .rz-form-field-label, .rz-chkbox ~ .rz-form-field-label {
+.rz-form-field:not(.rz-floating-label) .rz-form-field-label, .rz-textbox:focus ~ .rz-form-field-label, .rz-textarea:focus ~ .rz-form-field-label, .rz-spinner:focus-within ~ .rz-form-field-label, .rz-autocomplete:focus-within ~ .rz-form-field-label, .rz-textbox:not(:placeholder-shown) ~ .rz-form-field-label, :not(.rz-state-empty) ~ .rz-form-field-label, .rz-variant-filled .rz-textarea:focus ~ .rz-form-field-label, .rz-variant-flat .rz-textarea:focus ~ .rz-form-field-label, .rz-variant-filled :not(.rz-state-empty) ~ .rz-form-field-label, .rz-variant-flat :not(.rz-state-empty) ~ .rz-form-field-label, .rz-radio-button-list-vertical ~ .rz-form-field-label, .rz-radio-button-list-horizontal ~ .rz-form-field-label, .rz-checkbox-list-vertical ~ .rz-form-field-label, .rz-checkbox-list-horizontal ~ .rz-form-field-label, .rz-chkbox ~ .rz-form-field-label, .rz-state-empty:has(.rz-placeholder) ~ .rz-form-field-label {
   right: auto;
   top: var(--rz-form-field-label-floating-top);
   padding-top: 0;
@@ -19430,7 +20008,7 @@ button.rz-colorpicker-trigger .rzi:before {
   line-height: 1rem;
   max-width: calc(100% - 1.5rem);
 }
-.rz-form-field:not(.rz-variant-outlined) *:focus ~ .rz-form-field-label, .rz-form-field:not(.rz-variant-outlined) *:focus-within ~ .rz-form-field-label, .rz-form-field:not(.rz-variant-outlined) :not(.rz-state-empty) ~ .rz-form-field-label, .rz-form-field:not(.rz-variant-outlined) .rz-radio-button-list-vertical ~ .rz-form-field-label, .rz-form-field:not(.rz-variant-outlined) .rz-radio-button-list-horizontal ~ .rz-form-field-label, .rz-form-field:not(.rz-variant-outlined) .rz-checkbox-list-vertical ~ .rz-form-field-label, .rz-form-field:not(.rz-variant-outlined) .rz-checkbox-list-horizontal ~ .rz-form-field-label, .rz-form-field:not(.rz-variant-outlined) .rz-chkbox ~ .rz-form-field-label {
+.rz-form-field:not(.rz-variant-outlined):not(.rz-floating-label) .rz-form-field-label, .rz-form-field:not(.rz-variant-outlined) *:focus ~ .rz-form-field-label, .rz-form-field:not(.rz-variant-outlined) *:focus-within ~ .rz-form-field-label, .rz-form-field:not(.rz-variant-outlined) :not(.rz-state-empty) ~ .rz-form-field-label, .rz-form-field:not(.rz-variant-outlined) .rz-radio-button-list-vertical ~ .rz-form-field-label, .rz-form-field:not(.rz-variant-outlined) .rz-radio-button-list-horizontal ~ .rz-form-field-label, .rz-form-field:not(.rz-variant-outlined) .rz-checkbox-list-vertical ~ .rz-form-field-label, .rz-form-field:not(.rz-variant-outlined) .rz-checkbox-list-horizontal ~ .rz-form-field-label, .rz-form-field:not(.rz-variant-outlined) .rz-chkbox ~ .rz-form-field-label, .rz-form-field:not(.rz-variant-outlined) .rz-state-empty:has(.rz-placeholder) ~ .rz-form-field-label {
   background-color: inherit !important;
 }
 .invalid ~ .rz-form-field-label {
@@ -20001,4 +20579,29 @@ button.rz-colorpicker-trigger .rzi:before {
 }
 .rz-timeline-axis-xs .rzi {
   font-size: 0.5rem;
+}
+
+.rz-picklist-wrapper {
+  width: 100%;
+  height: 100%;
+  --rz-gap: 1rem;
+}
+
+.rz-picklist-source-wrapper,
+.rz-picklist-target-wrapper {
+  flex: 1;
+  --rz-gap: 0.5rem;
+  overflow: hidden;
+}
+
+.rz-picklist-source-wrapper,
+.rz-picklist-target-wrapper,
+.rz-picklist-source-wrapper .rz-listbox,
+.rz-picklist-target-wrapper .rz-listbox {
+  width: 100%;
+  height: 100%;
+}
+
+.rz-picklist-buttons.rz-flex-row .rzi {
+  transform: rotate(90deg);
 }
