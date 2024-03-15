@@ -53,7 +53,7 @@ namespace SkyDocs.Blazor.Pages
 
             DialogService.Open<LoadingModal>("Loading...", new Dictionary<string, object>() { { "Msg", "Loading..." } }, options: new DialogOptions() { ShowClose = false, ShowTitle = false, Width = "200px" });
 
-            ShareModel? shareModel = await shareService.GetMessage(address, hash, share.Skylink);
+            ShareModel? shareModel = await shareService.GetMessage(address, hash ?? string.Empty, share.Skylink);
 
             if (shareModel?.Sum != null)
             {

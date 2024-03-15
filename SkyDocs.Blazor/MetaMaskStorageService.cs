@@ -1,4 +1,4 @@
-﻿using Blazored.LocalStorage;
+using Blazored.LocalStorage;
 using SiaSkynet;
 using SkyDocs.Blazor.Models;
 using System;
@@ -19,14 +19,14 @@ namespace SkyDocs.Blazor
             this.localStorageService = localStorageService;
         }
 
-        public ValueTask<string> GetEncryptedMetamaskHash()
+        public ValueTask<string?> GetEncryptedMetamaskHash()
         {
             return localStorageService.GetItemAsStringAsync(MetaMaskLocalStorageKey);
         }
 
         public async Task<MetaMaskLogin?> GetStoredhash(string address)
         {
-            string encryptedStoredLogin = await GetEncryptedMetamaskHash();
+            string? encryptedStoredLogin = await GetEncryptedMetamaskHash();
             if (!string.IsNullOrEmpty(encryptedStoredLogin))
             {
                 try
